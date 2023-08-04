@@ -23,7 +23,7 @@
 				</view>
 			</view>
 			<span class="fenge"></span>
-			<view class="pay-password">
+			<view class="pay-password" @click="updatePayPwd">
 				<view class="pay-password-l">
 					<span class="title">支付密码</span>
 					<span class="tip">设置支付密码用于余额支付</span>
@@ -53,9 +53,14 @@
 			}
 		},
 		methods: {
+			updatePayPwd(){
+				uni.navigateTo({
+					url:"/pages/center/setting/update-mobile"
+				})
+			},
 			goUpdateIphone(){
 				uni.navigateTo({
-					url: '/pages/center/setting/update-mobile'
+					url: '/pages/center/setting/update-payword'
 				})
 			}
 		}

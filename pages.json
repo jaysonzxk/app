@@ -271,6 +271,20 @@
 			}
 		},
 		{
+			"path": "pages/center/setting/update-payword",
+			"style": {
+				"scrollIndicator":"none",
+				"navigationBarTitleText": "设置支付密码",
+				"app-plus": {
+					"titleNView": {
+						// "type": "transparent",
+						"titleColor": "#000",
+						"backgroundColor": "#fff"
+					}
+				}
+			}
+		},
+		{
 			"path": "pages/center/setting/update-mobile",
 			"style": {
 				"scrollIndicator":"none",
@@ -355,6 +369,15 @@
         }
         ,{
             "path" : "pages/center/setting/update-mobile",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/center/setting/update-payword",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
