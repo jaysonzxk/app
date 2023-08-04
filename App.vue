@@ -6,6 +6,8 @@
 				
 			})
 			console.log('App Launch')
+			const lang = uni.getLocale()
+			console.log(lang)
 		},
 		onShow: function() {
 			console.log('App Show')

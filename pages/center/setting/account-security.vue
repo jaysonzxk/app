@@ -55,12 +55,12 @@
 		methods: {
 			updatePayPwd(){
 				uni.navigateTo({
-					url:"/pages/center/setting/update-mobile"
+					url:"/pages/center/setting/update-payword"
 				})
 			},
 			goUpdateIphone(){
 				uni.navigateTo({
-					url: '/pages/center/setting/update-payword'
+					url: '/pages/center/setting/update-mobile'
 				})
 			}
 		}

@@ -122,6 +122,30 @@
 			}
 		},
 		{
+			"path": "pages/jishi/index",
+			"style": {
+				"navigationBarTitleText": "技师",
+				"scrollIndicator":"none",
+				"app-plus": {
+					"scrollIndicator":"none",
+					"titleNView": {
+						// "type": "transparent",
+						"titleColor": "#fff",
+						// "titleText": "我的",
+						"backgroundColor": "#3ab54a"
+						// "buttons": [{
+						// 	"fontSrc": "/static/iconfont.ttf",
+						// 	"text": "\ue660",
+						// 	"width": "40px",
+						// 	"fontSize": "22px",
+						// 	"color": "#fff",
+						// 	"background": "rgba(0,0,0,0)"
+						// }]
+					}
+				}
+			}
+		},
+		{
 			"path": "pages/center/index",
 			"style": {
 				"navigationBarTitleText": "我的",
@@ -404,7 +428,7 @@
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/hot/index",
+				"pagePath": "pages/jishi/index",
 				"iconPath": "static/jishi.png",
 				"selectedIconPath": "static/jishi1.png",
 				"text": "技师"
