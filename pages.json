@@ -39,7 +39,7 @@
 			}
 		},
 		{
-			"path": "pages/hot/index",
+			"path": "pages/jishi/index",
 			"style": {
 				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "推荐",
@@ -358,8 +358,23 @@
 				"app-plus": {
 					"titleNView": {
 						// "type": "transparent",
-						"titleColor": "#fff"
-						// "backgroundColor": "#007AFF",
+						"titleColor": "#000",
+						"backgroundColor": "#fff"
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/center/wallet",
+			"style": {
+				"scrollIndicator":"none",
+				"navigationBarTitleText": "我的钱包",
+				"app-plus": {
+					"titleNView": {
+						// "type": "transparent",
+						"titleColor": "#000",
+						"backgroundColor": "#fff",
+						"titleSize": "16px"
 					}
 				}
 			}
@@ -402,6 +417,15 @@
         }
         ,{
             "path" : "pages/center/setting/update-payword",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/center/wallet",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
