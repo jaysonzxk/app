@@ -30,3 +30,13 @@ export function getGoodDetail(params) {
 export function checkVersion(params){
 	return http.get('/api/app/check_version',params)
 }
+
+// 登陆
+export function userLogin(data){
+	return http.post('/api/v1/login/', data)
+}
+
+// 用户信息
+export function getUserInfo(params){
+	return http.get('/api/v1/client/user/user_info/', params)
+}

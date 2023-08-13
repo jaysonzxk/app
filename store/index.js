@@ -6,6 +6,7 @@ import banner from './modules/banner'
 import activity from './modules/activity'
 import search from './modules/search'
 import footprint from './modules/footprint'
+import user from './modules/user'
 Vue.use(Vuex)
 const store = new Vuex.Store({
     modules: {
@@ -14,7 +15,8 @@ const store = new Vuex.Store({
 		banner,
 		activity,
 		search,
-		footprint
+		footprint,
+		user
     }
 })
 

@@ -8,7 +8,7 @@
 				<span class="money-l">20000.80</span>
 				<span class="money-r">充值</span>
 			</view>
-			
+
 		</view>
 		<view class="body">
 			<view class="title">
@@ -48,7 +48,7 @@
 			}
 		},
 		methods: {
-			
+
 		}
 	}
 </script>

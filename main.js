@@ -65,6 +65,8 @@ Vue.prototype.disabledPullRefresh = function(disabled) {
 }
 App.mpType = 'app'
 
+
+
 const app = new Vue({
 	store,
 	...App

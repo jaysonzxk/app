@@ -172,24 +172,20 @@
 		{
 			"path": "pages/center/login",
 			"style": {
-				"navigationBarTitleText": "登录",
+//				"navigationBarTitleText": "登录",
 				"app-plus": {
 					"scrollIndicator":"none",
-					"titleNView": {
-						"titleColor": "#fff"
-					}
+					"titleNView": false
 				}
 			}
 		},
 		{
 			"path": "pages/center/register",
 			"style": {
-				"navigationBarTitleText": "注册",
+//				"navigationBarTitleText": "注册",
 				"app-plus": {
-					"scrollIndicator":"none",
-					"titleNView": {
-						"titleColor": "#fff"
-					}
+//					"scrollIndicator":"none",
+					"titleNView": false
 				}
 			}
 		}, {
@@ -381,63 +377,63 @@
 		}
 	    ,{
             "path" : "pages/center/setting/account-security",
-            "style" :                                                                                    
+            "style" :
             {
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
-            
+
         }
         ,{
             "path" : "pages/center/feedback",
-            "style" :                                                                                    
+            "style" :
             {
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
         }
-        
+
         ,{
             "path" : "pages/center/address",
-            "style" :                                                                                    
+            "style" :
             {
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
-            
+
         }
         ,{
             "path" : "pages/center/setting/update-mobile",
-            "style" :                                                                                    
+            "style" :
             {
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
-            
+
         }
         ,{
             "path" : "pages/center/setting/update-payword",
-            "style" :                                                                                    
+            "style" :
             {
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
-            
+
         }
         ,{
             "path" : "pages/center/wallet",
-            "style" :                                                                                    
+            "style" :
             {
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
-            
+
         }
     ],
 	"globalStyle": {
 		// "navigationBarTextStyle": "white",
-		"navigationBarTitleText": "首页",
-		"navigationBarBackgroundColor": "rgb(58, 181, 74)"
+//		"navigationBarTitleText": "首页",
+//		"navigationBarBackgroundColor": "rgb(58, 181, 74)"
 		// "backgroundColor": "#EFEFEF"
 	},
 	"tabBar": {
