@@ -49,13 +49,7 @@ export default {
       })
     },
     async userLogin() {
-      let res = await this.$store.dispatch('user/Login', this.loginForm);
-      if (res.code === 2000) {
-        uni.navigateBack({
-          delta:1
-        })
-      }
-
+      await this.$store.dispatch('user/Login', this.loginForm);
       // uni.showLoading({
       // 	title: '数据加载中...'
       // });
@@ -94,7 +88,9 @@ export default {
   width: 25px;
   margin-bottom: 20px;
 }
-
+/*.body-top{*/
+/*  margin-left: calc(5% / 2);*/
+/*}*/
 .header-top{
   display: flex;
   flex-direction: column;
@@ -124,7 +120,7 @@ export default {
   border-radius: 20px;
   height: 50px;
   width: 90%;
-  margin-left: calc(10% / 2);
+  margin-left: calc(5% / 2);
 
 }
 .pwd{
@@ -132,7 +128,7 @@ export default {
   border-radius: 20px;
   height: 50px;
   width: 90%;
-  margin-left: calc(10% / 2);
+  margin-left: calc(5% / 2);
   margin-top: 20px;
   padding-left: 20px;
 }

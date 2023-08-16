@@ -11,9 +11,7 @@
     </view>
     <view class="body">
       <view class="body-top">
-        <view class="mobile">
-          <input v-model="mobile" placeholder="手机号" class="username"/>
-        </view>
+        <input v-model="mobile" placeholder="手机号" class="username"/>
         <view class="reg-code">
           <input placeholder="请输短信验证码" class="code"/>
           <span v-show="show" class="get-code" @click="getCode(mobile)">获取验证码</span>
@@ -81,7 +79,7 @@ export default {
   /*height: 100%;*/
 }
 .header {
-  margin-top: 20px;
+  margin-top: 60px;
   margin-left: 20px;
 }
 .back{
@@ -119,7 +117,7 @@ export default {
   border-radius: 20px;
   height: 50px;
   width: 90%;
-  margin-left: calc(10% / 2);
+  margin-left: calc(5% / 2);
 
 }
 
@@ -140,7 +138,7 @@ export default {
   border-radius: 20px;
   height: 50px;
   width: 90%;
-  margin-left: calc(10% / 2);
+  margin-left: calc(5% / 2);
   margin-top: 20px;
   padding-left: 20px;
 }
@@ -163,7 +161,7 @@ export default {
   border-radius: 20px;
   height: 50px;
   width: 90%;
-  margin-left: calc(10% / 2);
+  margin-left: calc(5% / 2);
   margin-top: 20px;
   padding-left: 20px;
 }
@@ -173,7 +171,7 @@ export default {
   border-radius: 20px;
   height: 50px;
   width: 90%;
-  margin-left: calc(10% / 2);
+  margin-left: calc(5% / 2);
   margin-top: 20px;
   padding-left: 20px;
 }
