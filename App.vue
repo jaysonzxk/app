@@ -3,7 +3,7 @@
 	export default {
 		onLaunch: function() {
 			this.checkVersion().catch(()=>{
-				
+
 			})
 			console.log('App Launch')
 			const lang = uni.getLocale()
@@ -23,11 +23,11 @@
 	@import './common/common.css';
 
 	page{
-		background:#f7f7f7;
+		background:#ffffff;
 		height: 100%;
 		font-size: 28upx;
 		line-height: 1.8;
 	}
-		
-	
+
+
 </style>

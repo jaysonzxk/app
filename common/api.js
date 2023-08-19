@@ -3,17 +3,14 @@ import http from '@/common/http'
 export function getCategory() {
 	return http.get('/api/category', {})
 }
-export function getGoods(params) {
-	return http.get('/api/goods', params)
-}
 export function getActGoods(params) {
 	return http.get('/api/goods/activity', params)
 }
 export function getRecommend(params) {
 	return http.get('/api/goods/recommend', params)
 }
-export function getBanner() {
-	return http.get('/api/banner')
+export function getBanner(params) {
+	return http.get('/api/v1/client/banners/', params)
 }
 export function getActivity(params) {
 	return http.get('/api/activity', params)
@@ -39,4 +36,14 @@ export function userLogin(data){
 // 用户信息
 export function getUserInfo(params){
 	return http.get('/api/v1/client/user/user_info/', params)
+}
+
+// 商品
+export function getGoods(params){
+	return http.get('/api/v1/client/goods/', params)
+}
+
+// 推荐技师列表
+export function getTechnician(params){
+	return http.get('/api/v1/client/technician/', params)
 }

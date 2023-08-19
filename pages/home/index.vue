@@ -1,576 +1,586 @@
 <template>
-	<view class="uni-tab-bar app">
-		<swiper :current="tabIndex" class="swiper-box touch-action-none" skip-hidden-item-layout="true" :duration="300"
-			@change="changeTab">
-			<swiper-item>
-				<scroll-view class="good-list touch-action-none" :scroll-top="scrollTop" @scroll="scroll" scroll-y
-					@scrolltolower="loadMore(good.cid)">
-					<view class="banner">
-						<uni-swiper-dot v-if="banners.length > 0">
-							<swiper class="banner-swiper" :indicator-dots="indicatorDots" :autoplay="autoplay"
-								:interval="interval" :duration="duration">
-								<swiper-item v-for="(banner, index) in banners" :key="index">
-									<view class="banner-swiper-item">
-										<image :src="banner.image" lazy-load mode="aspectFill"
-											@click="bannerClick(banner)" />
-									</view>
-								</swiper-item>
-							</swiper>
-						</uni-swiper-dot>
-						<!-- <view class="grid-list"><uni-grid :options="activitys" :show-border="false" columnNum="4" @click="actClick"></uni-grid></view>
-						<view class="active-title-image"><image :src="index_1.image" lazy-load mode="aspectFill" @click="bannerClick(index_1)"></image></view> -->
-					</view>
-					<span class="tip">服务项目</span>
-					<!-- <view class="cate-grid-list" v-if="good.cid > 0">
-						<uni-grid :options="gcategorys[index].sub_categorys" :show-border="false" columnNum="5" @click="tagClick"></uni-grid>
-					</view> -->
-					<block v-for="(product, index) in products" :key="product.id" class="item">
-						<view class="uni-index-list-cell">
-							<view class="list" @click="goodClick(g)">
-								<image class="uni-good-list-logo" lazy-load :src="product.image"></image>
-								<view class="uni-good-list-body">
-									<view class="uni-good-list-text-top">{{ product.title }}</view>
-									<view class="time">{{product.duration}}分钟</view>
-									<view class="uni-good-list-text-bottom">
-										<view class="bottom">
-											<view class="prices">
-												<span class="price">{{product.price}}</span>
-												<span class="origin-price">{{product.originprice}}</span>
-											</view>
-											<view class="sales">
-												已售 {{product.sales}}
-											</view>
-										</view>
-										<!-- <text class="good-price-favour">天猫价￥{{ g.original_price }}</text>
-										<text class="good-price-favour">淘宝价￥{{ g.original_price }}</text>
-										<text class="good-sell-number">已售{{ g.sales_num }}件</text> -->
-									</view>
-								</view>
-							</view>
-						</view>
-					</block>
-					<uni-load-more :status="loadmoreStatue" :contentText="loadingText"></uni-load-more>
-				</scroll-view>
-			</swiper-item>
-		</swiper>
-		<uni-floating-button :visible="showFloatButton" @click="gotTop()"></uni-floating-button>
-	</view>
+  <view class="uni-tab-bar app">
+    <view class="header">
+      <view class="location">
+        <view class="location-icon"></view>
+        <view class="title">北京</view>
+        <view class="more"></view>
+      </view>
+      <view class="massage"></view>
+    </view>
+    <view class="banner">
+      <uni-swiper-dot v-if="bannerList.length > 0">
+        <swiper class="banner-swiper" :indicator-dots="indicatorDots" :autoplay="autoplay"
+                :interval="interval" :duration="duration">
+          <swiper-item class="banners" v-for="(banner, index) in bannerList" :key="index">
+            <view class="banner-swiper-item">
+              <image :src="banner.file" lazy-load mode="aspectFill"
+                     @click="bannerClick(banner)"/>
+            </view>
+          </swiper-item>
+        </swiper>
+      </uni-swiper-dot>
+      <!-- <view class="grid-list"><uni-grid :options="activitys" :show-border="false" columnNum="4" @click="actClick"></uni-grid></view>
+      <view class="active-title-image"><image :src="index_1.image" lazy-load mode="aspectFill" @click="bannerClick(index_1)"></image></view> -->
+    </view>
+    <view class="tip-list">
+      <view class="item-tab">
+        <span class="tab-1"></span>
+        <span>超时秒退</span>
+      </view>
+      <view class="item-tab">
+        <span class="tab-2"></span>
+        <span>持证上岗</span>
+      </view>
+      <view class="item-tab">
+        <span class="tab-3"></span>
+        <span>爽约包赔</span>
+      </view>
+      <view class="item-tab">
+        <span class="tab-4"></span>
+        <span>全场保障</span>
+      </view>
+    </view>
+    <view class="recommend">
+      <span class="tjjs">推荐技师</span>
+      <view class="more-jishi">
+        <span class="more-l">更多</span>
+        <span class="more-r"></span>
+      </view>
+
+    </view>
+    <view class="technician" v-show="technicianList.length > 0">
+      <view class="technician-item">
+        <view class="jishi"  v-for="(item, index) in technicianList" :key="index">
+          <img class="avatar" :src="item.avatar" />
+          <span class="username">{{item.name}}</span>
+          <span class="order">接单量{{item.orderNum}}</span>
+        </view>
+      </view>
+    </view>
+    <span class="tjxm">服务项目</span>
+    <!-- <view class="cate-grid-list" v-if="good.cid > 0">
+      <uni-grid :options="gcategorys[index].sub_categorys" :show-border="false" columnNum="5" @click="tagClick"></uni-grid>
+    </view> -->
+    <view class="product" v-show="products.length > 0">
+      <view v-for="(product, index) in products" :key="product.id" class="item"  @click="goodClick(product.id)">
+        <view class="uni-index-list-cell">
+          <view class="list">
+            <image class="uni-good-list-logo" lazy-load :src="product.img"></image>
+            <view class="uni-good-list-body">
+              <view class="uni-good-list-text-top">{{ product.name }}</view>
+              <view class="time">{{ product.duration }}分钟</view>
+              <view class="uni-good-list-text-bottom">
+                <view class="bottom">
+                  <view class="prices">
+                    <span class="price">{{ product.price }}</span>
+                    <span class="origin-price">{{ product.originPrice }}</span>
+                  </view>
+                  <view class="sales">
+                    已售 {{ product.sales }}
+                  </view>
+                </view>
+                <!-- <text class="good-price-favour">天猫价￥{{ g.original_price }}</text>
+                <text class="good-price-favour">淘宝价￥{{ g.original_price }}</text>
+                <text class="good-sell-number">已售{{ g.sales_num }}件</text> -->
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <uni-load-more :status="loadmoreStatue" :contentText="loadingText"></uni-load-more>
+  </view>
 </template>
 
 <script>
-	import uniFloatingButton from '@/components/uni-floating-button/uni-floating-button.vue';
-	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
-	import uniSwiperDot from '@/components/uni-swiper-dot/uni-swiper-dot.vue';
-	import uniGrid from '@/components/uni-grid/uni-grid.vue';
-	import {
-		mapGetters
-	} from 'vuex';
-	import {
-		paseNum
-	} from '@/common/util';
+import uniFloatingButton from '@/components/uni-floating-button/uni-floating-button.vue';
+import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
+import uniSwiperDot from '@/components/uni-swiper-dot/uni-swiper-dot.vue';
+import uniGrid from '@/components/uni-grid/uni-grid.vue';
+import {getBanner, getGoods, getTechnician} from '@/common/api'
+import {
+  mapGetters
+} from 'vuex';
+import {
+  paseNum
+} from '@/common/util';
+import uniCard from "@/components/uni-card/uni-card.vue";
 
-	export default {
-		components: {
-			uniGrid,
-			uniLoadMore,
-			uniSwiperDot,
-			uniFloatingButton
-		},
-		computed: {
-			// ...mapGetters('category', {
-			// 	categorys: 'categorys'
-			// }),
-			// ...mapGetters('category', {
-			// 	gcategorys: 'gcategorys'
-			// }),
-			// ...mapGetters('good', {
-			// 	goods: 'goods'
-			// }),
-			// ...mapGetters('banner', {
-			// 	banners: 'banners'
-			// }),
-			// ...mapGetters('banner', {
-			// 	index_1: 'index_1'
-			// }),
-			// ...mapGetters('activity', {
-			// 	activitys: 'activitys'
-			// })
-		},
-		onLoad: function(options) {
-			this.getData();
-		},
+export default {
+  components: {
+    uniCard,
+    uniGrid,
+    uniLoadMore,
+    uniSwiperDot,
+    uniFloatingButton
+  },
 
-		data() {
-			return {
-				pullDownRefresh: true,
-				tabs: [],
-				showFloatButton: false,
-				scrollTop: 0,
-				oldScrollTop: 0,
-				isClickChange: false,
-				scrollLeft: 0,
-				tabIndex: 0,
-				loadmoreStatue: 'more',
-				indicatorDots: true,
-				autoplay: true,
-				interval: 2000,
-				duration: 500,
-				loadingText: {
-					contentdown: '下拉加载更多',
-					contentrefresh: '正在加载...',
-					contentnomore: '没有更多数据了'
-				},
-				banners: [{
-						id: 1,
-						image: require("./images/banner1.png")
-					},
-					{
-						id: 2,
-						image: require("./images/banner2.png")
-					},
-					{
-						id: 3,
-						image: require("./images/1.png")
-					}
-				],
-				products: [{
-						id: 1,
-						image: require("./products/1.png"),
-						title: "本地颐固本养生Spa",
-						duration: 100,
-						originprice: 200,
-						price: 180,
-						sales: 10
-					},
-					{
-						id: 2,
-						image: require("./products/2.png"),
-						title: "本地颐固本养生Spa",
-						duration: 100,
-						originprice: 200,
-						price: 180,
-						sales: 10
-					},
-					{
-						id: 3,
-						image: require("./products/3.png"),
-						title: "足部按摩",
-						duration: 100,
-						originprice: 200,
-						price: 180,
-						sales: 10
-					},
-					{
-						id: 4,
-						image: require("./products/4.png"),
-						title: "颈部按摩",
-						duration: 100,
-						originprice: 200,
-						price: 180,
-						sales: 10
-					},
-					{
-						id: 5,
-						image: require("./products/5.png"),
-						title: "泰式SPA",
-						duration: 100,
-						originprice: 200,
-						price: 180,
-						sales: 10
-					},
-					{
-						id: 6,
-						image: require("./products/6.png"),
-						title: "足浴",
-						duration: 100,
-						originprice: 200,
-						price: 180,
-						sales: 10
-					},
-					{
-						id: 7,
-						image: require("./products/7.png"),
-						title: "采耳服务",
-						duration: 100,
-						originprice: 200,
-						price: 180,
-						sales: 10
-					},
-					{
-						id: 8,
-						image: require("./products/8.png"),
-						title: "新居开荒",
-						duration: 100,
-						originprice: 200,
-						price: 180,
-						sales: 10
-					}
-				]
-			};
-		},
-		methods: {
-			async loadMore(cid) {
-				let item = this.goods[cid];
-				let page = item.page + 1;
-				this.loadmoreStatue = 'loading';
-				this.$store
-					.dispatch('good/GetGoods', {
-						cid: cid,
-						page: page,
-						push: true
-					})
-					.then(() => {
-						this.loadmoreStatue = 'more';
-					})
-					.catch(() => {
-						this.loadmoreStatue = 'noMore';
-					});
-			},
-			async getData() {
-				// uni.showLoading({
-				// 	title: '数据加载中...'
-				// });
-				this.tabIndex = 0;
-				if (this.categorys.length == 1) {
-					await this.$store.dispatch('category/GetCategory');
-					this.tabs = this.categorys;
-				}
-				await this.$store.dispatch('banner/GetBanner');
-				await this.$store.dispatch('activity/GetActivity', {});
-				await this.$store.dispatch('good/InitGoods', this.tabs);
-				await this.$store.dispatch('good/GetGoods', {
-					cid: 0,
-					page: 1
-				});
-				this.gotTop();
-				// console.log(this.tabs)
-				uni.hideLoading();
-			},
-			goodClick(g) {
-				let params = {
-					id: g.id,
-					numm_id: g.goods_id
-				};
-				uni.showLoading({
-					title: '数据加载中...'
-				});
-				this.$store
-					.dispatch('good/GetGoodDetail', params)
-					.then(() => {
-						uni.hideLoading();
-						uni.navigateTo({
-							url: '/pages/good/detail?id=' + g.id + '&nummId=' + g.goods_id
-						});
-					})
-					.catch(() => {
-						//TODO
-						uni.hideLoading();
-					});
-			},
-			getElSize(id) {
-				//得到元素的size
-				return new Promise((res, rej) => {
-					uni.createSelectorQuery()
-						.select('#' + id)
-						.fields({
-								size: true,
-								scrollOffset: true
-							},
-							data => {
-								res(data);
-							}
-						)
-						.exec();
-				});
-			},
-			async tapTab(tab, index) {
-				if (this.tabIndex === index) {
-					return false;
-				} else {
-					let tabBar = await this.getElSize('tab-bar'),
-						tabBarScrollLeft = tabBar.scrollLeft; //点击的时候记录并设置scrollLeft
-					this.scrollLeft = tabBarScrollLeft;
-					this.isClickChange = true;
-					this.tabIndex = index;
+  computed: {},
+  onLoad: function (options) {
+    // this.getData();
+    this.getBanners();
+    this.getGoodsList();
+    this.getTechnicians();
+  },
+  data() {
+    return {
+      pullDownRefresh: true,
+      tabs: [],
+      showFloatButton: false,
+      scrollTop: 0,
+      oldScrollTop: 0,
+      isClickChange: false,
+      scrollLeft: 0,
+      tabIndex: 0,
+      loadmoreStatue: 'more',
+      indicatorDots: true,
+      autoplay: true,
+      interval: 2000,
+      duration: 500,
+      loadingText: {
+        // contentdown: '下拉加载更多',
+        contentrefresh: '正在加载...',
+        contentnomore: '没有更多数据了'
+      },
+      bannerList: [],
+      products: [],
+      technicianList: [],
+    };
+  },
+  create() {
 
-					if (this.goods[tab.id].data.length == 0) {
-						uni.showLoading({
-							title: '数据加载中...'
-						});
-						await this.$store.dispatch('good/GetGoods', {
-							cid: tab.id,
-							page: 1
-						});
-						uni.hideLoading();
-					}
-					if (this.tabIndex > 0) {
-						this.subCategorys = this.tabs[this.tabIndex].sub_categorys.map(item => {
-							return {
-								id: item.id,
-								image: item.icon,
-								text: item.name
-							};
-						});
-					}
-				}
-			},
-			actClick(e) {
-				let act = this.activitys[e.index];
-				const id = act.id;
-				const name = act.text;
-				uni.showLoading({
-					title: '数据加载中...'
-				});
-				let params = {
-					cid: 0,
-					scid: 0,
-					score: 1,
-					page: 1,
-					id: id
-				};
-				this.$store
-					.dispatch('good/GetActGoods', params)
-					.then(() => {
-						uni.hideLoading();
-						uni.navigateTo({
-							url: '/pages/activity/index?id=' + id + '&name=' + name
-						});
-					})
-					.catch(() => {
-						uni.hideLoading();
-					});
-			},
-			bannerClick(banner) {
-				if (banner.url != '') {
-					if (banner.url.indexOf('https://') == 0) {
-						// #ifdef APP-PLUS
-						let link = banner.url;
-						link = link.replace('https', 'taobao');
+  },
+  methods: {
+    async getBanners() {
+      let res = await getBanner()
+      if (res.code === 2000) {
+        this.bannerList = res.data.data
+      }
+    },
+    async getTechnicians() {
+      let res = await getTechnician()
+      if (res.code === 2000) {
+        this.technicianList = res.data.data
+      }
+    },
+    async getGoodsList() {
+      uni.showLoading({
+        title: '数据加载中...'
+      });
+      let res = await getGoods()
+      if (res.code === 2000) {
+        this.products = res.data.data
+        uni.hideLoading();
+      }
+    },
+    goodClick(val){
+      uni.navigateTo({
+        url: '/pages/good/detail?goodsId=' + val
+      })
+    },
+    async loadMore(cid) {
+      let item = this.goods[cid];
+      let page = item.page + 1;
+      this.loadmoreStatue = 'loading';
+      this.$store
+          .dispatch('good/GetGoods', {
+            cid: cid,
+            page: page,
+            push: true
+          })
+          .then(() => {
+            this.loadmoreStatue = 'more';
+          })
+          .catch(() => {
+            this.loadmoreStatue = 'noMore';
+          });
+    },
+    // async getData() {
+    // 	// uni.showLoading({
+    // 	// 	title: '数据加载中...'
+    // 	// });
+    // 	await this.$store.dispatch('banner/GetBanner');
+    // 	await this.$store.dispatch('activity/GetActivity', {});
+    // 	await this.$store.dispatch('good/InitGoods', this.tabs);
+    // 	await this.$store.dispatch('good/GetGoods', {
+    // 		cid: 0,
+    // 		page: 1
+    // 	});
+    // 	this.gotTop();
+    // 	// console.log(this.tabs)
+    // 	uni.hideLoading();
+    // },
+    // async tapTab(tab, index) {
+    //   if (this.tabIndex === index) {
+    //     return false;
+    //   } else {
+    //     let tabBar = await this.getElSize('tab-bar'),
+    //         tabBarScrollLeft = tabBar.scrollLeft; //点击的时候记录并设置scrollLeft
+    //     this.scrollLeft = tabBarScrollLeft;
+    //     this.isClickChange = true;
+    //     this.tabIndex = index;
+    //
+    //     if (this.goods[tab.id].data.length == 0) {
+    //       uni.showLoading({
+    //         title: '数据加载中...'
+    //       });
+    //       await this.$store.dispatch('good/GetGoods', {
+    //         cid: tab.id,
+    //         page: 1
+    //       });
+    //       uni.hideLoading();
+    //     }
+    //     if (this.tabIndex > 0) {
+    //       this.subCategorys = this.tabs[this.tabIndex].sub_categorys.map(item => {
+    //         return {
+    //           id: item.id,
+    //           image: item.icon,
+    //           text: item.name
+    //         };
+    //       });
+    //     }
+    //   }
+    // },
+    bannerClick(banner) {
+      if (banner.url != '') {
+        if (banner.url.indexOf('https://') == 0) {
+          // #ifdef APP-PLUS
+          let link = banner.url;
+          link = link.replace('https', 'taobao');
 
-						plus.runtime.openURL(link, function(res) {
-							uni.navigateTo({
-								url: '/pages/web/index?url=' + escape(banner.url)
-							});
-						});
+          plus.runtime.openURL(link, function (res) {
+            uni.navigateTo({
+              url: '/pages/web/index?url=' + escape(banner.url)
+            });
+          });
 
-						// #endif
-						// #ifdef H5
-						uni.navigateTo({
-							url: '/pages/web/index?url=' + escape(banner.url)
-						});
-						// #endif
-					} else {
-						uni.navigateTo({
-							url: banner.url
-						});
-					}
-				} else if (banner.activity_type > 0) {
-					uni.navigateTo({
-						url: '/pages/activity/index?id=' + banner.activity_type
-					});
-				}
-			},
-			scroll(e) {
-				if (e.detail.scrollTop == 0) {
-					this.pullDownRefresh = true;
-					this.disabledPullRefresh(true);
-				} else {
-					//保证只设置一次
-					if (!this.pullDownRefresh) {
-						this.disabledPullRefresh(false);
-					}
-					this.pullDownRefresh = false;
-				}
+          // #endif
+          // #ifdef H5
+          uni.navigateTo({
+            url: '/pages/web/index?url=' + escape(banner.url)
+          });
+          // #endif
+        } else {
+          uni.navigateTo({
+            url: banner.url
+          });
+        }
+      } else if (banner.activity_type > 0) {
+        uni.navigateTo({
+          url: '/pages/activity/index?id=' + banner.activity_type
+        });
+      }
+    },
+    // scroll(e) {
+    //   if (e.detail.scrollTop == 0) {
+    //     this.pullDownRefresh = true;
+    //     this.disabledPullRefresh(true);
+    //   } else {
+    //     //保证只设置一次
+    //     if (!this.pullDownRefresh) {
+    //       this.disabledPullRefresh(false);
+    //     }
+    //     this.pullDownRefresh = false;
+    //   }
+    //
+    //   this.disabledPullRefresh(e.detail.scrollTop == 0);
+    //
+    //   if (e.detail.scrollTop > 1000) {
+    //     this.showFloatButton = true;
+    //   } else {
+    //     this.showFloatButton = false;
+    //   }
+    //   this.oldScrollTop = e.detail.scrollTop;
+    // },
+    gotTop() {
+      this.scrollTop = this.oldScrollTop;
+      this.$nextTick(function () {
+        this.scrollTop = 0;
+      });
+    },
+  },
 
-				this.disabledPullRefresh(e.detail.scrollTop == 0);
-
-				if (e.detail.scrollTop > 1000) {
-					this.showFloatButton = true;
-				} else {
-					this.showFloatButton = false;
-				}
-				this.oldScrollTop = e.detail.scrollTop;
-			},
-			gotTop() {
-				this.scrollTop = this.oldScrollTop;
-				this.$nextTick(function() {
-					this.scrollTop = 0;
-				});
-			},
-			// tagClick(e) {
-			// 	let cate = this.gcategorys[this.tabIndex];
-			// 	let scate = cate.sub_categorys[e.index];
-			// 	uni.showLoading({
-			// 		title: '数据加载中...'
-			// 	});
-			// 	this.params = {
-			// 		cid: cate.id,
-			// 		scid: scate.id,
-			// 		score: 1,
-			// 		page: 1,
-			// 		id: 0
-			// 	};
-			// 	this.$store
-			// 		.dispatch('good/GetActGoods', this.params)
-			// 		.then(() => {
-			// 			uni.hideLoading();
-			// 			uni.navigateTo({
-			// 				url: '/pages/activity/index?id=0&name=' + scate.text + '&scid=' + scate.id + '&cid=' + cate.id
-			// 			});
-			// 		})
-			// 		.catch(() => {
-			// 			uni.hideLoading();
-			// 		});
-			// }
-		},
-
-		/**
-		 * 当 searchInput 配置 disabled 为 true 时触发
-		 */
-		onNavigationBarSearchInputClicked(e) {
-			console.log('事件执行了');
-			uni.navigateTo({
-				url: '/pages/search/index'
-			});
-		},
-		/**
-		 *  点击导航栏 buttons 时触发
-		 */
-		onNavigationBarButtonTap(e) {
-			if (e.index == 0) {
-				this.getData();
-			} else if (e.index == 1) {
-				uni.navigateTo({
-					url: '/pages/center/footprint'
-				});
-			}
-		},
-		onTabItemTap(e) {
-			if (e.index == 0) {
-				this.getData();
-			}
-		},
-		onPullDownRefresh() {
-			let cate = this.gcategorys[this.tabIndex];
-			let item = this.goods[cate.id];
-			let page = item.page + 1;
-
-			this.$store
-				.dispatch('good/GetGoods', {
-					cid: cate.id,
-					page: page,
-					push: false
-				})
-				.then(() => {
-					uni.stopPullDownRefresh();
-				})
-				.catch(() => {
-					uni.stopPullDownRefresh();
-				});
-		}
-	};
+  /**
+   * 当 searchInput 配置 disabled 为 true 时触发
+   */
+  onNavigationBarSearchInputClicked(e) {
+    console.log('事件执行了');
+    uni.navigateTo({
+      url: '/pages/search/index'
+    });
+  },
+  /**
+   *  点击导航栏 buttons 时触发
+   */
+  onNavigationBarButtonTap(e) {
+    if (e.index == 0) {
+      this.getData();
+    } else if (e.index == 1) {
+      uni.navigateTo({
+        url: '/pages/center/footprint'
+      });
+    }
+  },
+  onTabItemTap(e) {
+    if (e.index == 0) {
+      this.getData();
+    }
+  },
+  // onPullDownRefresh() {
+  //   console.log(1111)
+  // }
+};
 </script>
 
 <style>
-	.app {
-		/* background: linear-gradient(180deg, #3ab54a, rgba(58, 181, 74, .37) 77%, rgba(58, 181, 74, .12) 86%, rgba(58, 181, 74, 0)) #f5f5f5 no-repeat; */
-		/* height: 800px; */
-		margin-top: 10px;
-		background-size: 100% 180px;
-	}
+.app {
+  /*margin-top: 30px;*/
+  height: auto;
+  padding-bottom: 60px;
+}
+.header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  /*justify-items: center;*/
+}
+.location{
+  display: flex;
+  align-items: center;
+}
+.location-icon{
+  background: url("@/pages/home/images/location.png") no-repeat;
+  background-size: 100%;
+  width: 14px;
+  height: 14px;
+  margin-right: 2px;
+}
+.more{
+  background: url("@/pages/home/images/down.png") no-repeat;
+  background-size: 100%;
+  width: 14px;
+  height: 8px;
+  display: flex;
+  align-items: center;
+  margin-left: 2px;
+}
+.massage{
+  background: url("@/pages/home/images/tongzhi.png") no-repeat;
+  background-size: 100%;
+  height: 30px;
+  width: 20px;
+  margin-top: 13px;
+}
+.banner {
+  margin: 0px 10px 0 10px;
+}
 
-	.banner {
-		margin: 0 10px;
-	}
+.item-tab{
+  display: flex;
+  align-items: center;
+}
+.tip-list{
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  color: #007aff;
+  font-size: 10px;
+  justify-content: space-around;
+}
+.tab-1{
+  background: url("@/pages/home/images/home_tab_1.png") no-repeat;
+  background-size: 100%;
+  width: 12px;
+  height: 12px;
+  margin-right: 3px;
+  /*padding-right: 5px;*/
+}
+.tab-2{
+  background: url("@/pages/home/images/home_tab_2.png") no-repeat;
+  background-size: 100%;
+  width: 12px;
+  height: 12px;
+  margin-right: 3px;
+}
+.tab-3{
+  background: url("@/pages/home/images/home_tab_3.png") no-repeat;
+  background-size: 100%;
+  width: 12px;
+  height: 12px;
+  margin-right: 3px;
+}
+.tab-4{
+  background: url("@/pages/home/images/home_tab_4.png") no-repeat;
+  background-size: 100%;
+  width: 12px;
+  height: 12px;
+  margin-right: 3px;
+}
+.recommend{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 10px 0 10px;
+}
+.tjjs {
+  font-size: 15px;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+.more-jishi{
+  display: flex;
+  align-items: center;
+}
+.more-l{
+  font-size: 12px;
+  color: #8F8F94;
+}
+.more-r{
+  background: url("@/pages/home/images/more.png") no-repeat;
+  background-size: 100%;
+  height: 15px;
+  width: 15px;
+}
+.technician{
+  margin-top: 10px;
+  overflow-x:auto;
+  /*background: #8F8F94;*/
+}
+.technician::-webkit-scrollbar{
+  display: none;
+}
+.technician-item{
+  display: flex;
+  flex-direction: row;
+  width: 60px;
+  /*height: 80px;*/
+}
+.jishi{
+  margin-right: 15px;
+  margin-left: 2px;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+}
+.username{
+  font-weight: 700;
+}
+.order{
+  font-size: 10px;
+  color: #8F8F94;
+}
+.tjjs::before {
+  content: "";
+  display: block;
+  width: 15px;
+  height: 20px;
+  background: url("@/pages/home/images/tjjs.png") no-repeat;
+  background-size: 100%;
+  /*border-radius: 1px;*/
+  margin-right: 5px;
+  margin-top: 5px;
+}
+.tjxm{
+  font-size: 15px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+.tjxm::before {
+  content: "";
+  display: block;
+  width: 15px;
+  height: 20px;
+  background: url("@/pages/home/images/tjtc.png") no-repeat;
+  background-size: 100%;
+  /*border-radius: 1px;*/
+  margin-right: 5px;
+  margin-top: 5px;
+}
+.uni-index-list-cell {
+  width: auto !important;
+  margin: 7px 10px !important;
+}
 
-	.tip {
-		font-size: 15px;
-		color: #333;
-		display: flex;
-		align-items: center;
-		margin-top: 10px;
-		margin-left: 10px;
-	}
+.uni-good-list-logo {
+  width: 90px;
+  height: 90px;
+  align-items: center;
+  border-radius: 5px;
+  margin: 10px;
+}
 
-	.tip::before {
-		content: "";
-		display: block;
-		width: 3px;
-		height: 13px;
-		background: #3ab54a;
-		border-radius: 1px;
-		margin-right: 5px;
-	}
+.list {
+  display: flex;
+}
 
-	.uni-index-list-cell {
-		width: auto !important;
-		margin: 7px 10px !important;
-	}
+.time {
+  font-size: 12px;
+  margin-bottom: 10px;
+}
 
-	.uni-good-list-logo {
-		width: 90px;
-		height: 90px;
-		align-items: center;
-		border-radius: 5px;
-		margin: 10px;
-	}
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
 
-	.list {
-		display: flex;
-	}
+.uni-good-list-text-top {
+  font-size: 15px;
+  line-height: 21px;
+  color: #333;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  margin-top: 15px !important;
+}
 
-	.time {
-		font-size: 12px;
-		margin-bottom: 10px;
-	}
+.price {
+  font-size: 17px;
+  color: #f55;
+}
 
-	.bottom {
-		display: flex;
-		justify-content: space-between;
-		margin-bottom: 15px;
-	}
+.price::before {
+  content: "¥";
+  color: #f55;
+  font-size: 12px
+}
 
-	.uni-good-list-text-top {
-		font-size: 15px;
-		line-height: 21px;
-		color: #333;
-		font-weight: 700;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		display: -webkit-box;
-		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 2;
-		margin-top: 15px !important;
-	}
+.origin-price {
+  font-size: 12px;
+  margin-left: 5px;
+  text-decoration: line-through;
+  text-decoration-line: line-through;
+  text-decoration-thickness: initial;
+  text-decoration-style: initial;
+  text-decoration-color: initial;
+}
 
-	.price {
-		font-size: 17px;
-		color: #f55;
-	}
+.origin-price::before {
+  content: "¥";
+}
 
-	.price::before {
-		content: "¥";
-		color: #f55;
-		font-size: 12px
-	}
+.sales {
+  font-size: 11px;
+  color: #999;
+  margin-right: 10px;
+}
 
-	.origin-price {
-		font-size: 12px;
-		margin-left: 5px;
-		text-decoration: line-through;
-		text-decoration-line: line-through;
-		text-decoration-thickness: initial;
-		text-decoration-style: initial;
-		text-decoration-color: initial;
-	}
-
-	.origin-price::before {
-		content: "¥";
-	}
-
-	.sales {
-		font-size: 11px;
-		color: #999;
-		margin-right: 10px;
-	}
+.noData {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 150px;
+  color: #8F8F94;
+}
 </style>

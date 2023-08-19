@@ -25,43 +25,6 @@ const banner = {
 				})
 			})
 		}
-	},
-	getters: {
-		banners: (state, getters, rootState) => {
-			// console.log(state.items)
-			let temp = []
-			for (var item of state.items) {
-				// console.log(item)
-				if (item.type == 1) {
-					temp.push(item);
-				}
-			}
-			state.items.map((item) => {
-				return {
-					image: item.image,
-					url: item.url,
-					activity_type: item.activity_type
-				}
-			});
-			return temp.map((item) => {
-				return {
-					image: item.image,
-					url: item.url,
-					activity_type: item.activity_type
-				}
-			});
-		},
-		index_1: (state, getters, rootState) => {
-			let temp = {}
-			for (var item of state.items) {
-				if (item.type == 2) {
-					temp = item;
-					break;
-				}
-			}
-			return temp;
-
-		}
 	}
 
 }

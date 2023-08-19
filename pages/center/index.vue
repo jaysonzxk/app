@@ -6,10 +6,11 @@
 				<view class="userinfo">
 					<image class="center-logo-img" src="./images/tuxiang.png"></image>
 					<view class="center-logo-title">
-						<view class="center-uer-name">
-							<text class="username">测试账号</text>
-							<text class="phone">15444376536</text>
+						<view class="center-uer-name" v-show="userInfo">
+							<text class="username">{{ userInfo.name }}</text>
+							<text class="phone">{{ userInfo.mobile }}</text>
 						</view>
+            <text v-show="!userInfo" class="login" @click="goLogin">请 登 录</text>
 					</view>
 				</view>
 				<!-- <view class="info">
@@ -19,18 +20,30 @@
 		</view>
 		<view class="my-wallet">
 			<view class="wallet">
-				<view class="balance">
-					<span class="top">1000.00</span>
+				<view class="balance" v-show="userInfo">
+					<span class="top">{{userInfo}}</span>
 					<span class="bottom">余额</span>
 				</view>
-				<view class="coupons">
+        <view class="balance" v-show="!userInfo">
+          <span class="top">0</span>
+          <span class="bottom">余额</span>
+        </view>
+				<view class="coupons" v-show="userInfo">
 					<span class="top">1</span>
 					<span class="bottom">优惠券</span>
 				</view>
-				<view class="collect">
+        <view class="coupons" v-show="!userInfo">
+          <span class="top">0</span>
+          <span class="bottom">优惠券</span>
+        </view>
+				<view class="collect" v-show="userInfo">
 					<span class="top">4</span>
 					<span class="bottom">收藏</span>
 				</view>
+        <view class="collect" v-show="!userInfo">
+          <span class="top">0</span>
+          <span class="bottom">收藏</span>
+        </view>
 			</view>
 		</view>
 		<view class="my-order">
@@ -39,12 +52,12 @@
 					<span class="orderIcon"></span>
 					<span class="tip">我的订单</span>
 				</view>
-				
+
 				<view class="more-icon">
 					<span class="more">查看全部</span>
 					<span class="moreIcon"></span>
 				</view>
-				
+
 			</view>
 			<view class="order-status">
 				<view class="daijiedan">
@@ -112,54 +125,21 @@
 		data() {
 			return {
 				versionName: 'v1.0.0',
-				infofilled: {
-					fontclass: 'text-icons',
-					color: '#ff80ab',
-					size: '22',
-					type: 'guanyu'
-				},
-				download: {
-					fontclass: 'text-icons',
-					color: '#ff80ab',
-					size: '22',
-					type: 'gengxin'
-				},
-				share: {
-					fontclass: 'text-icons',
-					color: '#ff80ab',
-					size: '22',
-					type: 'fenxiang'
-				},
-				help: {
-					fontclass: 'text-icons',
-					color: '#ff80ab',
-					size: '22',
-					type: 'bangzhu'
-				},
-				chat: {
-					fontclass: 'text-icons',
-					color: '#ff80ab',
-					size: '22',
-					type: 'lianxikefu'
-				},
-				zuji: {
-					fontclass: 'text-icons',
-					color: '#ff80ab',
-					size: '22',
-					type: 'zuji'
-				},
-				setting: {
-					fontclass: 'text-icons',
-					color: '#ff80ab',
-					size: '22',
-					type: 'shezhi'
-				}
 			};
 		},
 		onLoad() {
 			this.versionName = '版本:' + this.$config.versionName
 
 		},
+    computed: {
+      userInfo(){
+        if (uni.getStorageSync('userInfo')) {
+          return uni.getStorageSync('userInfo')
+        }else {
+          return false
+        }
+      }
+    },
 		methods: {
 			goAddress(){
 				uni.navigateTo({
@@ -263,7 +243,7 @@
 
 	.center-top {
 		width: 100%;
-		background: url(./images/mine-bg.png) no-repeat;
+		background: url(./images/mine_title_bg.png) no-repeat;
 		background-size: 100%;
 		border-radius: 0 0 20px 20px;
 	}
@@ -305,10 +285,13 @@
 		height: 60upx;
 		line-height: 60upx;
 		font-size: 38upx;
-		color: #ffffff;
+		color: #333;
 		margin-bottom: 20px;
 	}
-
+  .login{
+    font-size: 38upx;
+    color: #333;
+  }
 	.phone {
 		font-size: 13px;
 		color: #fbfbfb;

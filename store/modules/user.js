@@ -21,6 +21,11 @@ const user = {
 		Login({commit}, data){
 			return new Promise((resolve, reject) => {
 				userLogin(data).then(response => {
+					// if (response.code === 2000) {
+					// 	uni.navigateBack({
+					// 		delta: 1
+					// 	})
+					// }
 					const token = response.data.access
 					commit('SET_TOKEN', token)
 					uni.setStorageSync('TOKEN', token)
@@ -31,10 +36,11 @@ const user = {
 			})
 		},
 		GetUserInfo({commit}){
-			console.log(111111)
 			return new Promise((resolve, reject) => {
 				getUserInfo().then(response => {
-					console.log(response)
+					const userInfo = response.data
+					commit('SET_USER_INFO', userInfo)
+					uni.setStorageSync('userInfo', userInfo)
 					resolve()
 				}).catch(error => {
 					reject(error)

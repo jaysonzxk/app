@@ -7,34 +7,7 @@
 				"navigationBarTitleText": "首页",
 				"app-plus": {
 					"scrollIndicator":"none",
-					"titleNView": {
-						// "type": "transparent",
-						"titleColor": "#fff",
-						"titleText": "首页",
-						"backgroundColor": "#3ab54a"
-						// "buttons": [{
-						// 	"text": "桔子精选",
-						// 	"width": "88px",
-						// 	"fontSize": "20px",
-						// 	"color": "#fff",
-						// 	"float": "left",
-						// 	"background": "rgba(0,0,0,0)"
-						// }, {
-						// 	// "type":"favorite",
-						// 	"fontSrc": "/static/iconfont.ttf",
-						// 	"text": "\ue62c",
-						// 	"width": "40px",
-						// 	"fontSize": "22px",
-						// 	"color": "#fff",
-						// 	"background": "rgba(0,0,0,0)"
-						// }],
-						// "searchInput": {
-						// 	"backgroundColor": "#fff",
-						// 	"borderRadius": "6px",
-						// 	"placeholder": "短裤短袖女装",
-						// 	"disabled": true
-						// }
-					}
+					"titleNView": false
 				}
 			}
 		},
@@ -149,23 +122,17 @@
 			"path": "pages/center/index",
 			"style": {
 				"navigationBarTitleText": "我的",
-				"scrollIndicator":"none",
+//				"scrollIndicator":"none",
 				"app-plus": {
 					"scrollIndicator":"none",
-					"titleNView": {
-						// "type": "transparent",
-						"titleColor": "#fff",
-						// "titleText": "我的",
-						"backgroundColor": "#3ab54a"
-						// "buttons": [{
-						// 	"fontSrc": "/static/iconfont.ttf",
-						// 	"text": "\ue660",
-						// 	"width": "40px",
-						// 	"fontSize": "22px",
-						// 	"color": "#fff",
-						// 	"background": "rgba(0,0,0,0)"
-						// }]
-					}
+					"titleNView": false
+//					"titleNView": {
+//						// "type": "transparent",
+//						"titleColor": "#fff",
+//						// "titleText": "我的",
+//						"backgroundColor": "#3ab54a"
+//
+//					}
 				}
 			}
 		},
@@ -221,16 +188,7 @@
 				"navigationBarTitleText": "商品详情",
 				"app-plus": {
 					"scrollIndicator":"none",
-					"titleNView": {
-						// "type": "transparent",
-						"titleColor": "#fff",
-						// "backgroundColor": "#007AFF",
-						"buttons": [{
-							"type": "share",
-							"fontSize": "28px",
-							"color": "#fff"
-						}]
-					}
+					"titleNView": false
 				}
 			}
 		},

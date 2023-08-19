@@ -1,79 +1,7 @@
 <template>
 	<view class="detail">
-		<scroll-view class="detail-info" :scroll-top="scrollTop" @scroll="scroll" scroll-y>
-			<uni-swiper-dot>
-				<swiper class="detail-swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
-					<swiper-item>
-						<view class="detail-swiper-item" ><image :src="good.main_pic" lazy-load mode="aspectFill" /></view>
-					</swiper-item>
-					<swiper-item v-for="(img, index) in good.small_images" :key="index">
-						<view class="detail-swiper-item"><image :src="img" lazy-load mode="aspectFill" /></view>
-					</swiper-item>
-				</swiper>
-			</uni-swiper-dot>
-			<view class="detail-good-info">
-				<view class="detail-good-title">
-					<text class="detail-shop-type" v-if="good.shop_type == 1">天猫</text>
-					<text class="detail-shop-type" v-if="good.shop_type == 0">淘宝</text>
-					<text class="detail-good-title-text">{{good.title}}</text>
-				</view>
-				<view class="detail-good-price">
-					<view><text class="color-red">券后价<text class="detail-good-price-size">￥{{good.actual_price}}</text></text></view>
-					<view><text>已售{{good.month_sales}}件</text></view>
-				</view>
-				<view class="detail-good-org-price">
-					<view>	
-						<text v-if="good.shop_type == 1">天猫价</text>
-						<text v-if="good.shop_type == 0">淘宝价</text>
-						<text class="detail-good-price-size">￥{{good.original_price}}</text></text></view>
-					<view>
-						<!-- <text class="detail-text">包邮</text><text class="detail-text">运费险</text> -->
-					</view>
-				</view>
-				<view class="detail-good-quan" @click="onClickBuy">
-					<view class="detail-good-quan-left">
-						<text>￥{{good.coupon_price}}元优惠券</text>
-						<text class="detail-good-quan-time">使用期限:{{good.coupon_end_time}}</text>
-					</view>
-					<view class="detail-good-quan-right">立即领取</view>
-				</view>
-				<view class="detail-good-introduce">
-					{{good.desc}}
-				</view>
-			</view>
-			
-			<view class="detail-good-detail-info">
-				<view class="detail-good-detail-info-title">宝贝详情</view>
-				<view class="detail-good-images" v-if="good.detail_pics.length > 1">
-					<block v-for="(pic,index) in good.detail_pics" :key="index">
-						<image :src="pic" lazy-load mode="widthFix" ></image>
-					</block>
-				</view>
-				<view  class="detail-good-images" v-else>
-					<block v-for="(pic,index) in good.small_images" :key="index">
-						<image :src="pic" lazy-load mode="widthFix" ></image>
-					</block>
-				</view>
-			</view>
-			<uni-floating-button :visible="showFloatButton" @click="gotTop()"></uni-floating-button>
-		</scroll-view>
-		<view class="detail-foot-bar">
-			<view class="detail-tab-bar">
-				<view class="detail-tab-bar-tpwd" @click="showTpwd(0)"><view>口令购买</view></view>
-				<view class="detail-tab-bar-coupon" @click="onClickBuy"><view>领券购买</view></view>
-			</view>
-		</view>
-		<uni-popup :show="popupPwd" position="middle" mode="fixed" @hidePopup="hideTpwd()">
-			<view class="popup-center-box">
-				<view class="popup-center-title">{{popupTitle}}</view>
-				<view class="popup-center-txt">
-					<scroll-view scroll-y class="popup-center-txt-scroll">
-						<text selectable="true">{{popopContent}}</text>	
-					</scroll-view>
-				</view>
-				<view class="popup-center-button"><view class="copy-button" @click="clipboard">一键复制</view></view>
-			</view>
-		</uni-popup>
+
+		<span>2222</span>
 	</view>
 </template>
 
@@ -82,7 +10,6 @@ import uniFloatingButton from "@/components/uni-floating-button/uni-floating-but
 import uniSwiperDot from '@/components/uni-swiper-dot/uni-swiper-dot.vue'
 import uniPopup from "@/components/uni-popup/uni-popup.vue"
 import {format} from "@/common/util"
-import { mapGetters } from 'vuex';
 export default {
 	components: {
 		uniSwiperDot,
@@ -90,14 +17,12 @@ export default {
 		uniPopup
 	},
 	computed: {
-		...mapGetters('good', {
-			good: 'good'
-		})
+
 	},
 	onLoad: function(options) {
 		this.goodId = options.id;
 		this.nummId = options.nummId;
-		
+
 		// console.log(this.good)
 		// this.getData();
 	},
@@ -134,11 +59,11 @@ export default {
 				numm_id: this.nummId
 			};
 			await this.$store.dispatch('good/GetGoodDetail', params);
-			
+
 			uni.hideLoading();
 		},
 		scroll(e){
-			
+
 			if(e.detail.scrollTop > 1000){
 				this.showFloatButton = true;
 			}else{
@@ -164,14 +89,14 @@ export default {
 					url:'/pages/web/index?url='+ escape(_this.good.coupon_click_url)
 				})
 			});
-			
+
 			// #endif
 			// #ifdef H5
 				uni.navigateTo({
 					url:'/pages/web/index?url='+ escape(this.good.coupon_click_url)
 				})
 			// #endif
-			
+
 		},
 		hideTpwd(){
 			this.popupPwd = false;
@@ -180,7 +105,7 @@ export default {
 			if(type == 0){
 				this.popupTitle = "复制淘口令购买";
 				this.popopContent = format('复制框内整段文字，打开【手淘APP】即可领券购买。{0}',this.good.tpwd);
-				
+
 			}else{
 				this.popupTitle = "复制淘口令分享";
 				this.popopContent = format("{0}\n【原价】: {1}元\n【优惠券】: {2}元\n【券后价】: {3}元\n【淘口令下单】: 复制这条信息，打开→手机淘宝领取优惠券{4} \n推荐理由:{5}",this.good.dtitle,this.good.original_price,this.good.coupon_price,this.good.actual_price,this.good.tpwd,this.good.desc);
@@ -199,7 +124,7 @@ export default {
 				}
 			})
 			// #endif
-			
+
 		}
 	},
 	onNavigationBarButtonTap() {
@@ -290,8 +215,8 @@ export default {
 	flex-direction: column;
 	width: 60%;
 	height: 100%;
-	border-right:2px dashed #FFFFFF; 
-	
+	border-right:2px dashed #FFFFFF;
+
 }
 .detail-good-quan-time{
 	color: #F1F1F1;
@@ -343,12 +268,12 @@ export default {
 
 .detail-tab-bar{
 	padding: 0 10upx 0 10upx;
-	
+
 	height: 80upx;
 	width: 100%;
 	display: flex;
 	justify-content: center;
-	
+
 }
 
 .detail-tab-bar-tpwd{
@@ -362,7 +287,7 @@ export default {
 	width: 50%;
 	display: flex;
 	justify-content: center;
-	
+
 }
 .detail-tab-bar-coupon{
 	align-items: center;

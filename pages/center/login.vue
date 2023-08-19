@@ -11,13 +11,19 @@
     </view>
     <view class="body">
       <view class="body-top">
-        <input v-model="loginForm.username" placeholder="用户名/手机号" type="text" class="username" />
-        <input v-model="loginForm.password" placeholder="请输入密码" type="password" class="pwd" />
+        <input v-model="mobile" placeholder="请输入手机号" type="text" class="username" />
+        <input v-show="show" v-model="password" placeholder="请输入密码" type="password" class="pwd" />
+        <view class="reg-code" v-show="!show">
+          <input placeholder="请输短信验证码" class="code"/>
+          <span v-show="codeShow" class="get-code" @click="getCode(mobile)">获取验证码</span>
+          <span v-show="!codeShow" class="count">{{ count }}秒</span>
+        </view>
       </view>
       <view class="body-middle">
         <view class="remember"></view>
         <view class="other">
-          <view>切换验证码登录</view>
+          <view @click="changeLogin" v-show="isCode">切换验证码登录</view>
+          <view @click="changeLogin" v-show="!isCode">切换密码登录</view>
           <view class="other1">
             <span class="forget">找回密码</span>
             <span @click="goRegister">注册账号</span>
@@ -35,21 +41,61 @@
 export default {
   data() {
     return {
-      loginForm: {
-        username: '',
-        password: ''
-      }
+      show: true,
+      codeShow: true,
+      isCode: true,
+      count: '',
+      timer: null,
+      mobile: '',
+      password: '',
+      loginType: 1,
+      code: ''
 
     }
   },
   methods: {
+    goBack(){
+      uni.navigateBack({
+        delta: 1
+      })
+    },
+    changeLogin(){
+      this.show = !this.show
+      this.isCode = !this.isCode
+    },
     goRegister(){
       uni.navigateTo({
         url: '/pages/center/register'
       })
     },
+    getCode(val) {
+      const TIME_COUNT = 60
+      if (this.mobile === undefined) {
+        uni.showToast({
+          icon: 'none',
+          title: "请输入正确手机号",
+          duration: 2000
+        })
+      } else {
+        if (!this.timer) {
+          this.count = TIME_COUNT
+          this.codeShow = false
+          this.timer = setInterval(() => {
+            if (this.count > 0 && this.count <= TIME_COUNT) {
+              this.count--
+            } else {
+              this.codeShow = true
+              clearInterval(this.timer)
+              this.timer = null
+            }
+          }, 1000)
+        }
+      }
+    },
     async userLogin() {
-      await this.$store.dispatch('user/Login', this.loginForm);
+      const loginForm = {username: this.mobile, password: this.password}
+      await this.$store.dispatch('user/Login', loginForm);
+      await this.$store.dispatch('user/GetUserInfo', {});
       // uni.showLoading({
       // 	title: '数据加载中...'
       // });
@@ -88,12 +134,30 @@ export default {
   width: 25px;
   margin-bottom: 20px;
 }
-/*.body-top{*/
-/*  margin-left: calc(5% / 2);*/
-/*}*/
-.header-top{
+.reg-code {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+}
+.get-code {
+  position: absolute;
+  right: 30px;
+  margin-top: 33px;
+}
+
+.count {
+  position: absolute;
+  right: 30px;
+  margin-top: 33px;
+  color: red;
+}
+.code {
+  background: #fff;
+  border-radius: 20px;
+  height: 50px;
+  width: 90%;
+  margin-left: calc(5% / 2);
+  margin-top: 20px;
+  padding-left: 20px;
 }
 .title{
   font-weight: 700;

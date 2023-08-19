@@ -12,9 +12,9 @@ http.setConfig((config) => {
 // 拦截器
 http.interceptor.request(async (config, cancel) => {
 	let token = uni.getStorageSync('TOKEN')
+	console.log(config)
 	if (token) {
-		config.headers.token = 'JWT' + token
-		await store.dispatch('user/GetUserInfo', {});
+		config.header["Authorization"] = 'JWT ' + token
 	}
 	return config;
 })
