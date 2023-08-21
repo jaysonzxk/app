@@ -7,7 +7,7 @@
 在 ``script`` 中引用组件 
 
 ```javascript
-import uniTag from "@/components/uni-tag/uni-tag.vue"
+import uniTag from "@/components/uni-order/uni-order.vue"
 export default {
     components: {uniTag}
 }

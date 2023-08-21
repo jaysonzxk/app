@@ -18,55 +18,7 @@
 				"navigationBarTitleText": "推荐",
 				"app-plus": {
 					"scrollIndicator":"none",
-					"titleNView": {
-						// "type": "transparent",
-						"titleColor": "#fff",
-						// "backgroundColor": "#007AFF",
-						"buttons": [{
-							// "type":"favorite",
-							"fontSrc": "/static/iconfont.ttf",
-							"text": "\ue62c",
-							"width": "40px",
-							"fontSize": "22px",
-							"color": "#fff",
-							"background": "rgba(0,0,0,0)"
-						}],
-						"searchInput": {
-							"backgroundColor": "#fff",
-							"borderRadius": "6px",
-							"placeholder": "短裤短袖女装",
-							"disabled": true
-						}
-					}
-				}
-			}
-		},
-		{
-			"path": "pages/tag/index",
-			"style": {
-				"navigationBarTitleText": "分类",
-				"app-plus": {
-					"scrollIndicator":"none",
-					"titleNView": {
-						// "type": "transparent",
-						"titleColor": "#fff",
-						// "backgroundColor": "#007AFF",
-						"buttons": [{
-							// "type":"favorite",
-							"fontSrc": "/static/iconfont.ttf",
-							"text": "\ue62c",
-							"width": "40px",
-							"fontSize": "22px",
-							"color": "#fff",
-							"background": "rgba(0,0,0,0)"
-						}],
-						"searchInput": {
-							"backgroundColor": "#fff",
-							"borderRadius": "6px",
-							"placeholder": "短裤短袖女装",
-							"disabled": true
-						}
-					}
+					"titleNView": false
 				}
 			}
 		},
@@ -101,11 +53,12 @@
 				"scrollIndicator":"none",
 				"app-plus": {
 					"scrollIndicator":"none",
-					"titleNView": {
+					"titleNView": false
+//					{
 						// "type": "transparent",
-						"titleColor": "#fff",
+//						"titleColor": "#fff",
 						// "titleText": "我的",
-						"backgroundColor": "#3ab54a"
+//						"backgroundColor": "#3ab54a"
 						// "buttons": [{
 						// 	"fontSrc": "/static/iconfont.ttf",
 						// 	"text": "\ue660",
@@ -114,7 +67,7 @@
 						// 	"color": "#fff",
 						// 	"background": "rgba(0,0,0,0)"
 						// }]
-					}
+
 				}
 			}
 		},
@@ -396,31 +349,31 @@
 	},
 	"tabBar": {
 		"color": "#444444",
-		"selectedColor": "rgb(58, 181, 74)",
+		"selectedColor": "rgb(247, 199, 68)",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
 		"list": [{
 				"pagePath": "pages/home/index",
-				"iconPath": "static/home.png",
-				"selectedIconPath": "static/home1.png",
+				"iconPath": "static/home_noselect.png",
+				"selectedIconPath": "static/home_select.png",
 				"text": "首页"
 			},
 			{
 				"pagePath": "pages/jishi/index",
-				"iconPath": "static/jishi.png",
-				"selectedIconPath": "static/jishi1.png",
+				"iconPath": "static/technician_noselect.png",
+				"selectedIconPath": "static/technician_select.png",
 				"text": "技师"
 			},
 			{
-				"pagePath": "pages/tag/index",
-				"iconPath": "static/massage.png",
-				"selectedIconPath": "static/massage1.png",
-				"text": "消息"
+				"pagePath": "pages/order/index",
+				"iconPath": "static/order_noselect.png",
+				"selectedIconPath": "static/order_select.png",
+				"text": "订单"
 			},
 			{
 				"pagePath": "pages/center/index",
-				"iconPath": "static/mine.png",
-				"selectedIconPath": "static/mine1.png",
+				"iconPath": "static/mine_noselect.png",
+				"selectedIconPath": "static/mine_select.png",
 				"text": "我的"
 			}
 		]

@@ -2,19 +2,28 @@
 
 	export default {
 		onLaunch: function() {
+      const that = this
+      uni.getSystemInfo({
+        success(res){
+          that.globalData.statusBarHeight = res.statusBarHeight
+          console.log(that.globalData.statusBarHeight)
+        }
+      })
 			this.checkVersion().catch(()=>{
-
 			})
-			console.log('App Launch')
 			const lang = uni.getLocale()
-			console.log(lang)
 		},
+    globalData: {
+      statusBarHeight: ''
+    },
 		onShow: function() {
-			console.log('App Show')
+
+			// plus.navigator.setFullscreen(false)
 		},
 		onHide: function() {
 			console.log('App Hide')
-		}
+		},
+
 	}
 </script>
 

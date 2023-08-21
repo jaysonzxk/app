@@ -1,8 +1,8 @@
 <template>
-	<view class="recommend-good-view">
+	<view class="recommend-good-view" :style="{'padding-top': statusBarHeight + 'px'}">
 		<view class="recommend-good-condition-view">
 				<block v-for="(condition,index) in conditions" :key="index">
-					<view class="recommend-good-condition-item" :class="{'recommend-good-condition-color':selectIndex == index}" v-on:click="conditionClick(index)">{{condition.name}}</view>		
+					<view class="recommend-good-condition-item" :class="{'recommend-good-condition-color':selectIndex == index}" v-on:click="conditionClick(index)">{{condition.name}}</view>
 				</block>
 		</view>
 		<scroll-view class="recommend-good-scroll-list" :scroll-top="scrollTop" @scroll="scroll" scroll-y @scrolltolower="loadMore()">
@@ -53,7 +53,7 @@ export default {
 		uniFloatingButton
 	},
 	computed:{
-		
+
 		...mapGetters('good',{
 			recommend:'recommend'
 		})
@@ -63,6 +63,7 @@ export default {
 	},
 	data() {
 		return {
+      statusBarHeight: getApp().globalData.statusBarHeight,
 			pullDownRefresh:true,
 			showFloatButton:false,
 			scrollTop:0,
@@ -72,7 +73,7 @@ export default {
 			endPrice:'',
 			showDrawer: false,
 			params:{},
-			selectIndex:0,
+			selectIndex: undefined,
 			loadmoreStatue:'more',
 			loadingText: {
 				contentdown: '下拉加载更多',
@@ -81,25 +82,21 @@ export default {
 			},
 			conditions:[
 				{
-					param:'score',
-					name:'人气'
+					param:'distance',
+					name:'全城'
+				},
+				{
+					param:'intelligent',
+					name:'智能排序'
 				},
 				{
 					param:'time',
-					name:'最新'
+					name:'服务时段'
 				},
 				{
-					param:'sales_num',
-					name:'销量'
-				},
-				{
-					param:'price',
-					name:'价格'
-				},
-				{
-					param:'',
+					param:'filter',
 					name:'筛选'
-				}
+				},
 			]
 		}
 	},
@@ -112,15 +109,15 @@ export default {
 				this.showDrawer = true;
 				return;
 			}
-	
+
 			this.selectIndex = index;
 			let condition = this.conditions[index];
 			let params = {}
 			params['page'] = 1;
 			params[condition.param] = this.params[condition.param] == 1 ? 2 : 1;
-		
+
 			this.params = params;
-			
+
 			uni.showLoading({
 				title: '数据加载中...'
 			});
@@ -145,15 +142,15 @@ export default {
 			this.params.page = this.recommend.page + 1;
 			this.loadmoreStatue = 'loading';
 			this.$store.dispatch('good/GetRecommend',this.params).then(()=>{
-				this.loadmoreStatue = 'more';	
+				this.loadmoreStatue = 'more';
 			}).catch(()=>{
-				this.loadmoreStatue = 'noMore';	
+				this.loadmoreStatue = 'noMore';
 			})
 		},
 		onKeyInput(e){
-			
+
 		},
-		
+
 		reset(){
 			console.log(this.startPrice)
 			console.log(this.endPrice)
@@ -164,7 +161,7 @@ export default {
 			// uni.navigateTo({
 			// 	url: '/pages/good/detail?id='+g.id+"&nummId="+g.goods_id
 			// })
-			
+
 			let params = {
 				id: g.id,
 				numm_id: g.goods_id
@@ -177,7 +174,7 @@ export default {
 				uni.navigateTo({
 					url: '/pages/good/detail?id='+g.id+"&nummId="+g.goods_id
 				})
-				
+
 			}).catch(()=>{
 				//TODO
 				uni.hideLoading();
@@ -232,7 +229,7 @@ export default {
 			// this.scrollTop = 0;
 		}
 	},
-	
+
 	/**
 	 * 当 searchInput 配置 disabled 为 true 时触发
 	 */
@@ -271,13 +268,13 @@ export default {
 <style>
 
 .recommend-good-view{
-	
+
 	width: 100%;
 	height: 100%;
 }
 .recommend-good-scroll-list{
 	width: 750upx;
-	background: #E7E7E7;
+	background: #eee;
 	height: calc(100% - 34px);
 }
 .recommend-good-list {
@@ -311,18 +308,37 @@ export default {
 	height: 80upx;
 	display: flex;
 	flex-direction: row;
+  justify-content: space-around;
 	align-items: center;
 }
 .recommend-good-condition-item{
-	width: 150upx;
-	text-align: center;
+	/*width: 150upx;*/
+	/*text-align: center;*/
+  display: flex;
+  align-items: center;
+}
+.recommend-good-condition-item:after{
+  content: '';
+  background: url("@/pages/jishi/image/sort_down.png") no-repeat;
+  background-size: 100%;
+  width: 10px;
+  height: 10px;
+  margin-top: 3px;
 }
 .recommend-good-condition-color{
-	color:#FF80AB;
+	/*color:#FF80AB;*/
+  font-weight: 700;
+}
+.recommend-good-condition-color:after{
+  content: '';
+  background: url("@/pages/jishi/image/sort_up.png") no-repeat;
+  background-size: 100%;
+  height: 10px;
+  width: 10px;
 }
 
 .recommend-good-image {
-	
+
     height: 330upx;
     width: 330upx;
 }
@@ -341,7 +357,7 @@ export default {
 
 .recommend-good-price {
 	margin:20upx 0 20upx 0;
-	
+
     font-size: 28upx;
 	line-height:1.5;
     position: relative;

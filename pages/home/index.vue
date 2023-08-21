@@ -1,5 +1,5 @@
 <template>
-  <view class="uni-tab-bar app">
+  <view class="uni-tab-bar app" :style="{'padding-top': statusBarHeight + 'px'}">
     <view class="header">
       <view class="location">
         <view class="location-icon"></view>
@@ -89,6 +89,14 @@
         </view>
       </view>
     </view>
+<!--    <view class="body-bottom">-->
+<!--      <span>你的服务 我来保障</span>-->
+<!--      <view class="">-->
+<!--        <view>-->
+<!--          <span></span>-->
+<!--        </view>-->
+<!--      </view>-->
+<!--    </view>-->
     <uni-load-more :status="loadmoreStatue" :contentText="loadingText"></uni-load-more>
   </view>
 </template>
@@ -118,13 +126,13 @@ export default {
 
   computed: {},
   onLoad: function (options) {
-    // this.getData();
     this.getBanners();
     this.getGoodsList();
     this.getTechnicians();
   },
   data() {
     return {
+      statusBarHeight: getApp().globalData.statusBarHeight,
       pullDownRefresh: true,
       tabs: [],
       showFloatButton: false,
@@ -151,12 +159,22 @@ export default {
   create() {
 
   },
+
   methods: {
-    async getBanners() {
-      let res = await getBanner()
-      if (res.code === 2000) {
-        this.bannerList = res.data.data
-      }
+
+    // async getBanners() {
+    //   let res = await getBanner()
+    //   if (res.code === 2000) {
+    //     this.bannerList = res.data.data
+    //   }
+    // },
+    getBanners() {
+      getBanner().then(res => {
+        console.log(res)
+        if (res.code === 2000) {
+          this.bannerList = res.data.data
+        }
+      })
     },
     async getTechnicians() {
       let res = await getTechnician()
@@ -164,15 +182,27 @@ export default {
         this.technicianList = res.data.data
       }
     },
-    async getGoodsList() {
+    // async getGoodsList() {
+    //   uni.showLoading({
+    //     title: '数据加载中'
+    //   });
+    //   let res = await getGoods()
+    //   if (res.code === 2000) {
+    //     this.products = res.data.data
+    //     uni.hideLoading();
+    //   }
+    // },
+    getGoodsList() {
       uni.showLoading({
-        title: '数据加载中...'
+        title: '数据加载中'
       });
-      let res = await getGoods()
-      if (res.code === 2000) {
-        this.products = res.data.data
-        uni.hideLoading();
-      }
+      getGoods().then(res => {
+        if (res.code === 2000) {
+          this.products = res.data.data
+          uni.hideLoading();
+        }
+      })
+
     },
     goodClick(val){
       uni.navigateTo({
@@ -313,20 +343,20 @@ export default {
   /**
    *  点击导航栏 buttons 时触发
    */
-  onNavigationBarButtonTap(e) {
-    if (e.index == 0) {
-      this.getData();
-    } else if (e.index == 1) {
-      uni.navigateTo({
-        url: '/pages/center/footprint'
-      });
-    }
-  },
-  onTabItemTap(e) {
-    if (e.index == 0) {
-      this.getData();
-    }
-  },
+  // onNavigationBarButtonTap(e) {
+  //   if (e.index == 0) {
+  //     this.getData();
+  //   } else if (e.index == 1) {
+  //     uni.navigateTo({
+  //       url: '/pages/center/footprint'
+  //     });
+  //   }
+  // },
+  // onTabItemTap(e) {
+  //   if (e.index == 0) {
+  //     this.getData();
+  //   }
+  // },
   // onPullDownRefresh() {
   //   console.log(1111)
   // }
@@ -335,7 +365,7 @@ export default {
 
 <style>
 .app {
-  /*margin-top: 30px;*/
+  /*margin-top: 15px;*/
   height: auto;
   padding-bottom: 60px;
 }
@@ -510,8 +540,8 @@ export default {
 }
 
 .uni-good-list-logo {
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
   align-items: center;
   border-radius: 5px;
   margin: 10px;
