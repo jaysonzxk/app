@@ -111,7 +111,8 @@ export default {
         options.url = this.baseURL + options.url;
         options.method = options.method || 'GET';
         options.header = {
-          "Authorization": "JWT " + this.getToken()
+          "Authorization": "JWT " + this.getToken(),
+          'Content-Type': 'application/json;charset=UTF-8'
         }
         resolve(options)
       })

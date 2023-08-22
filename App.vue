@@ -6,7 +6,6 @@
       uni.getSystemInfo({
         success(res){
           that.globalData.statusBarHeight = res.statusBarHeight
-          console.log(that.globalData.statusBarHeight)
         }
       })
 			this.checkVersion().catch(()=>{

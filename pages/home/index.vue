@@ -162,19 +162,11 @@ export default {
 
   methods: {
 
-    // async getBanners() {
-    //   let res = await getBanner()
-    //   if (res.code === 2000) {
-    //     this.bannerList = res.data.data
-    //   }
-    // },
-    getBanners() {
-      getBanner().then(res => {
-        console.log(res)
-        if (res.code === 2000) {
-          this.bannerList = res.data.data
-        }
-      })
+    async getBanners() {
+      let res = await getBanner()
+      if (res.code === 2000) {
+        this.bannerList = res.data.data
+      }
     },
     async getTechnicians() {
       let res = await getTechnician()
