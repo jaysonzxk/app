@@ -93,6 +93,8 @@
 //     return this.request(options)
 //   }
 // }
+import {values} from "@/unpackage/dist/dev/app-plus/app-service";
+
 export default {
   config: {
     baseURL: ' http://192.168.2.50:8000',
@@ -114,12 +116,36 @@ export default {
           "Authorization": "JWT " + this.getToken(),
           'Content-Type': 'application/json;charset=UTF-8'
         }
+        if (options.method === 'get' && options.params) {
+          let url = options.url + '?';
+          for (const propName of Object.keys(options.params)){
+            const value = options.params[propName]
+            var part = encodeURIComponent(propName) + '=';
+            if (value != null && typeof (value) != "undefined"){
+              if (typeof value === "object") {
+                for (const key of Object.keys(value)){
+                  const params = propName + "[" + key + "]";
+                  var subPart = encodeURIComponent(params) + "=";
+                  url += subPart + encodeURIComponent(value[key]) + "&";
+                }
+              }else {
+                url += part + encodeURIComponent(value) + "&";
+              }
+            }
+          }
+          url = url.slice(0, -1);
+          options.params = {};
+          options.url = url;
+        }
         resolve(options)
       })
     },
     // 响应拦截器
     handleResponse(data) {
       return new Promise((resolve, reject) => {
+        uni.showLoading({
+          title: '数据加载中'
+        })
         const [err, res] = data;
         if (res && res.data.code !== 2000) {
           let msg = res.data.msg || '请求错误';
@@ -136,6 +162,7 @@ export default {
           })
           return reject(err)
         }
+        uni.hideLoading();
         return resolve(res.data)
       })
     },

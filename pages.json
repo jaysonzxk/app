@@ -14,8 +14,9 @@
 		{
 			"path": "pages/jishi/index",
 			"style": {
-				"enablePullDownRefresh": true,
-				"navigationBarTitleText": "推荐",
+//				"onReachBottomDistance": 100,
+//				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "技师",
 				"app-plus": {
 					"scrollIndicator":"none",
 					"titleNView": false
@@ -50,9 +51,9 @@
 			"path": "pages/jishi/index",
 			"style": {
 				"navigationBarTitleText": "技师",
-				"scrollIndicator":"none",
+//				"scrollIndicator":"none",
 				"app-plus": {
-					"scrollIndicator":"none",
+//					"scrollIndicator":"none",
 					"titleNView": false
 //					{
 						// "type": "transparent",

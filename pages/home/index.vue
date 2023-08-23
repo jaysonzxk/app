@@ -106,7 +106,7 @@ import uniFloatingButton from '@/components/uni-floating-button/uni-floating-but
 import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 import uniSwiperDot from '@/components/uni-swiper-dot/uni-swiper-dot.vue';
 import uniGrid from '@/components/uni-grid/uni-grid.vue';
-import {getBanner, getGoods, getTechnician} from '@/common/api'
+import {getBanner, getGoods, getRecommendTechnician} from '@/common/api'
 import {
   mapGetters
 } from 'vuex';
@@ -169,9 +169,9 @@ export default {
       }
     },
     async getTechnicians() {
-      let res = await getTechnician()
+      let res = await getRecommendTechnician()
       if (res.code === 2000) {
-        this.technicianList = res.data.data
+        this.technicianList = res.data
       }
     },
     // async getGoodsList() {

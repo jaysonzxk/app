@@ -63,11 +63,19 @@ export function getGoods(params){
 }
 
 // 推荐技师列表
-export function getTechnician(params){
-	console.log(params)
-	console.log('/api/v1/client/technician/?'+ params)
+export function getRecommendTechnician(params){
 	return http.request({
 		method: 'get',
-		url: '/api/v1/client/technician/?'+ params,
+		url: '/api/v1/client/technician/getRecommend/',
+		params:params
+	})
+}
+
+// 技师列表
+export function getTechnician(query){
+	return http.request({
+		method: 'get',
+		url: '/api/v1/client/technician/',
+		params: query
 	})
 }
