@@ -79,3 +79,13 @@ export function getTechnician(query){
 		params: query
 	})
 }
+
+// 获取技术服务项目
+// 技师列表
+export function getMasterGoods(query){
+	return http.request({
+		method: 'get',
+		url: '/api/v1/client/technician/getMasterGoods/',
+		params: query
+	})
+}

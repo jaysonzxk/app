@@ -13,7 +13,7 @@
                  @scrolltolower="loadMore()">
       <view class="recommend-good-list">
         <block v-for="(t,idx) in technicianList" :key="idx">
-          <view class="items" @click="goodClick(t)">
+          <view class="items">
             <view class="item">
               <view class="img">
                 <image class="avatar" :src="t.avatar"></image>
@@ -21,7 +21,7 @@
               <view class="jishi-info">
                 <view class="name">{{ t.name }}</view>
                 <view class="time">
-                  <span>最早可约</span>
+                  <span style="margin-right: 5px">最早可约</span>
                   <span>16:00</span>
                 </view>
                 <view class="stars">
@@ -35,15 +35,25 @@
               </view>
               <view class="other">
                 <span class="distance">1km</span>
-                <span class="btn">去预约</span>
+                <span class="btn" @click="reserve(t.id)">去预约</span>
               </view>
-
             </view>
           </view>
         </block>
       </view>
       <uni-load-more :status="loadmoreStatue" :contentText="loadingText"></uni-load-more>
     </scroll-view>
+<!--    <u-popup :show="show" :round="10" mode="bottom" @close="close" @open="open">-->
+<!--      <view class="queren">-->
+<!--        <view class="tag">-->
+<!--          <view class="u-page__tag-item" v-for="(item, index) in masterGoodsList" :key="index">-->
+<!--            <u-tag :text="item.project.name" :plain="!item.checked" type="warning" :name="index"-->
+<!--                   @click="radioClick">-->
+<!--            </u-tag>-->
+<!--          </view>-->
+<!--        </view>-->
+<!--      </view>-->
+<!--    </u-popup>-->
     <!--    <uni-floating-button :visible="showFloatButton" @click="gotTop()"></uni-floating-button>-->
   </view>
 </template>
@@ -52,16 +62,14 @@
 import uniFloatingButton from "@/components/uni-floating-button/uni-floating-button.vue"
 import uniDrawer from '@/components/uni-drawer/uni-drawer.vue'
 import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
-import dataCheckbox from "@/pages/jishi/components/dataCheckbox.vue";
 import {mapGetters} from 'vuex';
-import {getTechnician} from "@/common/api";
+import {getTechnician, getMasterGoods} from "@/common/api";
 
 export default {
   components: {
     uniLoadMore,
     uniDrawer,
     uniFloatingButton,
-    dataCheckbox,
   },
   computed: {},
   onLoad: function (options) {
@@ -70,6 +78,7 @@ export default {
   },
   data() {
     return {
+      show: false,
       selectShow: false,
       indexType: undefined,
       statusBarHeight: getApp().globalData.statusBarHeight,
@@ -82,7 +91,7 @@ export default {
       endPrice: '',
       refresherEnabled: true,
       triggered: false,
-
+      masterGoodsList: [],
       showDrawer: false,
       params: {},
       total: 0,
@@ -119,6 +128,28 @@ export default {
     }
   },
   methods: {
+    // radioClick(name) {
+    //   this.radios.map((item, index) => {
+    //     item.checked = index === name ? true : false
+    //   })
+    // },
+    // close() {
+    //   this.show = false
+    //   // console.log('close');
+    // },
+    // open() {
+    //   // console.log('open');
+    // },
+    async reserve(val){
+      this.show = true;
+      let res = await getMasterGoods({userId: val})
+      if (res.code === 2000) {
+        this.masterGoodsList = res.data;
+      }
+      // uni.navigateTo({
+      //   url: '/pages/jishi/reserve?userId='+ val,
+      // })
+    },
     onRestore() {
       this.triggered = 'restore';
     },
@@ -274,12 +305,16 @@ export default {
 .img {
   display: flex;
   align-items: center;
-  background: red;
+  /*justify-items: center;*/
+  border-radius: 50%;
+  border: 1px solid #eee;
+  width: 75px;
 }
 
 .avatar {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
+  margin-left: calc(15px / 2);
 }
 
 .jishi-info {
@@ -328,9 +363,10 @@ export default {
   border-radius: 5px;
   font-size: 10px;
   /*color: #fff;*/
-  display: flex;
+  /*display: flex;*/
   /*width: auto;*/
-  justify-content: space-around;
+  /*justify-content: space-around;*/
+  /*text-align: center;*/
   /*width: 100%;*/
 }
 
@@ -417,109 +453,12 @@ export default {
   height: 10px;
   width: 10px;
 }
-
-.recommend-good-image {
-
-  height: 330upx;
-  width: 330upx;
+.queren{
+  height: 700rpx;
 }
-
-.recommend-good-title {
-  margin: 20upx 0 20upx 0;
-  width: 330upx;
-  word-break: break-all;
-  display: -webkit-box;
-  overflow: hidden;
-  line-height: 1.5;
-  text-overflow: ellipsis;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-.recommend-good-price {
-  margin: 20upx 0 20upx 0;
-
-  font-size: 28upx;
-  line-height: 1.5;
-  position: relative;
-  padding-bottom: 20upx;
-}
-
-.recommend-good-price-original {
-  color: #e80080;
-}
-
-.recommend-good-price-favour {
-  color: #888888;
-  text-decoration: line-through;
-  margin-left: 10upx;
-}
-
-.recommend-good-tip {
-  position: absolute;
-  right: 10upx;
-  background-color: #ff3333;
-  color: #ffffff;
-  padding: 0 10upx;
-  border-radius: 5upx;
-}
-
-.drawer-title {
-  font-size: 32upx;
-  line-height: 32upx;
-  color: #777;
-  position: relative;
-}
-
-.drawer-condition-box {
-  padding: 70upx;
-}
-
-.drawer-condition {
-  margin-top: 40upx;
+.tag{
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
+  justify-content: space-around;
 }
-
-.drawer-conditon-text {
-  margin: 0 10upx 0 10upx;
-  background: #DCDCDC;
-  text-align: center;
-}
-
-.drawer-condition-font {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.drawer-condition-button-reset {
-  color: #888888;
-  background: #C8C7CC;
-  border-radius: 0px;
-}
-
-.drawer-condition-button-fix {
-  background: #FF3333;
-  border-radius: 0px;
-}
-
-.color-red {
-  color: #FF3333;
-}
-
-.text {
-  font-size: 12px;
-  color: #666;
-  margin-top: 5px;
-}
-
-.uni-px-5 {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.uni-pb-5 {
-  padding-bottom: 10px;
-}
-
 </style>

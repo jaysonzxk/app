@@ -97,7 +97,8 @@ import {values} from "@/unpackage/dist/dev/app-plus/app-service";
 
 export default {
   config: {
-    baseURL: ' http://192.168.2.50:8000',
+    // baseURL: ' http://192.168.2.63:8000',
+    baseURL: 'http://0.0.0.0:8000',
     getToken() {
       let token = uni.getStorageSync('TOKEN');
       // if (!token) {
@@ -147,6 +148,20 @@ export default {
           title: '数据加载中'
         })
         const [err, res] = data;
+        if (res.data.code === 4000) {
+          uni.showToast({
+            icon: 'none',
+            title: '请先登录',
+            duration: 2000
+          });
+          setTimeout(() => {
+            uni.navigateTo({
+              url: '/pages/center/login'
+            })
+          }, 2000)
+
+          return reject('请先登录')
+        }
         if (res && res.data.code !== 2000) {
           let msg = res.data.msg || '请求错误';
           uni.showToast({

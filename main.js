@@ -2,6 +2,9 @@ import Vue from 'vue'
 import App from './App'
 import store from './store'
 import config from './common/config'
+import uviewUi from "@/uni_modules/uview-ui";
+import '@/uni_modules/uview-ui/theme.scss'
+import '@/uni_modules/uview-ui/index.scss';
 import {
 	checkVersion
 } from './common/api'
@@ -64,11 +67,12 @@ Vue.prototype.disabledPullRefresh = function(disabled) {
 	// #endif
 }
 App.mpType = 'app'
+Vue.use(uviewUi)
 
 
 
 const app = new Vue({
 	store,
-	...App
+	...App,
 })
 app.$mount()

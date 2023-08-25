@@ -1,4 +1,6 @@
-{
+{	"easycom": {
+	"^u-(.*)": "@/uni_modules/uview-ui/components/u-$1/u-$1.vue"
+},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
 			"path": "pages/home/index",
@@ -51,24 +53,8 @@
 			"path": "pages/jishi/index",
 			"style": {
 				"navigationBarTitleText": "技师",
-//				"scrollIndicator":"none",
 				"app-plus": {
-//					"scrollIndicator":"none",
 					"titleNView": false
-//					{
-						// "type": "transparent",
-//						"titleColor": "#fff",
-						// "titleText": "我的",
-//						"backgroundColor": "#3ab54a"
-						// "buttons": [{
-						// 	"fontSrc": "/static/iconfont.ttf",
-						// 	"text": "\ue660",
-						// 	"width": "40px",
-						// 	"fontSize": "22px",
-						// 	"color": "#fff",
-						// 	"background": "rgba(0,0,0,0)"
-						// }]
-
 				}
 			}
 		},
@@ -76,24 +62,24 @@
 			"path": "pages/center/index",
 			"style": {
 				"navigationBarTitleText": "我的",
-//				"scrollIndicator":"none",
 				"app-plus": {
 					"scrollIndicator":"none",
 					"titleNView": false
-//					"titleNView": {
-//						// "type": "transparent",
-//						"titleColor": "#fff",
-//						// "titleText": "我的",
-//						"backgroundColor": "#3ab54a"
-//
-//					}
+				}
+			}
+		},
+		{
+			"path": "pages/jishi/reserve",
+			"style": {
+				"app-plus": {
+					"scrollIndicator":"none",
+					"titleNView": false
 				}
 			}
 		},
 		{
 			"path": "pages/center/login",
 			"style": {
-//				"navigationBarTitleText": "登录",
 				"app-plus": {
 					"scrollIndicator":"none",
 					"titleNView": false

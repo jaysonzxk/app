@@ -11,6 +11,7 @@
 			this.checkVersion().catch(()=>{
 			})
 			const lang = uni.getLocale()
+      console.log(lang)
 		},
     globalData: {
       statusBarHeight: ''
@@ -26,11 +27,11 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
 	/*每个页面公共css */
 	@import './common/common.css';
-
-	page{
+  @import "@/uni_modules/uview-ui/index.scss";
+  page{
 		background:#ffffff;
 		height: 100%;
 		font-size: 28upx;

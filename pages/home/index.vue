@@ -9,19 +9,13 @@
       <view class="massage"></view>
     </view>
     <view class="banner">
-      <uni-swiper-dot v-if="bannerList.length > 0">
-        <swiper class="banner-swiper" :indicator-dots="indicatorDots" :autoplay="autoplay"
-                :interval="interval" :duration="duration">
-          <swiper-item class="banners" v-for="(banner, index) in bannerList" :key="index">
-            <view class="banner-swiper-item">
-              <image :src="banner.file" lazy-load mode="aspectFill"
-                     @click="bannerClick(banner)"/>
-            </view>
-          </swiper-item>
-        </swiper>
-      </uni-swiper-dot>
-      <!-- <view class="grid-list"><uni-grid :options="activitys" :show-border="false" columnNum="4" @click="actClick"></uni-grid></view>
-      <view class="active-title-image"><image :src="index_1.image" lazy-load mode="aspectFill" @click="bannerClick(index_1)"></image></view> -->
+      <u-swiper
+          :list="bannerList"
+          keyName="file"
+          indicator
+          indicatorMode="line"
+          circular
+      ></u-swiper>
     </view>
     <view class="tip-list">
       <view class="item-tab">
@@ -52,9 +46,12 @@
     <view class="technician" v-show="technicianList.length > 0">
       <view class="technician-item">
         <view class="jishi"  v-for="(item, index) in technicianList" :key="index">
-          <img class="avatar" :src="item.avatar" />
-          <span class="username">{{item.name}}</span>
-          <span class="order">接单量{{item.orderNum}}</span>
+          <u-avatar :src="item.avatar" shape="square"></u-avatar>
+<!--          <img class="avatar" :src="item.avatar" />-->
+          <view class="user">
+            <span class="username">{{item.name}}</span>
+            <span class="order">接单量{{item.orderNum}}</span>
+          </view>
         </view>
       </view>
     </view>
@@ -478,16 +475,24 @@ export default {
 .technician-item{
   display: flex;
   flex-direction: row;
-  width: 60px;
+  /*width: 60px;*/
   /*height: 80px;*/
 }
 .jishi{
-  margin-right: 15px;
-  margin-left: 2px;
+  /*margin-right: 15px;*/
+  /*margin-left: 2px;*/
   display: flex;
   flex-direction: column;
-  justify-items: center;
+  /*justify-items: center;*/
+  /*justify-content: space-around;*/
+  /*align-items: center;*/
   align-items: center;
+}
+.user{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80px;
 }
 .username{
   font-weight: 700;
