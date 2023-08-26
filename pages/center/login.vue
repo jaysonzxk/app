@@ -3,44 +3,53 @@
     <view class="header">
       <view class="back" @click="goBack"></view>
       <view class="title">
-        欢 迎 登 陆 !
-      </view>
-      <view class="tip">
-        请用手机号密码登陆
+        手机号登录/注册
       </view>
     </view>
     <view class="body">
       <view class="body-top">
-        <input v-model="mobile" placeholder="请输入手机号" type="text" class="username" />
-        <input v-show="show" v-model="password" placeholder="请输入密码" type="password" class="pwd" />
-        <view class="reg-code" v-show="!show">
-          <input placeholder="请输短信验证码" class="code"/>
+        <u--input v-model="mobile" placeholder="请输入手机号" border="bottom" type="number" class="username">
+          <u--text
+              text="+86"
+              slot="prefix"
+              margin="0 8px 0 0"
+              type="tips"
+          ></u--text>
+        </u--input>
+        <view class="reg-code">
+<!--          <u&#45;&#45;input v-model="password" placeholder="请输短信验证码" border="bottom" type="number" class="code">-->
+<!--          </u&#45;&#45;input>-->
+          <u-code-input v-model="code" :maxlength="4" :space="20" ></u-code-input>
           <span v-show="codeShow" class="get-code" @click="getCode(mobile)">获取验证码</span>
-          <span v-show="!codeShow" class="count">{{ count }}秒</span>
+          <span v-show="!codeShow" class="count">{{ count }}秒重新获取</span>
         </view>
       </view>
-      <view class="body-middle">
-        <view class="remember"></view>
-        <view class="other">
-          <view @click="changeLogin" v-show="isCode">切换验证码登录</view>
-          <view @click="changeLogin" v-show="!isCode">切换密码登录</view>
-          <view class="other1">
-            <span class="forget">找回密码</span>
-            <span @click="goRegister">注册账号</span>
-          </view>
-        </view>
-      </view>
+      <!--      <view class="body-middle">-->
+      <!--        <view class="remember"></view>-->
+      <!--        <view class="other">-->
+      <!--          <view @click="changeLogin" v-show="isCode">切换验证码登录</view>-->
+      <!--          <view @click="changeLogin" v-show="!isCode">切换密码登录</view>-->
+      <!--          <view class="other1">-->
+      <!--            <span class="forget">找回密码</span>-->
+      <!--            <span @click="goRegister">注册账号</span>-->
+      <!--          </view>-->
+      <!--        </view>-->
+      <!--      </view>-->
       <view class="body-btn">
-        <view class="login-btn" @click="userLogin">登 录</view>
+        <view class="login-btn" @click="userLogin">登录</view>
+        <view class="tips">登录即代表已阅读并同意 <span style="color: rgb(249, 213, 85);">《用户协议》</span> <span
+            style="color: rgb(249, 213, 85);">《隐私协议》</span></view>
       </view>
     </view>
   </view>
 </template>
 
 <script>
+import {getMobileCode} from '@/common/api'
 export default {
   data() {
     return {
+      tips: '',
       show: true,
       codeShow: true,
       isCode: true,
@@ -54,30 +63,63 @@ export default {
     }
   },
   methods: {
-    goBack(){
+    goBack() {
       uni.navigateBack({
         delta: 1
       })
     },
-    changeLogin(){
+    codeChange(text) {
+      this.tips = text;
+    },
+    // getCode() {
+    //   if (this.$refs.uCode.canGetCode) {
+    //     // 模拟向后端请求验证码
+    //     uni.showLoading({
+    //       title: '正在获取验证码'
+    //     })
+    //     setTimeout(() => {
+    //       uni.hideLoading();
+    //       // 这里此提示会被this.start()方法中的提示覆盖
+    //       uni.$u.toast('验证码已发送');
+    //       // 通知验证码组件内部开始倒计时
+    //       this.$refs.uCode.start();
+    //     }, 2000);
+    //   } else {
+    //     uni.$u.toast('倒计时结束后再发送');
+    //   }
+    // },
+    change(e) {
+      console.log('change', e);
+    },
+    changeLogin() {
       this.show = !this.show
       this.isCode = !this.isCode
     },
-    goRegister(){
+    goRegister() {
       uni.navigateTo({
         url: '/pages/center/register'
       })
     },
-    getCode(val) {
+    async getCode(val) {
+
       const TIME_COUNT = 60
-      if (this.mobile === undefined) {
-        uni.showToast({
-          icon: 'none',
-          title: "请输入正确手机号",
-          duration: 2000
-        })
+      const phoneReg = /^[1][3,4,5,6,7,8][0-9]{9}$/;
+      if (phoneReg.test(val) === false) {
+        uni.$u.toast('手机号格式错误')
+        return
+      }
+      if (this.mobile === '') {
+        uni.$u.toast('手机号不能为空')
       } else {
         if (!this.timer) {
+          const query = {mobile: val}
+          let res = await getMobileCode(query)
+          if (res.code === 2000) {
+            this.code = res.data.code
+          }else {
+            uni.$u.toast(''+res.msg)
+            return
+          }
           this.count = TIME_COUNT
           this.codeShow = false
           this.timer = setInterval(() => {
@@ -89,11 +131,12 @@ export default {
               this.timer = null
             }
           }, 1000)
+          uni.$u.toast('验证码已发送');
         }
       }
     },
     async userLogin() {
-      const loginForm = {username: this.mobile, password: this.password}
+      const loginForm = {mobile: this.mobile, code: this.code}
       await this.$store.dispatch('user/Login', loginForm);
       await this.$store.dispatch('user/GetUserInfo', {});
       // uni.showLoading({
@@ -120,120 +163,74 @@ export default {
 </script>
 
 <style>
-.login{
-  /*height: 100%;*/
-}
-.header{
+.header {
   margin-top: 70px;
   margin-left: 20px;
 }
-.back{
+
+.back {
   background: url("./images/public_back_black.png") no-repeat;
   background-size: 50%;
   height: 25px;
   width: 25px;
   margin-bottom: 20px;
 }
+
 .reg-code {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  margin-top: 40px;
+  justify-content: space-between;
+  margin-left: calc(10% / 2);
+  margin-right: calc(10% / 2);
 }
+
 .get-code {
-  position: absolute;
-  right: 30px;
-  margin-top: 33px;
+  color: rgb(249, 213, 85);
 }
 
 .count {
-  position: absolute;
-  right: 30px;
-  margin-top: 33px;
   color: red;
 }
-.code {
-  background: #fff;
-  border-radius: 20px;
-  height: 50px;
-  width: 90%;
-  margin-left: calc(5% / 2);
-  margin-top: 20px;
-  padding-left: 20px;
-}
-.title{
+
+.title {
   font-weight: 700;
   font-size: 24px;
-  /*padding-top: 16px;*/
-  /*margin-bottom: 10px;*/
-  /*margin-left: 20px;*/
-  /*font-weight: 550;*/
 }
-.tip{
-  font-size: 16px;
-  color: #999;
-}
-.body{
+
+.body {
   display: flex;
   flex-direction: column;
   margin-top: 40px;
-
 }
+
 .username {
-  /*height: 100%;*/
-  padding-left: 20px;
-  background: #fff;
-  border-radius: 20px;
-  height: 50px;
-  width: 90%;
-  margin-left: calc(5% / 2);
+  margin-left: calc(10% / 2);
+  margin-right: calc(10% / 2);
+}
 
-}
-.pwd{
-  background: #fff;
-  border-radius: 20px;
-  height: 50px;
-  width: 90%;
-  margin-left: calc(5% / 2);
-  margin-top: 20px;
-  padding-left: 20px;
-}
-.body-middle{
-  display: flex;
-  justify-content: space-between;
-  /*width: 90%;*/
-  margin: 30px calc(10% / 2) 0 calc(10% / 2) ;
-
-}
-.other{
-  /*margin-right: 10px;*/
-}
-.other1{
-  color: #3ab54a;
-  display: flex;
-}
-.forget::after{
-  content: '';
-  background: #3ab54a;
-  height: 10px;
-  line-height: 10px;
-  width: 2px;
-  display: inline-block;
-  margin-left: 5px;
-  margin-right: 5px;
-
-}
-.login-btn{
-  background: #3ab54a;
+.login-btn {
+  background: rgb(249, 213, 85);
   border-radius: 20px;
   width: 90%;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: #333;
   font-size: 16px;
-  font-weight: 500;
-  margin-left: calc(10% / 2);
-  margin-top: 40px;
-  /*justify-items: center;*/
+}
+
+.body-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 80px;
+}
+
+.tips {
+  font-size: 12px;
+  margin-top: 20px;
 }
 </style>

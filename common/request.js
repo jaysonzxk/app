@@ -148,7 +148,7 @@ export default {
           title: '数据加载中'
         })
         const [err, res] = data;
-        if (res.data.code === 4000) {
+        if (res.data.code === 401) {
           uni.showToast({
             icon: 'none',
             title: '请先登录',
@@ -158,7 +158,7 @@ export default {
             uni.navigateTo({
               url: '/pages/center/login'
             })
-          }, 2000)
+          }, 1000)
 
           return reject('请先登录')
         }

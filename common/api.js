@@ -89,3 +89,13 @@ export function getMasterGoods(query){
 		params: query
 	})
 }
+
+
+// 登录验证码
+export function getMobileCode(query){
+	return http.request({
+		method: 'get',
+		url: '/api/v1/getCode/',
+		params: query
+	})
+}

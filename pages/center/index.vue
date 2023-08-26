@@ -21,7 +21,7 @@
 		<view class="my-wallet">
 			<view class="wallet">
 				<view class="balance" v-show="userInfo">
-					<span class="top">{{userInfo}}</span>
+					<span class="top">{{userInfo.balance}}</span>
 					<span class="bottom">余额</span>
 				</view>
         <view class="balance" v-show="!userInfo">
@@ -294,7 +294,7 @@
   }
 	.phone {
 		font-size: 13px;
-		color: #fbfbfb;
+		/*color: #fbfbfb;*/
 		margin-top: -5px;
 	}
 	.mine{

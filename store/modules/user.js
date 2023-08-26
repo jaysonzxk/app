@@ -20,15 +20,27 @@ const user = {
 	actions: {
 		Login({commit}, data){
 			return new Promise((resolve, reject) => {
+				if (data.mobile === '') {
+					uni.$u.toast('手机号不能为空');
+					return
+				} else if (data.code === '') {
+					uni.$u.toast('验证码不能为空');
+					return
+				}
 				userLogin(data).then(response => {
-					// if (response.code === 2000) {
-					// 	uni.navigateBack({
-					// 		delta: 1
-					// 	})
-					// }
 					const token = response.data.access
 					commit('SET_TOKEN', token)
 					uni.setStorageSync('TOKEN', token)
+					uni.showToast({
+						icon: 'none',
+						title: '登录成功',
+						duration: 2000
+					});
+					setTimeout(() => {
+						uni.navigateBack({
+							delta: 1
+						}, 1000)
+					})
 					resolve()
 				}).catch(error => {
 					reject(error)
