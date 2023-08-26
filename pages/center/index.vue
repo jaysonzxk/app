@@ -1,5 +1,5 @@
 <template>
-	<view class="center">
+	<view class="center" :style="{'padding-top': statusBarHeight + 'px'}">
 		<view class="center-top">
 			<!-- <text class="mine">我的</text> -->
 			<view class="center-logo">
@@ -7,109 +7,95 @@
 					<image class="center-logo-img" src="./images/tuxiang.png"></image>
 					<view class="center-logo-title">
 						<view class="center-uer-name" v-show="userInfo">
-							<text class="username">{{ userInfo.name }}</text>
-							<text class="phone">{{ userInfo.mobile }}</text>
+              <view class="sex">
+                <text class="username">{{ userInfo.name }}</text>
+                <span class="man" v-show="userInfo.gender === 0"></span>
+                <span class="woman" v-show="userInfo.gender === 1"></span>
+              </view>
+							<text class="phone">普通用户</text>
 						</view>
             <text v-show="!userInfo" class="login" @click="goLogin">请 登 录</text>
 					</view>
 				</view>
+        <view class="top-r">
+          <span class="tongzhi"></span>
+          <span class="setting"></span>
+        </view>
+
 				<!-- <view class="info">
 					<span>编辑资料</span>
 				</view> -->
 			</view>
-		</view>
-		<view class="my-wallet">
-			<view class="wallet">
-				<view class="balance" v-show="userInfo">
-					<span class="top">{{userInfo.balance}}</span>
-					<span class="bottom">余额</span>
-				</view>
-        <view class="balance" v-show="!userInfo">
-          <span class="top">0</span>
-          <span class="bottom">余额</span>
+      <view class="tips">
+        <view class="collect">
+          <span>0</span>
+          <span>收藏</span>
         </view>
-				<view class="coupons" v-show="userInfo">
-					<span class="top">1</span>
-					<span class="bottom">优惠券</span>
-				</view>
-        <view class="coupons" v-show="!userInfo">
-          <span class="top">0</span>
-          <span class="bottom">优惠券</span>
+        <view class="follow">
+          <span>0</span>
+          <span>关注</span>
         </view>
-				<view class="collect" v-show="userInfo">
-					<span class="top">4</span>
-					<span class="bottom">收藏</span>
-				</view>
-        <view class="collect" v-show="!userInfo">
-          <span class="top">0</span>
-          <span class="bottom">收藏</span>
+        <view class="points">
+          <span>0</span>
+          <span>积分</span>
         </view>
-			</view>
+      </view>
+      <view class="vip">
+        <view class="vip-bg">
+          <span class="vip-bg-l"></span>
+          <span style="color: rgb(235, 209, 182);font-size: 12px">点亮会员标识, 享受尊贵特权</span>
+          <span class="open" @click="goOpenVip"></span>
+        </view>
+      </view>
 		</view>
-		<view class="my-order">
-			<view class="title">
-				<view class="order-icon">
-					<span class="orderIcon"></span>
-					<span class="tip">我的订单</span>
-				</view>
-
-				<view class="more-icon">
-					<span class="more">查看全部</span>
-					<span class="moreIcon"></span>
-				</view>
-
-			</view>
-			<view class="order-status">
-				<view class="daijiedan">
-					<span>待接单</span>
-				</view>
-				<view class="fuwuzhong">
-					<span>服务中</span>
-				</view>
-				<view class="daiqueren">
-					<span>待确认</span>
-				</view>
-				<view class="daipingjia">
-					<span>待评价</span>
-				</view>
-				<view class="yiwancheng">
-					<span>已完成</span>
-				</view>
-			</view>
-		</view>
+    <view class="my-wallet">
+      <view class="coupon">
+        <view class="coupon-l">
+          <span class="title">优惠券</span>
+          <span class="use-num">3张可用</span>
+        </view>
+        <view class="coupon-icon"></view>
+      </view>
+      <view class="wallet">
+        <view class="wallet-l">
+          <span class="title">我的钱包</span>
+          <span class="balance">余额:{{userInfo.balance}}</span>
+        </view>
+        <view class="wallet-icon"></view>
+      </view>
+    </view>
 		<view class="middle">
 			<span class="middle-l"></span>
 			<span class="middle-r"></span>
 		</view>
 		<view class="bottom-list">
-			<view class="addr" @click="goAddress">
-				<view class="addr-l">
-					<span class="addr-icon"></span>
-					<span class="addr-title">常用地址</span>
-				</view>
-				<span class="bottom-more"></span>
-			</view>
-			<view class="about" @click="goAbout">
-				<view class="about-l">
-					<span class="about-icon"></span>
-					<span class="about-title">关于我们</span>
-				</view>
-				<span class="bottom-more"></span>
-			</view>
-			<view class="opinion" @click="goFeedback">
-				<view class="opinion-l">
-					<span class="opinion-icon"></span>
-					<span class="opinion-title">意见反馈</span>
-				</view>
-				<span class="bottom-more"></span>
-			</view>
-			<view class="setting" @click="goSetting">
-				<view class="setting-l">
-					<span class="setting-icon"></span>
-					<span class="setting-title">设置</span>
-				</view>
-				<span class="bottom-more"></span>
-			</view>
+      <text style="margin-left: 10px">我的工具</text>
+      <view class="tools">
+<!--        <view class="addr">-->
+<!--          <span class="addr-icon"></span>-->
+<!--          <span>我的地址</span>-->
+<!--        </view>-->
+        <view class="about">
+          <span class="about-icon part"></span>
+          <span>关于我们</span>
+        </view>
+        <view class="feedback part">
+          <span class="feedback-icon"></span>
+          <span>用户反馈</span>
+        </view>
+        <view class="cs part">
+          <span class="cs-icon"></span>
+          <span>联系客服</span>
+        </view>
+        <view class="evaluate part">
+          <span class="evaluate-icon"></span>
+          <span>我的评价</span>
+        </view>
+        <view class="report part">
+          <span class="report-icon"></span>
+          <span>投诉举报</span>
+        </view>
+      </view>
 		</view>
 	</view>
 </template>
@@ -125,12 +111,16 @@
 		data() {
 			return {
 				versionName: 'v1.0.0',
+        statusBarHeight: getApp().globalData.statusBarHeight,
 			};
 		},
 		onLoad() {
 			this.versionName = '版本:' + this.$config.versionName
-
+      this.getUserInfo()
 		},
+    create(){
+      this.getUserInfo()
+    },
     computed: {
       userInfo(){
         if (uni.getStorageSync('userInfo')) {
@@ -141,6 +131,15 @@
       }
     },
 		methods: {
+      async getUserInfo() {
+        await this.$store.dispatch('user/GetUserInfo', {});
+
+      },
+      goOpenVip(){
+        uni.navigateTo({
+          url: '/pages/center/vip'
+        })
+      },
 			goAddress(){
 				uni.navigateTo({
 					url: '/pages/center/address'
@@ -221,64 +220,111 @@
 	};
 </script>
 
-<style>
+<style scoped lang="scss">
 	.center {
-		height: 800px;
+		height: auto;
 		/* flex-direction: column; */
 		background-color:#f5f5f5;
-	}
+    padding-bottom: 20px;
+    .center-top {
+      width: 100%;
+      background: url(./images/mine_title_bg.png) no-repeat;
+      background-size: 100%;
+      border-radius: 0 0 20px 20px;
+      .center-logo {
+        width: 750upx;
+        /*height: 380upx;*/
+        box-sizing: border-box;
+        /* flex-direction: row; */
+        align-items: center;
+        margin-left: 20px;
+        display: flex;
+        justify-content: space-between;
+        /* padding-bottom: 60px; */
+        .userinfo{
+          display: flex;
+          /* flex-direction: column; */
+          align-items: center;
+          margin-top: 40px;
+          .center-logo-img {
+            width: 120upx;
+            height: 120upx;
+            border-radius: 150upx;
+          }
+          .center-logo-title {
+            height: 150upx;
+            /* flex: 1; */
+            align-items: center;
+            flex-direction: row;
+            margin-left: 20upx;
+            display: flex;
+          }
+        }
+        .top-r{
+          display: flex;
+          margin-right: 30px;
+          margin-bottom: 30px;
+          .tongzhi{
+            background: url("@/pages/center/images/tongzhi.png")  no-repeat;
+            background-size: 100%;
+            height: 30px;
+            width: 20px;
+            margin-right: 10px;
+          }
+          .setting{
+            background: url("@/pages/center/images/setting.png")  no-repeat;
+            background-size: 100%;
+            height: 30px;
+            width: 20px;
+          }
+        }
+      }
+      .tips{
+        display: flex;
+        justify-content: space-around;
+        margin-top: 20px;
+      }
+      .tips>view{
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        align-items: center;
+      }
+      .vip{
+        height: 50px;
+        width: 100%;
+        margin-top: 20px;
+        .vip-bg{
+          background: url("@/pages/center/images/vipcard_bg.png") no-repeat;
+          background-size: 100%;
+          height: 50px;
+          width: 95%;
+          margin-left: calc(5% / 2);
+          display: flex;
+          flex: 1;
+          /*align-items: center;*/
+          align-items: center;
+          justify-content: space-around;
+          .vip-bg-l{
+            background: url("@/pages/center/images/vip_txt_ic.png") no-repeat;
+            background-size: 100%;
+            width: 50px;
+            height: 30px;
+            display: flex;
+            margin-top: 10px;
+          }
+          .open{
+            background: url("@/pages/center/images/vip_open.png") no-repeat;
+            background-size: 100%;
+            width: 80px;
+            height: 30px;
+            /*margin-top: 10px;*/
+          }
+        }
 
-	/* .center-title {
-		font-size: 32upx;
-		line-height: 32upx;
-		color: #777;
-		margin: 40upx 25upx;
-		position: relative;
+      }
+    }
 	}
-
-	.center-list {
-		background-color: #ffffff;
-		flex-direction: column;
-	} */
-
-	.center-top {
-		width: 100%;
-		background: url(./images/mine_title_bg.png) no-repeat;
-		background-size: 100%;
-		border-radius: 0 0 20px 20px;
-	}
-
-	.center-logo {
-		width: 750upx;
-		height: 380upx;
-		box-sizing: border-box;
-		/* flex-direction: row; */
-		align-items: center;
-		display: flex;
-		margin-left: 20px;
-		/* padding-bottom: 60px; */
-	}
-	.userinfo{
-		display: flex;
-		/* flex-direction: column; */
-		align-items: center;
-		margin-bottom: 30px;
-	}
-	.center-logo-img {
-		width: 120upx;
-		height: 120upx;
-		border-radius: 150upx;
-	}
-
-	.center-logo-title {
-		height: 150upx;
-		/* flex: 1; */
-		align-items: center;
-		flex-direction: row;
-		margin-left: 20upx;
-		display: flex;
-	}
-
 	.center-uer-name {
 		display: flex;
 		flex-direction: column;
@@ -292,9 +338,29 @@
     font-size: 38upx;
     color: #333;
   }
+  .sex{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .man{
+    background: url("@/pages/center/images/sex_man.png") no-repeat;
+    background-size: 100%;
+    height: 12px;
+    width: 12px;
+    margin-left: 5px;
+  }
+  .woman{
+    background: url("@/pages/center/images/sex_woman.png") no-repeat;
+    background-size: 100%;
+    height: 12px;
+    width: 12px;
+    margin-left: 5px;
+  }
 	.phone {
-		font-size: 13px;
+		font-size: 10px;
 		/*color: #fbfbfb;*/
+    color: #8F8F94;
 		margin-top: -5px;
 	}
 	.mine{
@@ -316,24 +382,66 @@
 		margin-right: 10px;
 	}
 	.my-wallet{
-		position: relative;
-		bottom: 60px;
-	}
-	.wallet{
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		width: 95%;
-		height: 90px;
-		background-color: #fff;
-		border-radius: 7px;
-		margin-left: calc(5% / 2);
-	}
-	.balance{
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		margin-left: 20px;
+    height: 90px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    .coupon{
+      height: 90px;
+      width: 45%;
+      background-color: #fff;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      .coupon-l{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .title{
+          font-size: 16px;
+        }
+        .use-num{
+          font-size: 12px;
+          color: #8F8F94;
+        }
+      }
+      .coupon-icon{
+        background: url("@/pages/center/images/coupon_ic.png") no-repeat;
+        background-size: 80%;
+        width: 70px;
+        height: 55px;
+      }
+    }
+    .wallet{
+      height: 90px;
+      width: 45%;
+      background-color: #fff;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      .wallet-l{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-items: center;
+        .title{
+          font-size: 16px;
+        }
+        .balance{
+          font-size: 12px;
+          color: #8F8F94;
+        }
+      }
+      .wallet-icon{
+        background: url("@/pages/center/images/wallet_ic.png") no-repeat;
+        background-size: 80%;
+        width: 70px;
+        height: 55px;
+      }
+    }
 	}
 	.coupons{
 		display: flex;
@@ -362,7 +470,7 @@
 		background-color: #fff;
 		border-radius: 7px;
 		margin-left: calc(5% / 2);
-		margin-top: -50px;
+		/*margin-top: -50px;*/
 	}
 	.title{
 		display: flex;
@@ -434,86 +542,103 @@
 		margin-left: calc((100% - 346px) / 3);
 	}
 	.bottom-list{
-		width: 95%;
-		height: 200px;
-		background-color: #fff;
-		border-radius: 7px;
+		width: 100%;
+		height: 100%;
 		margin-top: 10px;
-		margin-left: calc(5% / 2);
-		margin-bottom: -20px;
-		font-size: 16px;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-evenly;
+		//font-size: 16px;
+    .tools{
+      background: #fff;
+      width: 95%;
+      height: auto;
+      border-radius: 7px;
+      margin-left: calc(5% / 2);
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      padding-top: 10px;
+      //padding-left: calc((100% - 330px) / 2);
+      justify-content: space-between;
+      .addr{
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        align-items: center;
+        margin-left: 20px;
+        .addr-icon{
+          background: url("@/pages/center/images/location.png") no-repeat;
+          background-size: 80%;
+          width: 30px;
+          height: 30px;
+        }
+      }
+      .about{
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        align-items: center;
+        width: 80px;
+
+        //margin-left: 20px;
+        .about-icon{
+          background: url("@/pages/center/images/guanyuwomen.png") no-repeat;
+          background-size: 100%;
+          width: 40px;
+          height: 40px;
+        }
+      }
+      .feedback{
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        align-items: center;
+        width: 80px;
+        .feedback-icon{
+          background: url("@/pages/center/images/yonghufankui.png") no-repeat;
+          background-size: 100%;
+          width: 40px;
+          height: 40px;
+        }
+      }
+      .cs{
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        align-items: center;
+        width: 80px;
+        .cs-icon{
+          background: url("@/pages/center/images/lianxikefu.png") no-repeat;
+          background-size: 100%;
+          width: 40px;
+          height: 40px;
+        }
+      }
+      .evaluate{
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        align-items: center;
+        width: 80px;
+        .evaluate-icon{
+          background: url("@/pages/center/images/wodepingjia.png") no-repeat;
+          background-size: 100%;
+          width: 40px;
+          height: 40px;
+        }
+      }
+      .report{
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        align-items: center;
+        width: 80px;
+        .report-icon{
+          background: url("@/pages/center/images/tousujubao.png") no-repeat;
+          background-size: 100%;
+          width: 40px;
+          height: 40px;
+        }
+      }
+    }
 	}
-	.addr{
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin: 0 10px;
-	}
-	.addr-l{
-		display: flex;
-		align-items: center;
-	}
-	.addr-icon{
-		background: url('./images/addr.png') no-repeat;
-		background-size: 100%;
-		width: 25px;
-		height: 25px;
-	}
-	.about{
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin: 0 10px;
-	}
-	.about-l{
-		display: flex;
-		align-items: center;
-	}
-	.about-icon{
-		background: url('./images/about.png') no-repeat;
-		background-size: 100%;
-		width: 25px;
-		height: 25px;
-	}
-	.opinion{
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin: 0 10px;
-	}
-	.opinion-l{
-		display: flex;
-		align-items: center;
-	}
-	.opinion-icon{
-		background: url('./images/opinion.png') no-repeat;
-		background-size: 100%;
-		width: 25px;
-		height: 25px;
-	}
-	.setting{
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin: 0 10px;
-	}
-	.setting-l{
-		display: flex;
-		align-items: center;
-	}
-	.setting-icon{
-		background: url('./images/setting.png') no-repeat;
-		background-size: 100%;
-		width: 25px;
-		height: 25px;
-	}
-	.bottom-more{
-		background: url('./images/more_icon.png') no-repeat;
-		background-size: 100%;
-		width: 25px;
-		height: 25px;
-	}
+
 </style>

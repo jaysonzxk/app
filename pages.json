@@ -87,6 +87,16 @@
 			}
 		},
 		{
+			"path": "pages/center/vip",
+			"style": {
+				"app-plus": {
+					"navigationBarTitleText": "会员中心",
+					"scrollIndicator":"none",
+					"titleNView": false
+				}
+			}
+		},
+		{
 			"path": "pages/center/register",
 			"style": {
 //				"navigationBarTitleText": "注册",

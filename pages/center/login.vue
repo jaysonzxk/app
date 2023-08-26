@@ -21,7 +21,7 @@
 <!--          </u&#45;&#45;input>-->
           <u-code-input v-model="code" :maxlength="4" :space="20" ></u-code-input>
           <span v-show="codeShow" class="get-code" @click="getCode(mobile)">获取验证码</span>
-          <span v-show="!codeShow" class="count">{{ count }}秒重新获取</span>
+          <span v-show="!codeShow" class="count">({{ count }})重新获取</span>
         </view>
       </view>
       <!--      <view class="body-middle">-->
