@@ -12,6 +12,11 @@ Vue.config.productionTip = false
 Vue.prototype.$store = store
 Vue.prototype.$config = config
 
+Vue.prototype.$timeStamp = function (val){
+	let times = Math.round(new Date(val) / 1000)
+	return times
+}
+
 Vue.prototype.checkVersion = function() {
 	return new Promise((resolve, reject) => {
 		try {

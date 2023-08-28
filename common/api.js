@@ -118,3 +118,12 @@ export function getPayChannel(query) {
 		params: query
 	})
 }
+
+// 支付
+export function payMoney(data) {
+	return http.request({
+		method: 'post',
+		url: '/api/v1/client/payMoney/pay/',
+		data: data
+	})
+}

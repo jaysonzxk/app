@@ -12,7 +12,8 @@
                 <span class="man" v-show="userInfo.gender === 0"></span>
                 <span class="woman" v-show="userInfo.gender === 1"></span>
               </view>
-							<text class="phone">普通用户</text>
+							<text v-if="!userInfo" class="phone">普通用户</text>
+							<text v-else class="phone">{{userInfo.vip.vipName}}</text>
 						</view>
             <text v-show="!userInfo" class="login" @click="goLogin">请 登 录</text>
 					</view>
@@ -41,11 +42,18 @@
         </view>
       </view>
       <view class="vip">
-        <view class="vip-bg">
+        <view class="vip-bg"  v-if="!userInfo">
           <span class="vip-bg-l"></span>
           <span style="color: rgb(235, 209, 182);font-size: 12px">点亮会员标识, 享受尊贵特权</span>
           <span class="open" @click="goOpenVip"></span>
+
         </view>
+        <view class="vip-bg"  v-else>
+          <span class="vip-bg-l"></span>
+          <span style="color: rgb(235, 209, 182);font-size: 12px">到期时间:{{$u.timeFormat(userInfo.vip.expiration, 'yyyy-mm-dd hh:MM:ss')}}</span>
+          <span class="renew" @click="goOpenVip"></span>
+        </view>
+
       </view>
 		</view>
     <view class="my-wallet">
@@ -103,6 +111,7 @@
 <script>
 	import uniList from '@/components/uni-list/uni-list.vue';
 	import uniListItem from '@/components/uni-list-item/uni-list-item.vue';
+  import {getUserInfo} from '@/common/api'
 	export default {
 		components: {
 			uniList,
@@ -112,6 +121,7 @@
 			return {
 				versionName: 'v1.0.0',
         statusBarHeight: getApp().globalData.statusBarHeight,
+        // userInfo:{}
 			};
 		},
 		onLoad() {
@@ -221,13 +231,17 @@
 </script>
 
 <style scoped lang="scss">
+.uni-page-body{
+  height: auto !important;
+}
 	.center {
-		height: auto;
+		//height: 550px;
+    overflow-y: auto;
 		/* flex-direction: column; */
 		background-color:#f5f5f5;
     padding-bottom: 20px;
     .center-top {
-      width: 100%;
+      //width: 100%;
       background: url(./images/mine_title_bg.png) no-repeat;
       background-size: 100%;
       border-radius: 0 0 20px 20px;
@@ -319,6 +333,12 @@
             width: 80px;
             height: 30px;
             /*margin-top: 10px;*/
+          }
+          .renew{
+            background: url("@/pages/center/images/vip_renew.png") no-repeat;
+            background-size: 100%;
+            width: 80px;
+            height: 30px;
           }
         }
 
