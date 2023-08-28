@@ -99,3 +99,22 @@ export function getMobileCode(query){
 		params: query
 	})
 }
+
+// vip卡列表
+export function getVipList(query) {
+	return http.request({
+		method: 'get',
+		url: '/api/v1/client/vipList/',
+		params: query
+	})
+}
+
+
+// 支付渠道
+export function getPayChannel(query) {
+	return http.request({
+		method: 'get',
+		url: '/api/v1/client/payChannel/',
+		params: query
+	})
+}
