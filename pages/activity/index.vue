@@ -168,7 +168,6 @@ export default {
 					});
 				})
 				.catch(() => {
-					//TODO
 					uni.hideLoading();
 				});
 		},
@@ -270,7 +269,7 @@ export default {
 				}
 				this.pullDownRefresh = false;
 			}
-			
+
 			if (e.detail.scrollTop > 1000) {
 				this.showFloatButton = true;
 			} else {

@@ -176,7 +176,6 @@ export default {
 					});
 				})
 				.catch(() => {
-					//TODO
 					uni.hideLoading();
 				});
 		},

@@ -37,7 +37,6 @@ export default {
 										duration:1000
 									})
 								}catch(e){
-									//TODO handle the exception
 										uni.showToast({
 										title:"清除失败请稍后重试",
 										duration:1000

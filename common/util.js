@@ -17,7 +17,7 @@ function paseNum(num,fixed = 0){
 		}
 		return str;
 }
-//解决手机端无法使用解析yyyy-MM-dd hh:mm:ss直接格式 new Date(dateString)  
+//解决手机端无法使用解析yyyy-MM-dd hh:mm:ss直接格式 new Date(dateString)
 function string2Date(dateString){
 	if(dateString){
 		try{
@@ -26,7 +26,6 @@ function string2Date(dateString){
 			var him = arr[1].split(':');
 			return new Date(ymd[0],ymd[1],ymd[2],him[0],him[1],him[2]);
 		}catch(e){
-			//TODO handle the exception
 		}
 	}
 	return new Date(dateString);

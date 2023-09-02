@@ -81,14 +81,13 @@ export default {
 				uni.navigateTo({
 					url: '/pages/good/detail?id='+g.id+"&nummId="+g.goods_id
 				})
-				
+
 			}).catch(()=>{
-				//TODO
 				uni.hideLoading();
 			});
 		},
 		clearInvalidGood(){
-			
+
 		}
 	},
 	onNavigationBarButtonTap() {
