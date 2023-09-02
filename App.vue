@@ -32,10 +32,10 @@
 	@import './common/common.css';
   @import "@/uni_modules/uview-ui/index.scss";
   page{
-		background:#ffffff;
-		height: 100%;
-		font-size: 28upx;
-		line-height: 1.8;
+		//background:#ffffff;
+		//height: 100%;
+		//font-size: 28upx;
+		//line-height: 1.8;
 	}
 
 

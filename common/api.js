@@ -127,3 +127,12 @@ export function payMoney(data) {
 		data: data
 	})
 }
+
+// 获取技师详情
+export function getInfo(query) {
+	return http.request({
+		method: 'get',
+		url: '/api/v1/client/technician/getMasterInfo',
+		params: query
+	})
+}

@@ -12,8 +12,10 @@
                 <span class="man" v-show="userInfo.gender === 0"></span>
                 <span class="woman" v-show="userInfo.gender === 1"></span>
               </view>
-							<text v-if="!userInfo" class="phone">普通用户</text>
-							<text v-else class="phone">{{userInfo.vip.vipName}}</text>
+              <view>
+                <text v-if="userInfo.vip === null" class="phone">普通用户</text>
+                <text v-else class="phone">{{userInfo.vip.vipName}}</text>
+              </view>
 						</view>
             <text v-show="!userInfo" class="login" @click="goLogin">请 登 录</text>
 					</view>
@@ -42,7 +44,7 @@
         </view>
       </view>
       <view class="vip">
-        <view class="vip-bg"  v-if="!userInfo">
+        <view class="vip-bg"  v-if="userInfo.vip === null">
           <span class="vip-bg-l"></span>
           <span style="color: rgb(235, 209, 182);font-size: 12px">点亮会员标识, 享受尊贵特权</span>
           <span class="open" @click="goOpenVip"></span>
@@ -111,7 +113,7 @@
 <script>
 	import uniList from '@/components/uni-list/uni-list.vue';
 	import uniListItem from '@/components/uni-list-item/uni-list-item.vue';
-  import {getUserInfo} from '@/common/api'
+  import {getUserInfo, userLogin} from '@/common/api'
 	export default {
 		components: {
 			uniList,
@@ -121,29 +123,28 @@
 			return {
 				versionName: 'v1.0.0',
         statusBarHeight: getApp().globalData.statusBarHeight,
-        // userInfo:{}
+        isRefresh: false,
+        userInfo:{}
 			};
 		},
-		onLoad() {
-			this.versionName = '版本:' + this.$config.versionName
-      this.getUserInfo()
-		},
-    create(){
-      this.getUserInfo()
+    onShow(){
+      this.userInfos();
     },
+		onLoad(options) {
+			this.versionName = '版本:' + this.$config.versionName
+		},
     computed: {
-      userInfo(){
-        if (uni.getStorageSync('userInfo')) {
-          return uni.getStorageSync('userInfo')
-        }else {
-          return false
-        }
-      }
     },
 		methods: {
-      async getUserInfo() {
-        await this.$store.dispatch('user/GetUserInfo', {});
-
+      // async getUserInfo() {
+      //   await this.$store.dispatch('user/GetUserInfo', {});
+      //
+      // },
+      async userInfos() {
+        let res = await getUserInfo();
+        if (res.code === 2000){
+          this.userInfo = res.data
+        }
       },
       goOpenVip(){
         uni.navigateTo({
@@ -231,15 +232,13 @@
 </script>
 
 <style scoped lang="scss">
-.uni-page-body{
-  height: auto !important;
-}
 	.center {
-		//height: 550px;
-    overflow-y: auto;
+		//height: 100%;
+    //overflow-y: auto;
 		/* flex-direction: column; */
 		background-color:#f5f5f5;
-    padding-bottom: 20px;
+    //margin-bottom: 20px;
+    padding-bottom: 10px;
     .center-top {
       //width: 100%;
       background: url(./images/mine_title_bg.png) no-repeat;
@@ -563,8 +562,10 @@
 	}
 	.bottom-list{
 		width: 100%;
-		height: 100%;
+		//height: auto;
+    height: 400px;
 		margin-top: 10px;
+    //margin-bottom: 20px;
 		//font-size: 16px;
     .tools{
       background: #fff;

@@ -15,7 +15,12 @@
             "delay" : 0
         },
         "modules" : {
-            "Maps" : {}
+            "Maps" : {},
+            "Push" : {},
+            "Barcode" : {},
+            "Contacts" : {},
+            "Geolocation" : {},
+            "Camera" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -45,17 +50,34 @@
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
-                ]
+                ],
+                "abiFilters" : [ "armeabi-v7a", "arm64-v8a", "x86" ]
             },
             "ios" : {},
             /* ios打包配置 */
             "sdkConfigs" : {
                 "statics" : {},
-                "geolocation" : {},
+                "geolocation" : {
+                    "system" : {
+                        "__platform__" : [ "ios", "android" ]
+                    }
+                },
                 "maps" : {
                     "google" : {
                         "APIKey_ios" : "",
                         "APIKey_android" : ""
+                    }
+                },
+                "push" : {
+                    "unipush" : {
+                        "version" : "2",
+                        "offline" : true,
+                        "hms" : {},
+                        "oppo" : {},
+                        "vivo" : {},
+                        "mi" : {},
+                        "meizu" : {},
+                        "fcm" : {}
                     }
                 }
             },

@@ -128,28 +128,21 @@ export default {
     }
   },
   methods: {
-    // radioClick(name) {
-    //   this.radios.map((item, index) => {
-    //     item.checked = index === name ? true : false
-    //   })
-    // },
-    // close() {
-    //   this.show = false
-    //   // console.log('close');
-    // },
-    // open() {
-    //   // console.log('open');
-    // },
-    async reserve(val){
-      this.show = true;
-      let res = await getMasterGoods({userId: val})
-      if (res.code === 2000) {
-        this.masterGoodsList = res.data;
-      }
-      // uni.navigateTo({
-      //   url: '/pages/jishi/reserve?userId='+ val,
-      // })
+    reserve(val){
+      uni.navigateTo({
+        url: '/pages/jishi/reserve?userId='+ val,
+      })
     },
+    // async reserve(val){
+    //   this.show = true;
+    //   let res = await getMasterGoods({userId: val})
+    //   if (res.code === 2000) {
+    //     this.masterGoodsList = res.data;
+    //   }
+    //   // uni.navigateTo({
+    //   //   url: '/pages/jishi/reserve?userId='+ val,
+    //   // })
+    // },
     onRestore() {
       this.triggered = 'restore';
     },

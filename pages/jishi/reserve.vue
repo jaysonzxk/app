@@ -1,77 +1,73 @@
 <template>
   <view class="reserve-order" :style="{'padding-top': statusBarHeight + 'px'}">
     <view class="header">
-      <view style="display: flex; flex-direction: row; align-items: center; flex: 1;justify-content: space-between">
-        <view class="header-l" @click="goBack"></view>
-        <view class="title">预约下单</view>
-        <view class="notice">说明</view>
-      </view>
+      <u-navbar
+          title="预约下单"
+          @rightClick="rightClick"
+          :autoBack="true"
+          :placeholder="true"
+      >
+      </u-navbar>
+    </view>
+    <view class="body">
+      <u-notice-bar :text="text" speed="50"></u-notice-bar>
 
     </view>
   </view>
 </template>
 
 <script>
+import {getInfo} from "@/common/api";
 
 export default {
   components: {
   },
   computed: {},
   onLoad: function (options) {
-
+    this.getMaster();
   },
   data() {
     return {
       statusBarHeight: getApp().globalData.statusBarHeight,
+      masterImg: undefined,
+      text: '平台技师已经已持有从业资格证，健康证；请广大用户放心预约下单～'
     }
   },
   methods: {
-    goBack(){
-      uni.navigateBack({
-        delta: 1
-      })
+    rightClick() {
+    },
+    async getMaster(){
+      const query = this.$route.query
+      let res = await getInfo(query);
+      if (res.code === 2000) {
+        this.masterImg = res.data.avatar
+      }
     }
+    // goBack(){
+    //   uni.navigateBack({
+    //     delta: 1
+    //   })
+    // }
   },
 
 };
 </script>
 
-<style>
+<style scoped lang="scss">
 .reserve-order{
-  background: #fff;
-}
-.header{
-  /*display: flex;*/
-  /*flex-direction: column;*/
-  background: linear-gradient(to bottom, #edd089, #fff);
-  height: 200px;
-  padding-top: 10px;
-  /*align-items: center;*/
-  /*justify-content: space-between;*/
+  //background: #8F8F94 !important;
+  height: 500px;
+  .body{
+    //margin-top: 44px;
+    //display: flex;
+    //flex-direction: column;
+    //align-items: center;
+    .u-notice-bar{
+      padding: 0;
+    }
+  }
 }
 
-.header-l{
-  background: url("@/pages/jishi/image/back.png") no-repeat;
-  background-size: 60%;
-  width: 15px;
-  height: 15px;
-  margin-left: 10px;
-  /*position: absolute;*/
-  /*left: 5px;*/
-  /*margin-left: 10px;*/
-}
-.title{
-  font-size: 15px;
-  font-weight: 600;
-  /*margin-left: calc((100% - 80px) / 2);*/
-}
-.notice{
-  font-size: 13px;
-  /*position: absolute;*/
-  /*right: 5px;*/
-  margin-right: 10px;
-  color: #969696;
-}
 
 
 </style>

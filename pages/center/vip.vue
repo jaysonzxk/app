@@ -69,29 +69,35 @@
               <!--            <span>{{Number(v.amount) - Number(v.currentPrice)}}</span>-->
             </view>
           </view>
+
+        </view>
+        <view class="queren-pay">
+          <span class="btn" @click="open">确认开通</span>
         </view>
         <view class="pay-list">
-          <span style="font-size: 16px;">选择支付</span>
-          <view class="pay-item" v-for="(p,index) in payChannelList" :key="p.id" @click="changePay(p,index)">
-            <view class="item" v-model="pId" :class="{'pay-active': payActive ? payIndex === index : !payActive}">
-              <span v-if="p.payCode === 'balance'">{{p.name}}({{userInfo.balance}})</span>
-              <span v-else>{{p.name}}</span>
-              <span class="icon"></span>
+          <u-popup :show="show" :round="10" mode="bottom" @close="close" @open="open">
+            <span class="title">选择支付</span>
+            <view class="pay-item" v-for="(p,index) in payChannelList" :key="p.id" @click="changePay(p,index)">
+              <view class="item" v-model="pId" :class="{'pay-active': payActive ? payIndex === index : !payActive}">
+                <span v-if="p.payCode === 'balance'">{{ p.name }}({{ userInfo.balance }}元)</span>
+                <span v-else>{{ p.name }}</span>
+                <span class="icon"></span>
+              </view>
             </view>
-          </view>
+                <view class="bottom">
+                  <view class="bottom-l">
+                    <span style="font-size: 10px; color: #8F8F94">支付金额:¥</span>
+                    <span style="color: #ce3c39;font-size: 16px">{{amount}}</span>
+                  </view>
+<!--                  <text class="tips">支付遇到问题联系客服</text>-->
+                  <view class="bottom-r">
+                    <span class="ljzf" @click="goPay">立即支付</span>
+                  </view>
+                </view>
+          </u-popup>
         </view>
       </view>
     </view>
-    <view class="bottom">
-      <view class="bottom-l">
-        <span style="font-size: 10px; color: #8F8F94">金额:</span>
-        <span style="color: #ce3c39;font-size: 16px">{{amount}}</span>
-      </view>
-      <view class="bottom-r">
-        <span class="ljzf" @click="goPay">立即支付</span>
-      </view>
-    </view>
-
   </view>
 </template>
 
@@ -100,6 +106,7 @@ import uniList from '@/components/uni-list/uni-list.vue';
 import uniListItem from '@/components/uni-list-item/uni-list-item.vue';
 import user from "@/store/modules/user";
 import {getVipList, getPayChannel, payMoney} from "@/common/api"
+import {beforeDestroy} from "@/uni_modules/uview-ui/libs/mixin/mixin";
 
 export default {
   components: {
@@ -117,11 +124,12 @@ export default {
       isActive: true,
       payActive: true,
       payIndex: 0,
-      amount:0,
+      amount: 0,
       pName: undefined,
       pId: undefined,
       vId: undefined,
-      form: {}
+      form: {},
+      show: false
     };
   },
   onLoad() {
@@ -136,11 +144,26 @@ export default {
     }
   },
   methods: {
-    async goPay(){
+    open() {
+      this.show = true;
+    },
+    close() {
+      this.show = false
+    },
+    async goPay() {
       const data = {vId: this.vId, pId: this.pId, amount: this.amount}
       let res = await payMoney(data);
+      if (res.code === 2000) {
+        uni.showToast({
+          title: res.msg,
+          duration: 2000
+        });
+        uni.navigateBack({
+          delta: 1,
+        })
+      }
     },
-    changePay(val, index){
+    changePay(val, index) {
       this.payIndex = index;
       this.pId = val.id;
     },
@@ -163,8 +186,8 @@ export default {
       let res = await getVipList();
       if (res.code === 2000) {
         this.vipList = res.data.data;
-        for (let i=0;i<this.vipList.length;i++) {
-          if (this.indexI === i){
+        for (let i = 0; i < this.vipList.length; i++) {
+          if (this.indexI === i) {
             this.amount = this.vipList[i].currentPrice;
             this.vId = this.vipList[i].id;
           }
@@ -180,9 +203,11 @@ export default {
 .vip {
   //margin-top: 30px;
   background: #f1f0f0;
-  .top{
-    overflow-y: auto;
-    max-height: 600px;
+  height: 100%;
+
+  .top {
+    //overflow-y: auto;
+    //max-height: 600px;
     .header {
       //display: flex;
       //justify-content: space-between;
@@ -228,24 +253,49 @@ export default {
 
       }
     }
+
     .body {
       margin-top: 60px;
-      .pay-list{
-        margin-top: 20px;
+      height: 100%;
+
+      .queren-pay {
+        margin-top: 60px;
+        //display: flex;
+        //align-items: center;
+        //width: 90%;
+        text-align: center;
+        .btn {
+          background: rgb(244, 190, 85);
+          border-radius: 40px;
+          font-size: 16px;
+          padding: 10px 40px;
+          color: #fff;
+          font-weight: 600;
+        }
+      }
+
+      .pay-list {
+        //margin-top: 20px;
         width: 90%;
         margin-left: calc(10% / 2);
-
-        .pay-item{
-          .pay-active{
-            .icon{
+        .title{
+          text-align: center;
+          font-size: 16px;
+          padding-bottom: 20px;
+        }
+        .pay-item {
+          .pay-active {
+            .icon {
               background: goldenrod !important;
             }
           }
-          .item{
+
+          .item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            .icon{
+            margin: 5px 20px;
+            .icon {
               //background: #8F8F94;
               border: 1px solid #8F8F94;
               width: 14px;
@@ -256,6 +306,7 @@ export default {
 
         }
       }
+
       .quanyi {
         width: 90%;
         margin-left: calc(10% / 2);
@@ -327,7 +378,7 @@ export default {
         margin-top: 20px;
         width: 90%;
         margin-left: calc(10% / 2);
-
+        //height: 400px;
         .vip-card {
           display: flex;
           flex-direction: row;
@@ -346,13 +397,15 @@ export default {
               //.item{
               //  border: 1px solid rgb(212, 119, 60);
               //}
-              .info{
+              .info {
                 color: rgb(212, 119, 60);
               }
-              .youhui{
+
+              .youhui {
                 background: rgb(250, 235, 209) !important;
               }
             }
+
             .item {
               border: 1px solid #8F8F94;
               background: #fff;
@@ -369,7 +422,8 @@ export default {
                 flex-direction: column;
                 align-items: center;
                 margin-top: 10px;
-                .mark{
+
+                .mark {
                   width: auto;
                   //height: 10px;
                   background: rgb(212, 119, 60);
@@ -380,7 +434,8 @@ export default {
                   font-size: 10px;
                   text-align: center;
                 }
-                .mark1{
+
+                .mark1 {
                   width: auto;
                   height: 19px;
                   background: rgb(212, 119, 60);
@@ -388,6 +443,7 @@ export default {
                   margin-top: -12px;
                   margin-left: -68px;
                 }
+
                 .amount {
                   font-size: 12px;
                   color: #8F8F94;
@@ -425,24 +481,29 @@ export default {
   }
 
 
-
-.bottom{
-  height: 40px;
-  border-radius: 10px 10px 0 0;
-  background: #fff;
-  //padding-bottom: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  //position: relative;
-  //bottom: 10px;
-  .bottom-r{
-    .ljzf{
-      background: rgb(244, 190, 85);
-      border-radius: 5px;
-      padding: 5px 13px;
+  .bottom {
+    height: 40px;
+    border-radius: 10px 10px 0 0;
+    background: #fff;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 20px;
+    .tips{
+      font-size: 10px;
+      color: #fe7f0f;
+    }
+    .bottom-r {
+      .ljzf {
+        background: rgb(244, 190, 85);
+        border-radius: 30px;
+        padding: 10px 40px;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 600;
+      }
     }
   }
-}
 }
 </style>
