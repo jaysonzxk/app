@@ -93,12 +93,12 @@
 //     return this.request(options)
 //   }
 // }
-import {values} from "@/unpackage/dist/dev/app-plus/app-service";
+// import {values} from "@/unpackage/dist/dev/app-plus/app-service";
 
 export default {
   config: {
-    // baseURL: ' http://192.168.2.63:8000',
-    baseURL: 'http://0.0.0.0:8000',
+    baseURL: ' http://192.168.2.53:8000',
+    // baseURL: 'http://0.0.0.0:8000',  // hbiuld x
     getToken() {
       let token = uni.getStorageSync('TOKEN');
       // if (!token) {
@@ -144,9 +144,9 @@ export default {
     // 响应拦截器
     handleResponse(data) {
       return new Promise((resolve, reject) => {
-        uni.showLoading({
-          title: '数据加载中'
-        })
+        // uni.showLoading({
+        //   title: '数据加载中...'
+        // })
         const [err, res] = data;
         if (res.data.code === 401) {
           uni.showToast({

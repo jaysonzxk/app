@@ -158,9 +158,9 @@ export default {
   },
 
   methods: {
-
     async getBanners() {
       let res = await getBanner()
+	  console.log(res)
       if (res.code === 2000) {
         this.bannerList = res.data.data
       }
@@ -181,12 +181,13 @@ export default {
     //     uni.hideLoading();
     //   }
     // },
-    getGoodsList() {
+    async getGoodsList() {
       uni.showLoading({
-        title: '数据加载中'
+        title: '数据加载中...'
       });
-      getGoods().then(res => {
+      let res = await getGoods(() => {
         if (res.code === 2000) {
+          console.log(res)
           this.products = res.data.data
           uni.hideLoading();
         }

@@ -9,12 +9,12 @@
     <view class="body">
       <view class="body-top">
         <u--input v-model="mobile" placeholder="请输入手机号" border="bottom" type="number" class="username">
-          <u--text
-              text="+86"
-              slot="prefix"
-              margin="0 8px 0 0"
-              type="tips"
-          ></u--text>
+<!--          <u&#45;&#45;text-->
+<!--              text="+86"-->
+<!--              slot="prefix"-->
+<!--              margin="0 8px 0 0"-->
+<!--              type="tips"-->
+<!--          ></u&#45;&#45;text>-->
         </u--input>
         <view class="reg-code">
 <!--          <u&#45;&#45;input v-model="password" placeholder="请输短信验证码" border="bottom" type="number" class="code">-->

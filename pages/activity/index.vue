@@ -149,9 +149,6 @@ export default {
 	},
 	methods: {
 		goodClick(g) {
-			// uni.navigateTo({
-			// 	url: '/pages/good/detail?id='+g.id+"&nummId="+g.goods_id
-			// })
 			let params = {
 				id: g.id,
 				numm_id: g.goods_id

@@ -16,7 +16,6 @@
         },
         "modules" : {
             "Maps" : {},
-            "Push" : {},
             "Barcode" : {},
             "Contacts" : {},
             "Geolocation" : {},
