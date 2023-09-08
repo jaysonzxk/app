@@ -14,7 +14,6 @@
           console.log('当前位置的纬度：' + res.latitude);
           console.log(res)
         }})
-			console.log(this.isShow)
 		},
 		globalData: {
 			statusBarHeight: ''
@@ -26,6 +25,12 @@
     data(){
       return {
         isShow: false
+      }
+    },
+    methods: {
+      getClientId(){
+        const client = plus.push.getClientInfo();
+        console.log('当前设备ID',client)
       }
     }
 

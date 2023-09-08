@@ -97,6 +97,7 @@
           </u-popup>
         </view>
       </view>
+      <u-modal :show="toastShow" :closeOnClickOverlay="true"></u-modal>
     </view>
   </view>
 </template>
@@ -115,6 +116,7 @@ export default {
   },
   data() {
     return {
+      toastShow: false,
       statusBarHeight: getApp().globalData.statusBarHeight,
       bgColor: '#444',
       leftIconColor: '#fff',
@@ -153,15 +155,15 @@ export default {
     async goPay() {
       const data = {vId: this.vId, pId: this.pId, amount: this.amount}
       let res = await payMoney(data);
-      if (res.code === 2000) {
-        uni.showToast({
-          title: res.msg,
-          duration: 2000
-        });
-        uni.navigateBack({
-          delta: 1,
-        })
-      }
+        if (res.code === 2000) {
+          uni.showToast({
+            title: res.msg,
+            duration: 2000
+          });
+          uni.navigateBack({
+            delta: 1,
+          })
+        }
     },
     changePay(val, index) {
       this.payIndex = index;

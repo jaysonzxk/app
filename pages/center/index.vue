@@ -13,8 +13,10 @@
                 <span class="woman" v-show="userInfo.gender === 1"></span>
               </view>
               <view>
-                <text v-if="userInfo.vip === null" class="phone">普通用户</text>
-                <text v-else class="phone">{{userInfo.vip.vipName}}</text>
+                <view v-if="userInfo">
+                  <text v-if="userInfo.vip === null" class="phone">普通用户</text>
+                  <text v-else class="phone">{{userInfo.vip.vipName}}</text>
+                </view>
               </view>
 						</view>
             <text v-show="!userInfo" class="login" @click="goLogin">请 登 录</text>
@@ -44,16 +46,23 @@
         </view>
       </view>
       <view class="vip">
-        <view class="vip-bg"  v-if="userInfo.vip === null">
+        <view class="vip-bg" v-if="!userInfo">
           <span class="vip-bg-l"></span>
           <span style="color: rgb(235, 209, 182);font-size: 12px">点亮会员标识, 享受尊贵特权</span>
           <span class="open" @click="goOpenVip"></span>
-
         </view>
         <view class="vip-bg"  v-else>
-          <span class="vip-bg-l"></span>
-          <span style="color: rgb(235, 209, 182);font-size: 12px">到期时间:{{$u.timeFormat(userInfo.vip.expiration, 'yyyy-mm-dd hh:MM:ss')}}</span>
-          <span class="renew" @click="goOpenVip"></span>
+          <template v-if="userInfo.vip === null">
+            <span class="vip-bg-l"></span>
+            <span style="color: rgb(235, 209, 182);font-size: 12px">点亮会员标识, 享受尊贵特权</span>
+            <span class="open" @click="goOpenVip"></span>
+          </template>
+          <template v-else>
+            <span class="vip-bg-l"></span>
+            <span style="color: rgb(235, 209, 182);font-size: 12px">到期时间:{{$u.timeFormat(userInfo.vip.expiration, 'yyyy-mm-dd hh:MM:ss')}}</span>
+            <span class="renew" @click="goOpenVip"></span>
+          </template>
+
         </view>
 
       </view>
@@ -66,7 +75,7 @@
         </view>
         <view class="coupon-icon"></view>
       </view>
-      <view class="wallet">
+      <view class="wallet" @click="goWallet">
         <view class="wallet-l">
           <span class="title">我的钱包</span>
           <span class="balance">余额:{{userInfo.balance}}</span>
@@ -124,27 +133,36 @@
 				versionName: 'v1.0.0',
         statusBarHeight: getApp().globalData.statusBarHeight,
         isRefresh: false,
-        userInfo:{}
+        // userInfo:{}
 			};
 		},
     onShow(){
-      this.userInfos();
+      // this.userInfo = uni.getStorageSync('userInfo')
     },
 		onLoad(options) {
 			this.versionName = '版本:' + this.$config.versionName
 		},
     computed: {
+      userInfo(){
+        console.log(uni.getStorageSync('userInfo') === '')
+        return uni.getStorageSync('userInfo')
+      }
     },
 		methods: {
-      // async getUserInfo() {
-      //   await this.$store.dispatch('user/GetUserInfo', {});
-      //
+      async getUserInfo() {
+        await this.$store.dispatch('user/GetUserInfo', {});
+
+      },
+      // async userInfos() {
+      //   let res = await getUserInfo();
+      //   if (res.code === 2000){
+      //     this.userInfo = res.data
+      //   }
       // },
-      async userInfos() {
-        let res = await getUserInfo();
-        if (res.code === 2000){
-          this.userInfo = res.data
-        }
+      goWallet(){
+        uni.navigateTo({
+          url: '/pages/center/wallet'
+        })
       },
       goOpenVip(){
         uni.navigateTo({

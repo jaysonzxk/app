@@ -58,8 +58,8 @@ export default {
       mobile: '',
       password: '',
       loginType: 1,
-      code: ''
-
+      code: '',
+      deviceId: getApp().globalData.clientId
     }
   },
   methods: {
@@ -101,7 +101,6 @@ export default {
       })
     },
     async getCode(val) {
-
       const TIME_COUNT = 60
       const phoneReg = /^[1][3,4,5,6,7,8][0-9]{9}$/;
       if (phoneReg.test(val) === false) {
@@ -136,7 +135,7 @@ export default {
       }
     },
     async userLogin() {
-      const loginForm = {mobile: this.mobile, code: this.code}
+      const loginForm = {mobile: this.mobile, code: this.code, deviceId:this.deviceId}
       await this.$store.dispatch('user/Login', loginForm);
       await this.$store.dispatch('user/GetUserInfo', {});
       // uni.showLoading({

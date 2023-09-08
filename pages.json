@@ -271,15 +271,9 @@
 		{
 			"path": "pages/center/wallet",
 			"style": {
-				"scrollIndicator":"none",
-				"navigationBarTitleText": "我的钱包",
 				"app-plus": {
-					"titleNView": {
-						// "type": "transparent",
-						"titleColor": "#000",
-						"backgroundColor": "#fff",
-						"titleSize": "16px"
-					}
+					"scrollIndicator":"none",
+					"titleNView": false
 				}
 			}
 		}
