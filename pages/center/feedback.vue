@@ -1,18 +1,24 @@
 <template>
 	<view class="feedback">
-		<span class="tip">您好，欢迎您给我们反馈产品的使用感受和建议。</span>
+		<span class="tip">Xin chào, bạn có thể gửi phản hồi cho chúng tôi về trải nghiệm và đề xuất sản phẩm của bạn.</span>
 		<view class="area">
 			<view class="content" style="background-color: #fff;">
-				<textarea placeholder-style="color:#d3d3d3; fontSize: 14px;" placeholder="请填写意见反馈内容" />
+        <u--textarea v-model="content" placeholder="Ý kiến ​​hoặc đề xuất" count height="140" maxlength="500" ></u--textarea>
 			</view>
 		</view>
-		<input type="text" placeholder="留下您的联系方式 手机 / QQ邮箱" placeholder-style="color:#d3d3d3; fontSize: 14px;"
-			class="input" />
-		<span class="bottom-tip">您的联系方式有助于我们沟通解决问题，仅工作人员可见</span>
+<!--		<input type="text" placeholder="留下您的联系方式 手机 / QQ邮箱" placeholder-style="color:#d3d3d3; fontSize: 14px;"-->
+<!--			class="input" />-->
+    <view style="background: #fff;margin-top: 20px;width: 95%; margin-left: calc(5% / 2)">
+      <u--input
+          placeholder="Vui lòng nhập thông tin liên hệ"
+          border="surround"
+          clearable
+      ></u--input>
+    </view>
+		<span class="bottom-tip">Thông tin liên hệ của bạn giúp chúng tôi liên lạc và giải quyết các vấn đề và chỉ nhân viên mới nhìn thấy được</span>
 		<view class="btn" @click="submit">
-			提交
+      nộp
 		</view>
-	</view>
 	</view>
 </template>
 
@@ -21,10 +27,12 @@
 		components: {},
 		computed: {},
 		data() {
-			return {};
+			return {
+        content: ''
+      };
 		},
 		onLoad: function(options) {
-			this.getData();
+			// this.getData();
 		},
 		methods: {
 			submit() {
@@ -44,7 +52,8 @@
 
 	.tip {
 		margin-top: 10px;
-		margin-left: 12px;
+		margin-left: 10px;
+    color: #8F8F94;
 	}
 
 	.content {
@@ -66,21 +75,25 @@
 	}
 
 	.bottom-tip {
-		color: #d3d3d3;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		color: #8F8F94;
+		/*display: flex;*/
+		/*align-items: center;*/
+		/*justify-content: center;*/
 		margin-top: 10px;
+    font-size: 12px;
+    width: 95%;
+    margin-left: calc(5% / 2);
 	}
 
 	.btn {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background-color: #3ab54a;
+		background-color: #f4be55;
 		color: #fff;
 		border-radius: 22px;
-		font-size: 14px;
+		font-size: 16px;
+    font-weight: 600;
 		margin-top: 80px;
 		height: 45px;
 		width: 90%;

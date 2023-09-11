@@ -16,7 +16,7 @@
             <image class="center-logo-img" src="./images/tuxiang.png"></image>
             <span class="username">{{ userInfo.name }}</span>
           </view>
-          <span style="padding-left: 10px;">开通VIP享受多重特权</span>
+          <span style="margin: 10px 0 0 10px">开通VIP享受多重特权</span>
         </view>
       </view>
       <view class="body">
@@ -84,20 +84,19 @@
                 <span class="icon"></span>
               </view>
             </view>
-                <view class="bottom">
-                  <view class="bottom-l">
-                    <span style="font-size: 10px; color: #8F8F94">支付金额:¥</span>
-                    <span style="color: #ce3c39;font-size: 16px">{{amount}}</span>
-                  </view>
-<!--                  <text class="tips">支付遇到问题联系客服</text>-->
-                  <view class="bottom-r">
-                    <span class="ljzf" @click="goPay">立即支付</span>
-                  </view>
-                </view>
+            <view class="bottom">
+              <view class="bottom-l">
+                <span style="font-size: 10px; color: #8F8F94">支付金额:¥</span>
+                <span style="color: #ce3c39;font-size: 16px">{{ amount }}</span>
+              </view>
+              <!--                  <text class="tips">支付遇到问题联系客服</text>-->
+              <view class="bottom-r">
+                <span class="ljzf" @click="goPay">立即支付</span>
+              </view>
+            </view>
           </u-popup>
         </view>
       </view>
-      <u-modal :show="toastShow" :closeOnClickOverlay="true"></u-modal>
     </view>
   </view>
 </template>
@@ -131,7 +130,8 @@ export default {
       pId: undefined,
       vId: undefined,
       form: {},
-      show: false
+      show: false,
+      show1: false
     };
   },
   onLoad() {
@@ -155,15 +155,20 @@ export default {
     async goPay() {
       const data = {vId: this.vId, pId: this.pId, amount: this.amount}
       let res = await payMoney(data);
-        if (res.code === 2000) {
-          uni.showToast({
-            title: res.msg,
-            duration: 2000
-          });
-          uni.navigateBack({
-            delta: 1,
-          })
-        }
+      if (res.code === 2000) {
+        uni.showToast({
+          title: res.msg,
+          duration: 2000
+        });
+        uni.navigateBack({
+          delta: 1,
+        })
+      }
+      if (res.code === 401) {
+        uni.navigateTo({
+          url: '/pages/center/login'
+        })
+      }
     },
     changePay(val, index) {
       this.payIndex = index;
@@ -186,6 +191,7 @@ export default {
     },
     async getVip() {
       let res = await getVipList();
+      console.log(res)
       if (res.code === 2000) {
         this.vipList = res.data.data;
         for (let i = 0; i < this.vipList.length; i++) {
@@ -266,6 +272,7 @@ export default {
         //align-items: center;
         //width: 90%;
         text-align: center;
+
         .btn {
           background: rgb(244, 190, 85);
           border-radius: 40px;
@@ -280,11 +287,13 @@ export default {
         //margin-top: 20px;
         width: 90%;
         margin-left: calc(10% / 2);
-        .title{
+
+        .title {
           text-align: center;
           font-size: 16px;
           padding-bottom: 20px;
         }
+
         .pay-item {
           .pay-active {
             .icon {
@@ -297,6 +306,7 @@ export default {
             align-items: center;
             justify-content: space-between;
             margin: 5px 20px;
+
             .icon {
               //background: #8F8F94;
               border: 1px solid #8F8F94;
@@ -492,10 +502,12 @@ export default {
     align-items: center;
     justify-content: space-between;
     margin: 0 20px;
-    .tips{
+
+    .tips {
       font-size: 10px;
       color: #fe7f0f;
     }
+
     .bottom-r {
       .ljzf {
         background: rgb(244, 190, 85);

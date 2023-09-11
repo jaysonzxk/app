@@ -1,53 +1,71 @@
 <template>
-	<!-- <view class="container"> -->
 		<view class="page-body">
-			<scroll-view id="tab-bar" class="nav-left" scroll-y :scroll-top="scrollTop">
-				<block :key="index"  v-for="(cate, index) in categorys">
-					<view :class="{'active':index==tabIndex}" :id="'tab_'+cate.id" :data-current="index"  class="nav-left-item" @click="tapTab(cate,index)" >
-						{{cate.name}}
-					</view>	
-				</block>
-			</scroll-view>
-			<view class="nav-right">
-				<swiper :current="tabIndex" vertical="false" class="swiper-box" skip-hidden-item-layout="true"  @change="changeTab">
-					<block v-for="(cate,idx) in categorys" :key="idx">
-						<swiper-item v-if="cate">
-							<!-- 无法滑动 优化点 -->
-							<scroll-view  scroll-y >
-									<view class="nav-right-item" v-for="(scate,index) in cate.sub_categorys" :key="index" @click="tagClick(cate,scate)">
-										<image lazy-load :src="scate.icon" />
-										<view>{{scate.name}}</view>
-									</view>
-							</scroll-view>
-						</swiper-item>						
-					</block>
-				</swiper>
-			</view>
+      <view  class="header">
+        <u-navbar
+            title="全部订单"
+        ></u-navbar>
+        <u-tabs
+            :list="list4"
+            lineWidth="20"
+            lineHeight="7"
+            :lineColor="`url(${lineBg}) 100% 100%`"
+            :activeStyle="{
+        color: '#303133',
+        fontWeight: 'bold',
+        transform: 'scale(1.05)'
+    }"
+            :inactiveStyle="{
+        color: '#606266',
+        transform: 'scale(1)'
+    }"
+            itemStyle="padding-left: 15px; padding-right: 15px; height: 34px;"
+        >
+        </u-tabs>
+      </view>
+
 		</view>
 	<!-- </view> -->
 </template>
-</template>
 
 <script>
-import { mapGetters } from 'vuex';
 export default {
 	components: {
-		
+
 	},
 	computed:{
-		...mapGetters('category',{
-			categorys:'tcategorys'
-		})
+
 	},
 	onLoad:function(options){
-		this.getData()
 	},
 	data() {
 		return {
+      lineBg: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAOCAYAAABdC15GAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAFxSURBVHgBzZNRTsJAEIb/WTW+lpiY+FZPIDew3ABP4GJ8hxsI9zBpOYHeQDwBPQI+mRiRvpLojtPdYhCorQqF/6GdbGd2vvwzBXZcNAt4oj1ANeUoAT5iqkUjbEFLHNmhD1YPEvpZ3ghkGlVDCkc94/BmHMq998I5ONiY1ZBfpKAyuOtgAc5yOEDmYEWNh32BHF91sGHZHmwW4azciN9aQwnz3SJEgOmte+R2tdLprTYoa50mvuomlLpD4Y3oQZnov6D2RzCqI93bWOHaEmAGqQUyRBlZR1WfarcD/EJ2z8DtzDGvsMCwpm8XOCfDUsVOCYhiqRxI/CTQo4UOvjzO7Pow18vfywneuUHHUUxLn55lLw5JFpZ8bEUcY8oXdOLWiHLTxvoGpLqoUmy6dBT15o/ox3znpoycAmxUsiJTbs1cmxeVKp+0zmFIS7bGWiVghC7Vwse8jFKAX9eljh4ggKLLv7uaQvG9/F59Oo2SouxPu7OTCxN/s8wAAAAASUVORK5CYII=",
 			isClickChange:false,
 			height: 0,
 			tabIndex: 0,
 			scrollTop: 0,
+      list4: [{
+        name: '关注'
+      }, {
+        name: '推荐',
+        badge: {
+          isDot: true
+        }
+      }, {
+        name: '电影',
+      }, {
+        name: '科技'
+      }, {
+        name: '音乐'
+      }, {
+        name: '美食'
+      }, {
+        name: '文化'
+      }, {
+        name: '财经'
+      }, {
+        name: '手工'
+      }],
 		}
 	},
 	methods: {
@@ -65,7 +83,7 @@ export default {
 			// uni.navigateTo({
 			// 	url: '/pages/activity/index?id=0&name='+scate.name+'&scid=' + scate.id
 			// });
-			
+
 			uni.showLoading({
 				title:"数据加载中..."
 			})
@@ -77,7 +95,7 @@ export default {
 				id:0
 			}
 			this.$store.dispatch('good/GetActGoods',this.params).then(()=>{
-				uni.hideLoading();		
+				uni.hideLoading();
 				uni.navigateTo({
 					url: '/pages/activity/index?id=0&name='+scate.name+'&scid=' + scate.id+'&cid='+cate.id
 				});
@@ -85,10 +103,10 @@ export default {
 				uni.hideLoading();
 			});
 
-			
+
 		},
 		async tapTab(tab, index) {
-			
+
 			if(this.tabIndex == index){
 				return false;
 			}else{
@@ -97,7 +115,7 @@ export default {
 				this.isClickChange = true;
 				this.tabIndex = index;
 			}
-			
+
 		},
 		async getData(){
 			if(this.categorys.length == 0){
@@ -112,7 +130,7 @@ export default {
 		async changeTab(e){
 			// console.log("changeTab:" + index)
 			let index = e.target.current
-	
+
 			if(this.isClickChange){
 				this.tabIndex = index;
 				this.isClickChange = false;
@@ -136,7 +154,7 @@ export default {
 
 		}
 	},
-	
+
 	/**
 	 * 当 searchInput 配置 disabled 为 true 时触发
 	 */
@@ -163,59 +181,20 @@ export default {
 };
 </script>
 
-<style>
-	.swiper-box {
-		flex: 1;
-		width: 100%;
-		height: 100%;
-		
-	}
-	
+<style scoped lang="scss">
 	.page-body {
-		display: flex;
 		height: 100%;
+    .header{
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-items: center;
+      span {
+        font-size: 16px;
+        font-weight: 500;
+
+      }
+    }
 	}
 
-	.nav {
-		display: flex;
-		width: 100%;
-	}
-
-	.nav-left {
-		width: 20%;
-		background:#E7E7E7;
-	}
-
-	.nav-left-item {
-		height: 100upx;
-		font-size: 28upx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.nav-right {
-		width: 80%;
-		background:#FFFFFF;
-	}
-
-	.nav-right-item {
-		width: 28%;
-		height: 200upx;
-		float: left;
-		text-align: center;
-		padding: 16upx;
-		font-size: 26upx;
-	}
-
-	.nav-right-item image {
-		width: 100upx;
-		height: 100upx;
-	}
-
-	.active {
-		border-left: solid 4px #FF80AB;
-		background: #FFFFFF;
-		color: #FF80AB;
-	}
 </style>

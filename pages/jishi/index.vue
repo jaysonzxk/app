@@ -1,11 +1,30 @@
 <template>
   <view class="jishi" :style="{'margin-top': statusBarHeight + 'px'}">
-    <view class="recommend-good-condition-view">
-      <block v-for="(condition,index) in conditions" :key="index">
-        <view class="recommend-good-condition-item" :class="{'recommend-good-condition-color':selectIndex == index}"
-              @click="conditionClick(index)">{{ condition.name }}
-        </view>
-      </block>
+    <!--    <view class="recommend-good-condition-view">-->
+    <!--      <block v-for="(condition,index) in conditions" :key="index">-->
+    <!--        <view class="recommend-good-condition-item" :class="{'recommend-good-condition-color':selectIndex == index}"-->
+    <!--              @click="conditionClick(index)">{{ condition.name }}-->
+    <!--        </view>-->
+    <!--      </block>-->
+    <!--    </view>-->
+    <view style="padding: 10px 0">
+      <u-tabs
+          :list="conditions"
+          lineWidth="20"
+          lineHeight="7"
+          :lineColor="`url(${lineBg}) 100% 100%`"
+          :activeStyle="{
+        color: '#303133',
+        fontWeight: 'bold',
+        transform: 'scale(1.05)'
+    }"
+          :inactiveStyle="{
+        color: '#606266',
+        transform: 'scale(1)'
+    }"
+          itemStyle="padding-left: 15px; padding-right: 15px; height: 34px;"
+      >
+      </u-tabs>
     </view>
     <scroll-view class="scroll" :refresher-triggered="triggered" @refresherrestore="onRestore"
                  @refresherrefresh="onRefresh" @refresherabort="onAbout" refresher-background="#f0f0f0"
@@ -41,19 +60,19 @@
           </view>
         </block>
       </view>
-      <uni-load-more :status="loadmoreStatue" :contentText="loadingText"></uni-load-more>
+      <uni-load-more style="padding-bottom: 10px" :status="loadmoreStatue" :contentText="loadingText"></uni-load-more>
     </scroll-view>
-<!--    <u-popup :show="show" :round="10" mode="bottom" @close="close" @open="open">-->
-<!--      <view class="queren">-->
-<!--        <view class="tag">-->
-<!--          <view class="u-page__tag-item" v-for="(item, index) in masterGoodsList" :key="index">-->
-<!--            <u-tag :text="item.project.name" :plain="!item.checked" type="warning" :name="index"-->
-<!--                   @click="radioClick">-->
-<!--            </u-tag>-->
-<!--          </view>-->
-<!--        </view>-->
-<!--      </view>-->
-<!--    </u-popup>-->
+    <!--    <u-popup :show="show" :round="10" mode="bottom" @close="close" @open="open">-->
+    <!--      <view class="queren">-->
+    <!--        <view class="tag">-->
+    <!--          <view class="u-page__tag-item" v-for="(item, index) in masterGoodsList" :key="index">-->
+    <!--            <u-tag :text="item.project.name" :plain="!item.checked" type="warning" :name="index"-->
+    <!--                   @click="radioClick">-->
+    <!--            </u-tag>-->
+    <!--          </view>-->
+    <!--        </view>-->
+    <!--      </view>-->
+    <!--    </u-popup>-->
     <!--    <uni-floating-button :visible="showFloatButton" @click="gotTop()"></uni-floating-button>-->
   </view>
 </template>
@@ -78,6 +97,7 @@ export default {
   },
   data() {
     return {
+      lineBg: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAOCAYAAABdC15GAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAFxSURBVHgBzZNRTsJAEIb/WTW+lpiY+FZPIDew3ABP4GJ8hxsI9zBpOYHeQDwBPQI+mRiRvpLojtPdYhCorQqF/6GdbGd2vvwzBXZcNAt4oj1ANeUoAT5iqkUjbEFLHNmhD1YPEvpZ3ghkGlVDCkc94/BmHMq998I5ONiY1ZBfpKAyuOtgAc5yOEDmYEWNh32BHF91sGHZHmwW4azciN9aQwnz3SJEgOmte+R2tdLprTYoa50mvuomlLpD4Y3oQZnov6D2RzCqI93bWOHaEmAGqQUyRBlZR1WfarcD/EJ2z8DtzDGvsMCwpm8XOCfDUsVOCYhiqRxI/CTQo4UOvjzO7Pow18vfywneuUHHUUxLn55lLw5JFpZ8bEUcY8oXdOLWiHLTxvoGpLqoUmy6dBT15o/ox3znpoycAmxUsiJTbs1cmxeVKp+0zmFIS7bGWiVghC7Vwse8jFKAX9eljh4ggKLLv7uaQvG9/F59Oo2SouxPu7OTCxN/s8wAAAAASUVORK5CYII=",
       show: false,
       selectShow: false,
       indexType: undefined,
@@ -109,28 +129,40 @@ export default {
       },
       conditions: [
         {
-          param: 'distance',
-          name: '全城'
-        },
-        {
-          param: 'intelligent',
-          name: '智能排序'
-        },
-        {
-          param: 'time',
-          name: '服务时段'
-        },
-        {
-          param: 'filter',
-          name: '筛选'
-        },
-      ]
+          name: '全部',
+        },{
+        name: '推荐',
+      }, {
+        name: '单量优先',
+      }, {
+        name: '好评优先'
+      }, {
+        name: '距离优先'
+      }],
+      // conditions: [
+      //   {
+      //     param: 'distance',
+      //     name: '全城'
+      //   },
+      //   {
+      //     param: 'intelligent',
+      //     name: '智能排序'
+      //   },
+      //   {
+      //     param: 'time',
+      //     name: '服务时段'
+      //   },
+      //   {
+      //     param: 'filter',
+      //     name: '筛选'
+      //   },
+      // ]
     }
   },
   methods: {
-    reserve(val){
+    reserve(val) {
       uni.navigateTo({
-        url: '/pages/jishi/reserve?userId='+ val,
+        url: '/pages/jishi/reserve?userId=' + val,
       })
     },
     // async reserve(val){
@@ -160,7 +192,7 @@ export default {
         this._freshing = false;
       }, 1000)
     },
-    onAbout(e){
+    onAbout(e) {
       this.triggered = false;
     },
     async getTechnicians() {
@@ -168,7 +200,7 @@ export default {
       if (res.code === 2000) {
         this.technicianList = this.technicianList.concat(res.data.data);
         this.total = res.data.total;
-        if (this.technicianList.length === this.total){
+        if (this.technicianList.length === this.total) {
           this.loadmoreStatue = 'nomore';
         }
       }
@@ -214,7 +246,7 @@ export default {
       this.gotTop();
     },
     loadMore() {
-      this.queryParams.page  += 1;
+      this.queryParams.page += 1;
       if (this.technicianList.length === this.total) {
         this.loadmoreStatue = 'nomore';
       } else {
@@ -370,12 +402,14 @@ export default {
   align-items: center;
   margin-left: 20px;
 }
-.distance{
+
+.distance {
   font-size: 12px;
   color: #8F8F94;
   position: relative;
   top: 20px;
 }
+
 /*.distance:before{*/
 /*  content: '';*/
 /*  background: url("@/pages/jishi/image/location.png") no-repeat;*/
@@ -446,10 +480,12 @@ export default {
   height: 10px;
   width: 10px;
 }
-.queren{
+
+.queren {
   height: 700rpx;
 }
-.tag{
+
+.tag {
   display: flex;
   flex-direction: row;
   justify-content: space-around;

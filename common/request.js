@@ -97,8 +97,8 @@
 
 export default {
   config: {
-    baseURL: ' http://192.168.2.53:8000',
-    // baseURL: 'http://0.0.0.0:8000',  // hbiuld x
+    // baseURL: ' http://192.168.2.53:8000',
+    baseURL: 'http://0.0.0.0:8000',  // hbiuld x
     getToken() {
       let token = uni.getStorageSync('TOKEN');
       // if (!token) {
@@ -144,25 +144,25 @@ export default {
     // 响应拦截器
     handleResponse(data) {
       return new Promise((resolve, reject) => {
-        // uni.showLoading({
-        //   title: '数据加载中...'
-        // })
         const [err, res] = data;
-        if (res.data.code === 401) {
-          uni.showToast({
-            icon: 'none',
-            title: '请先登录',
-            duration: 2000
-          });
-          setTimeout(() => {
-            uni.navigateTo({
-              url: '/pages/center/login'
-            })
-          }, 1000)
-
-          return reject('请先登录')
-        }
-        if (res && res.data.code !== 2000) {
+        // if (res.data.code === 401) {
+        //   uni.showToast({
+        //     icon: 'none',
+        //     title: '请先登录',
+        //     duration: 2000
+        //   });
+        //   setTimeout(() => {
+        //     uni.navigateTo({
+        //       url: '/pages/center/login'
+        //     })
+        //   }, 1000)
+        //
+        //   return reject('请先登录')
+        // }
+        // if (res && res.data.code === 401) {
+        //   return
+        // }
+        if (res && (res.data.code !== 2000 && res.data.code !== 401)) {
           let msg = res.data.msg || '请求错误';
           uni.showToast({
             icon: 'none',
