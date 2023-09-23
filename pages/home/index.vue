@@ -56,9 +56,14 @@
       </view>
     </view>
     <span class="tjxm">服务项目</span>
-    <!-- <view class="cate-grid-list" v-if="good.cid > 0">
-      <uni-grid :options="gcategorys[index].sub_categorys" :show-border="false" columnNum="5" @click="tagClick"></uni-grid>
-    </view> -->
+    <view v-show="products.length === 0">
+      <u-empty
+          mode="list"
+          text="暂无数据"
+          marginTop="40"
+      >
+      </u-empty>
+    </view>
     <view class="product" v-show="products.length > 0">
       <view v-for="(product, index) in products" :key="product.id" class="item"  @click="goodClick(product.id)">
         <view class="uni-index-list-cell">
@@ -160,7 +165,6 @@ export default {
   methods: {
     async getBanners() {
       let res = await getBanner()
-	  console.log(res)
       if (res.code === 2000) {
         this.bannerList = res.data.data
       }
@@ -171,28 +175,15 @@ export default {
         this.technicianList = res.data
       }
     },
-    // async getGoodsList() {
-    //   uni.showLoading({
-    //     title: '数据加载中'
-    //   });
-    //   let res = await getGoods()
-    //   if (res.code === 2000) {
-    //     this.products = res.data.data
-    //     uni.hideLoading();
-    //   }
-    // },
     async getGoodsList() {
       uni.showLoading({
-        title: '数据加载中...'
+        title: '数据加载中'
       });
-      let res = await getGoods(() => {
-        if (res.code === 2000) {
-          console.log(res)
-          this.products = res.data.data
-          uni.hideLoading();
-        }
-      })
-
+      let res = await getGoods()
+      if (res.code === 2000) {
+        this.products = res.data.data
+        uni.hideLoading();
+      }
     },
     goodClick(val){
       uni.navigateTo({

@@ -79,7 +79,7 @@
             <span class="title">选择支付</span>
             <view class="pay-item" v-for="(p,index) in payChannelList" :key="p.id" @click="changePay(p,index)">
               <view class="item" v-model="pId" :class="{'pay-active': payActive ? payIndex === index : !payActive}">
-                <span v-if="p.payCode === 'balance'">{{ p.name }}({{ userInfo.balance }}元)</span>
+                <span v-if="p.payCode === 'balance'">{{ p.name }}({{ userInfo.balance || 0 }}元)</span>
                 <span v-else>{{ p.name }}</span>
                 <span class="icon"></span>
               </view>
