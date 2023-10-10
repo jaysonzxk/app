@@ -285,18 +285,13 @@ export default {
 .jishi {
   width: 100%;
   height: 100%;
+  
 }
-
-.header {
-  background: #8F8F94;
-  /*height: 40px;*/
-}
-
 .body {
-  height: calc(100% - 40px);
-  /*height: 100%;*/
-  /*background-color: #8F8F94;*/
-}
+    height: calc(100% - 40px);
+    /*height: 100%;*/
+    /*background-color: #8F8F94;*/
+  }
 
 .scroll {
   /*width: 750upx;*/

@@ -16,7 +16,7 @@
 		{
 			"path": "pages/order/index",
 			"style": {
-				"navigationBarTitleText": "技师",
+				"navigationBarTitleText": "订单",
 				"app-plus": {
 					"scrollIndicator":"none",
 					"titleNView": false
