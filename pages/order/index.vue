@@ -2,12 +2,14 @@
 	<view class="page-body">
 		<view class="header">
 			<u-navbar title="全部订单" leftIcon=""></u-navbar>
+			<view class="">
+				<u-tabs :list="conditions" lineWidth="0" lineHeight="0" :activeStyle="{
+				color: '#303133',
+				fontWeight: 'bold'}">
+					</u-tabs>
+			</view>
 		</view>
 		<view class="body">
-			<u-tabs :list="conditions" lineWidth="0" lineHeight="0" :activeStyle="{
-	    color: '#303133',
-	    fontWeight: 'bold'}">
-			</u-tabs>
 		</view>
 	</view>
 	<!-- </view> -->
@@ -28,14 +30,21 @@
 				height: 0,
 				tabIndex: 0,
 				scrollTop: 0,
-				conditions: [{
+				conditions: [
+					{
 					name: '全部',
-				}, {
+				}, 
+				{
 					name: '已完成',
+				},
+				{
+					name: '进行中',
+				}
+				, 
+				{
+					name: '已取消',
 				}, {
-					name: '已取消/退款',
-				}, {
-					name: '待评价'
+					name: '待评价',
 				}],
 				
 			}
@@ -149,24 +158,16 @@
 		height: 100%;
 
 		.header {
-			margin-top: 10px;
-			display: flex;
-			align-items: center;
-			justify-items: center;
 
-			span {
-				font-size: 16px;
-				font-weight: 500;
-
+			/deep/.u-tabs__wrapper__nav {
+				justify-content: space-around;
+				margin-top: 40px;
 			}
 		}
 
 		.body {
-			margin-top: 40px;
-
-			/deep/.u-tabs__wrapper__nav {
-				justify-content: space-around;
-			}
+			background: #eee;
+			height: 100px;
 		}
 	}
 </style>

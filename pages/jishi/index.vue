@@ -49,7 +49,7 @@
           </view>
         </block>
       </view>
-      <uni-load-more style="padding-bottom: 10px" :status="loadmoreStatue" :contentText="loadingText"></uni-load-more>
+      <uni-load-more style="padding-bottom: 40px" :status="loadmoreStatue" :contentText="loadingText"></uni-load-more>
     </scroll-view>
   </view>
 </template>
@@ -96,8 +96,8 @@ export default {
       technicianList: [],
       loadingText: {
         // contentdown: '下拉加载更多',
-        contentrefresh: '正在加载...',
-        contentnomore: '没有更多数据了'
+        contentrefresh: 'đang tải...',
+        contentnomore: 'không còn dữ liệu'
       },
       queryParams: {
         limit: 10,
@@ -106,9 +106,7 @@ export default {
       conditions: [
         {
           name: '全部',
-        },{
-        name: '推荐',
-      }, {
+        }, {
         name: '单量优先',
       }, {
         name: '好评优先'
