@@ -1,28 +1,17 @@
 <template>
   <view class="jishi" :style="{'margin-top': statusBarHeight + 'px'}">
-    <!--    <view class="recommend-good-condition-view">-->
-    <!--      <block v-for="(condition,index) in conditions" :key="index">-->
-    <!--        <view class="recommend-good-condition-item" :class="{'recommend-good-condition-color':selectIndex == index}"-->
-    <!--              @click="conditionClick(index)">{{ condition.name }}-->
-    <!--        </view>-->
-    <!--      </block>-->
-    <!--    </view>-->
-    <view style="padding: 10px 0">
+	  <view class="header">
+	  	<u-navbar title="全部技师" leftIcon=""></u-navbar>
+	  </view>
+    <view style="margin-top: 40px;">
       <u-tabs
           :list="conditions"
-          lineWidth="20"
-          lineHeight="7"
-          :lineColor="`url(${lineBg}) 100% 100%`"
+          lineWidth="0"
+          lineHeight="0"
           :activeStyle="{
         color: '#303133',
         fontWeight: 'bold',
-        transform: 'scale(1.05)'
     }"
-          :inactiveStyle="{
-        color: '#606266',
-        transform: 'scale(1)'
-    }"
-          itemStyle="padding-left: 15px; padding-right: 15px; height: 34px;"
       >
       </u-tabs>
     </view>
@@ -62,18 +51,6 @@
       </view>
       <uni-load-more style="padding-bottom: 10px" :status="loadmoreStatue" :contentText="loadingText"></uni-load-more>
     </scroll-view>
-    <!--    <u-popup :show="show" :round="10" mode="bottom" @close="close" @open="open">-->
-    <!--      <view class="queren">-->
-    <!--        <view class="tag">-->
-    <!--          <view class="u-page__tag-item" v-for="(item, index) in masterGoodsList" :key="index">-->
-    <!--            <u-tag :text="item.project.name" :plain="!item.checked" type="warning" :name="index"-->
-    <!--                   @click="radioClick">-->
-    <!--            </u-tag>-->
-    <!--          </view>-->
-    <!--        </view>-->
-    <!--      </view>-->
-    <!--    </u-popup>-->
-    <!--    <uni-floating-button :visible="showFloatButton" @click="gotTop()"></uni-floating-button>-->
   </view>
 </template>
 
@@ -97,7 +74,6 @@ export default {
   },
   data() {
     return {
-      lineBg: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAOCAYAAABdC15GAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAFxSURBVHgBzZNRTsJAEIb/WTW+lpiY+FZPIDew3ABP4GJ8hxsI9zBpOYHeQDwBPQI+mRiRvpLojtPdYhCorQqF/6GdbGd2vvwzBXZcNAt4oj1ANeUoAT5iqkUjbEFLHNmhD1YPEvpZ3ghkGlVDCkc94/BmHMq998I5ONiY1ZBfpKAyuOtgAc5yOEDmYEWNh32BHF91sGHZHmwW4azciN9aQwnz3SJEgOmte+R2tdLprTYoa50mvuomlLpD4Y3oQZnov6D2RzCqI93bWOHaEmAGqQUyRBlZR1WfarcD/EJ2z8DtzDGvsMCwpm8XOCfDUsVOCYhiqRxI/CTQo4UOvjzO7Pow18vfywneuUHHUUxLn55lLw5JFpZ8bEUcY8oXdOLWiHLTxvoGpLqoUmy6dBT15o/ox3znpoycAmxUsiJTbs1cmxeVKp+0zmFIS7bGWiVghC7Vwse8jFKAX9eljh4ggKLLv7uaQvG9/F59Oo2SouxPu7OTCxN/s8wAAAAASUVORK5CYII=",
       show: false,
       selectShow: false,
       indexType: undefined,
@@ -139,24 +115,6 @@ export default {
       }, {
         name: '距离优先'
       }],
-      // conditions: [
-      //   {
-      //     param: 'distance',
-      //     name: '全城'
-      //   },
-      //   {
-      //     param: 'intelligent',
-      //     name: '智能排序'
-      //   },
-      //   {
-      //     param: 'time',
-      //     name: '服务时段'
-      //   },
-      //   {
-      //     param: 'filter',
-      //     name: '筛选'
-      //   },
-      // ]
     }
   },
   methods: {
@@ -165,16 +123,7 @@ export default {
         url: '/pages/jishi/reserve?userId=' + val,
       })
     },
-    // async reserve(val){
-    //   this.show = true;
-    //   let res = await getMasterGoods({userId: val})
-    //   if (res.code === 2000) {
-    //     this.masterGoodsList = res.data;
-    //   }
-    //   // uni.navigateTo({
-    //   //   url: '/pages/jishi/reserve?userId='+ val,
-    //   // })
-    // },
+    
     onRestore() {
       this.triggered = 'restore';
     },
@@ -241,7 +190,6 @@ export default {
       uni.showLoading({
         title: '数据加载中...'
       });
-      // await this.$store.dispatch('good/GetRecommend', this.params)
       uni.hideLoading();
       this.gotTop();
     },
@@ -259,9 +207,7 @@ export default {
       this.endPrice = '';
     },
     scroll(e) {
-      // this.disabledPullRefresh(e.detail.scrollTop == 0);
       if (e.detail.scrollTop == 0) {
-        // this.pullDownRefresh = true;
         this.refresherEnabled = true;
         this.disabledPullRefresh(true);
       } else {
@@ -292,7 +238,9 @@ export default {
     /*height: 100%;*/
     /*background-color: #8F8F94;*/
   }
-
+/deep/.u-tabs__wrapper__nav {
+				justify-content: space-around;
+			}
 .scroll {
   /*width: 750upx;*/
   background: #eee;
