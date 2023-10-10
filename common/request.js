@@ -163,7 +163,7 @@ export default {
         //   return
         // }
         if (res && (res.data.code !== 2000 && res.data.code !== 401)) {
-          let msg = res.data.msg || '请求错误';
+          let msg = res.data.msg || 'Yêu cầu lỗi';
           uni.showToast({
             icon: 'none',
             title: msg
@@ -173,7 +173,7 @@ export default {
         if (err) {
           uni.showToast({
             icon: 'none',
-            title: '请求错误'
+            title: 'Yêu cầu lỗi'
           })
           return reject(err)
         }
