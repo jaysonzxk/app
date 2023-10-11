@@ -3,13 +3,13 @@
 		<view class="header">
 			<u-navbar title="全部技师" leftIcon=""></u-navbar>
 		</view>
-		<view class="body" style="margin-top: 40px;">
-			<u-tabs style="padding-top: 30px;" :list="conditions" lineWidth="0" lineHeight="0" :activeStyle="{
+		<view class="body" style="margin-top: 20;">
+			<u-tabs :list="conditions" lineWidth="0" lineHeight="0" :activeStyle="{
 			    color: '#303133',
 			    fontWeight: 'bold',
 			}">
 				</u-tabs>
-			<scroll-view class="scroll" :refresher-triggered="triggered" @refresherrestore="onRestore"
+			<scroll-view @scroll="scroll()" refresher-default-style="none" class="scroll" :refresher-triggered="triggered" @refresherrestore="onRestore"
 				@refresherrefresh="onRefresh" @refresherabort="onAbout" refresher-background="#f0f0f0"
 				:refresher-enabled="refresherEnabled" scroll-y @scrolltolower="loadMore()">
 				<view class="recommend-good-list">
@@ -126,18 +126,18 @@
 				this.triggered = 'restore';
 			},
 			onRefresh() {
-				this.queryParams.page = 1;
-				this.queryParams.limit = 10;
-				this.technicianList = [];
 				this.loadmoreStatue = 'loading';
 				if (this._freshing) return
 				this._freshing = true;
+				this.queryParams.page = 1;
+				this.queryParams.limit = 10;
+				this.technicianList = [];
 				this.getTechnicians()
 				this.triggered = 'restore';
 				setTimeout(() => {
 					this.triggered = false;
 					this._freshing = false;
-				}, 3000)
+				}, 1000)
 			},
 			onAbout(e) {
 				this.triggered = false;
@@ -162,40 +162,12 @@
 			closeDrawer(e) {
 				this.showDrawer = false;
 			},
-			async conditionClick(index) {
-				this.indexType = index;
-				this.selectShow = !this.selectShow;
-				if (index == this.conditions.length - 1) {
-					this.showDrawer = true;
-					return;
-				}
-				if (this.selectIndex === index) {
-					this.selectIndex = undefined;
-				}
-				if (this.selectIndex !== undefined) {
-					this.selectIndex = index;
-					this.selectShow = !this.selectShow;
-				} else {
-					this.selectIndex = index;
-				}
-				let condition = this.conditions[index];
-				let params = {};
-				params['page'] = 1;
-				params[condition.param] = this.params[condition.param] == 1 ? 2 : 1;
-
-				this.params = params;
-
-				uni.showLoading({
-					title: '数据加载中...'
-				});
-				uni.hideLoading();
-				this.gotTop();
-			},
 			loadMore() {
 				this.queryParams.page += 1;
 				if (this.technicianList.length === this.total) {
 					this.loadmoreStatue = 'nomore';
 				} else {
+					this.loadmoreStatue = 'loading';
 					this.getTechnicians()
 					this.loadmoreStatue = 'more';
 					
@@ -205,19 +177,19 @@
 				this.startPrice = '';
 				this.endPrice = '';
 			},
-			// scroll(e) {
-			// 	if (e.detail.scrollTop == 0) {
-			// 		this.refresherEnabled = true;
-			// 		this.disabledPullRefresh(true);
-			// 	} else {
-			// 		//保证只设置一次
-			// 		if (!this.refresherEnabled) {
-			// 			this.disabledPullRefresh(false);
-			// 		}
-			// 		this.refresherEnabled = false;
-			// 	}
-			// 	this.oldScrollTop = e.detail.scrollTop;
-			// },
+			scroll(e) {
+				if (e.detail.scrollTop == 0) {
+					this.refresherEnabled = true;
+					this.disabledPullRefresh(true);
+				} else {
+					//保证只设置一次
+					if (!this.refresherEnabled) {
+						this.disabledPullRefresh(false);
+					}
+					this.refresherEnabled = false;
+				}
+				this.oldScrollTop = e.detail.scrollTop;
+			},
 
 
 		},
@@ -230,15 +202,19 @@
 		width: 100%;
 		height: 100%;
 	}
-
+	.header{
+		height: 40px;
+	}
 	.body {
-		height: calc(100% - 40px);
+		height: 100%;
 	}
 
 	/deep/.u-tabs__wrapper__nav {
 		justify-content: space-around;
 	}
-
+	/* /deep/.uni-scroll-view-refresh-inner{
+		display: none;
+	} */
 	.scroll {
 		/*width: 750upx;*/
 		background: #eee;

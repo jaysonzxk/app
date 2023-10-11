@@ -82,7 +82,7 @@
 			</view>
 		</view>
 		<view>
-			<u-modal :show="isShow" :content='content' confirmText="知道了" @confirm="isShow=false"></u-modal>
+			<u-modal :title="title" :show="isShow" :content='content' confirmText="知道了" @confirm="isShow=false"></u-modal>
 			<!-- <u-button @click="isShow = !isShow">知道了</u-button> -->
 		</view>
 		<uni-load-more :status="loadmoreStatue" :contentText="loadingText"></uni-load-more>
@@ -122,7 +122,8 @@
 			return {
 				statusBarHeight: getApp().globalData.statusBarHeight,
 				isShow: false,
-				content: "定位失败, 将导致部分功能无法使用",
+				title: "提示",
+				content: "定位失败，请稍后重试~",
 				pullDownRefresh: true,
 				tabs: [],
 				showFloatButton: false,
@@ -633,5 +634,8 @@
 		justify-content: center;
 		margin-top: 150px;
 		color: #8F8F94;
+	}
+	/deep/.u-modal__content{
+		text-align: center;
 	}
 </style>
