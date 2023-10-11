@@ -136,3 +136,12 @@ export function getInfo(query) {
 		params: query
 	})
 }
+
+// 项目详情
+export function getGoodsInfo(query) {
+	return http.request({
+		method: 'get',
+		url: '/api/v1/client/goods/getDetails',
+		params: query
+	})
+}
