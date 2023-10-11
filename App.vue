@@ -1,5 +1,8 @@
 <script>
 	export default {
+		data(){
+			
+		},
 		onLaunch: function() {
 			const that = this
 			uni.getSystemInfo({
@@ -7,13 +10,19 @@
 					that.globalData.statusBarHeight = res.statusBarHeight
 				}
 			})
-			this.checkVersion().catch(() => {})
-			const lang = uni.getLocale()
-      uni.getLocation({type: 'wgs84', success: function (res) {
-          console.log('当前位置的经度：' + res.longitude);
-          console.log('当前位置的纬度：' + res.latitude);
-          console.log(res)
-        }})
+			this.checkVersion().catch(() => {});
+			const lang = uni.getLocale();
+			// uni.getLocation({
+			// 	type: 'wgs84',
+			// 	geocode:true,
+			// 	success: function(res) {
+			// 		console.log(res)
+			// 	},
+			// 	fail: function() {
+			// 		that.show = true;
+					
+			// 	}
+			// })
 		},
 		globalData: {
 			statusBarHeight: ''
@@ -22,17 +31,17 @@
 		onHide: function() {
 			console.log('App Hide')
 		},
-    data(){
-      return {
-        isShow: false
-      }
-    },
-    methods: {
-      getClientId(){
-        const client = plus.push.getClientInfo();
-        console.log('当前设备ID',client)
-      }
-    }
+		data() {
+			return {
+				isShow: false
+			}
+		},
+		methods: {
+			getClientId() {
+				const client = plus.push.getClientInfo();
+				console.log('当前设备ID', client)
+			}
+		}
 
 	}
 </script>

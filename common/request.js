@@ -97,8 +97,8 @@
 
 export default {
   config: {
-    // baseURL: ' http://192.168.2.53:8000',
-    baseURL: 'http://0.0.0.0:8000',  // hbiuld x
+    baseURL: ' http://192.168.2.53:8000',
+    // baseURL: 'http://0.0.0.0:8000',  // hbiuld x
     getToken() {
       let token = uni.getStorageSync('TOKEN');
       // if (!token) {

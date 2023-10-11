@@ -5,7 +5,7 @@
 		{
 			"path": "pages/home/index",
 			"style": {
-				"enablePullDownRefresh": true,
+				// "enablePullDownRefresh": true,
 				"navigationBarTitleText": "首页",
 				"app-plus": {
 					"scrollIndicator":"none",
@@ -37,7 +37,7 @@
 		{
 			"path": "pages/activity/index",
 			"style": {
-				"enablePullDownRefresh": true,
+				"enablePullDownRefresh": false,
 				"navigationBarTitleText": "",
 				"app-plus": {
 					"scrollIndicator":"none",
@@ -62,7 +62,9 @@
 			"path": "pages/jishi/index",
 			"style": {
 				"navigationBarTitleText": "技师",
+				"navigationStyle": "custom",
 				"app-plus": {
+					"scrollIndicator":"none",
 					"titleNView": false
 				}
 			}
