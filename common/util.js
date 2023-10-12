@@ -30,8 +30,85 @@ function string2Date(dateString){
 	}
 	return new Date(dateString);
 }
+// 手机定位
+function openGps (openNow) {
+	let system = uni.getSystemInfoSync(); // 获取设备类型
+	console.log(openNow==="true"),
+	console.log(openNow)
+	if (system.platform === 'android') {
+		/* #ifdef APP-PLUS */
+		const context = plus.android.importClass("android.content.Context");
+		const locationManager = plus.android.importClass("android.location.LocationManager");
+		const main = plus.android.runtimeMainActivity();
+		const mainSvr = main.getSystemService(context.LOCATION_SERVICE);
+		console.log()
+		if (!mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER) && openNow === true) {
+			const Intent = plus.android.importClass('android.content.Intent');
+			const Settings = plus.android.importClass('android.provider.Settings');
+			const intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+			main.startActivity(intent);
+			// uni.showModal({
+			// 	title: "提示",
+			// 	content: "请打开手机定位",
+			// 	cancelText: '取消',
+			// 	confirmText: '去开启',
+			// 	success() {
+			// 		const Intent = plus.android.importClass('android.content.Intent');
+			// 		const Settings = plus.android.importClass('android.provider.Settings');
+			// 		const intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+			// 		main.startActivity(intent);
+			// 	}
+			// })
+		}
+		/* #endif */
+	}else if (system.platform === 'ios'){
+		/* #ifdef APP-PLUS */
+		const cllocationManger = plus.ios.import('CLLocationManager');
+		const enable = cllocationManger.locationServicesEnabled();
+		const status = cllocationManger.authorizationStatus();
+		plus.ios.deleteObject(cllocationManger);
+		if ((enable && status == 2) && openNow === true) {
+			const UIApplication = plus.ios.import('UIApplication');
+			const application2 = UIApplication.sharedApplication();
+			const NSURL2 = plus.ios.import('NSURL');
+			const settings2 = NSURL2.URLWithString('App-Prefs:root=Privacy&path=LOCATION');
+			application2.openURL(settings2);
+			plus.ios.deleteObject(settings2);
+			plus.ios.deleteObject(NSURL2);
+			plus.ios.deleteObject(application2);
+		}
+		// uni.showModal({
+		// 	title: '提示',
+		// 	content: '请打开手机定位',
+		// 	showCancel:false,
+		// 	success() {
+		// 		const UIApplication = plus.ios.import('UIApplication');
+		// 		const application2 = UIApplication.sharedApplication();
+		// 		const NSURL2 = plus.ios.import('NSURL');
+		// 		const settings2 = NSURL2.URLWithString('App-Prefs:root=Privacy&path=LOCATION');
+		// 		application2.openURL(settings2);
+		// 		plus.ios.deleteObject(settings2);
+		// 		plus.ios.deleteObject(NSURL2);
+		// 		plus.ios.deleteObject(application2);
+		// 	}
+			
+		// })
+		/* #endif */
+	}else{
+		uni.showModal({
+			title: '提示',
+			content: '请打开手机定位',
+			showCancel:false,
+			success() {
+				
+			}
+			
+		})
+	}
+} 
 export {
 	format,
 	paseNum,
-	string2Date
+	string2Date,
+	openGps
 }

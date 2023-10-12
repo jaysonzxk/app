@@ -82,8 +82,8 @@
 			</view>
 		</view>
 		<view>
-			<u-modal :title="title" :show="isShow" :content='content' confirmText="知道了" @confirm="isShow=false"></u-modal>
-			<!-- <u-button @click="isShow = !isShow">知道了</u-button> -->
+			<u-modal :title="title" :show="isShow" :content='content' cancelText="取消" confirmText="去开启" :showCancelButton="true"
+				@confirm="confirm" @cancel="cancel"></u-modal>
 		</view>
 		<uni-load-more :status="loadmoreStatue" :contentText="loadingText"></uni-load-more>
 	</view>
@@ -103,7 +103,8 @@
 		mapGetters
 	} from 'vuex';
 	import {
-		paseNum
+		paseNum,
+		openGps
 	} from '@/common/util';
 	import uniCard from "@/components/uni-card/uni-card.vue";
 
@@ -123,7 +124,8 @@
 				statusBarHeight: getApp().globalData.statusBarHeight,
 				isShow: false,
 				title: "提示",
-				content: "定位失败，请稍后重试~",
+				openNow: false,
+				content: "定位失败，请打开手机定位",
 				pullDownRefresh: true,
 				tabs: [],
 				showFloatButton: false,
@@ -161,10 +163,10 @@
 				success: function(res) {
 					console.log(res)
 				},
-				fail: function() {
-					console.log(that.isShow)
+				fail: (error) => {
 					that.isShow = true;
-
+					// that.openNow = true;
+					
 				}
 			})
 		},
@@ -213,52 +215,14 @@
 						this.loadmoreStatue = 'noMore';
 					});
 			},
-			// async getData() {
-			// 	// uni.showLoading({
-			// 	// 	title: '数据加载中...'
-			// 	// });
-			// 	await this.$store.dispatch('banner/GetBanner');
-			// 	await this.$store.dispatch('activity/GetActivity', {});
-			// 	await this.$store.dispatch('good/InitGoods', this.tabs);
-			// 	await this.$store.dispatch('good/GetGoods', {
-			// 		cid: 0,
-			// 		page: 1
-			// 	});
-			// 	this.gotTop();
-			// 	// console.log(this.tabs)
-			// 	uni.hideLoading();
-			// },
-			// async tapTab(tab, index) {
-			//   if (this.tabIndex === index) {
-			//     return false;
-			//   } else {
-			//     let tabBar = await this.getElSize('tab-bar'),
-			//         tabBarScrollLeft = tabBar.scrollLeft; //点击的时候记录并设置scrollLeft
-			//     this.scrollLeft = tabBarScrollLeft;
-			//     this.isClickChange = true;
-			//     this.tabIndex = index;
-			//
-			//     if (this.goods[tab.id].data.length == 0) {
-			//       uni.showLoading({
-			//         title: '数据加载中...'
-			//       });
-			//       await this.$store.dispatch('good/GetGoods', {
-			//         cid: tab.id,
-			//         page: 1
-			//       });
-			//       uni.hideLoading();
-			//     }
-			//     if (this.tabIndex > 0) {
-			//       this.subCategorys = this.tabs[this.tabIndex].sub_categorys.map(item => {
-			//         return {
-			//           id: item.id,
-			//           image: item.icon,
-			//           text: item.name
-			//         };
-			//       });
-			//     }
-			//   }
-			// },
+			confirm(){
+				this.isShow = false;
+				this.openNow = true;
+				openGps(this.openNow);
+			},
+			cancel() {
+				this.isShow = false;
+			},
 			bannerClick(banner) {
 				if (banner.url != '') {
 					if (banner.url.indexOf('https://') == 0) {
@@ -289,27 +253,6 @@
 					});
 				}
 			},
-			// scroll(e) {
-			//   if (e.detail.scrollTop == 0) {
-			//     this.pullDownRefresh = true;
-			//     this.disabledPullRefresh(true);
-			//   } else {
-			//     //保证只设置一次
-			//     if (!this.pullDownRefresh) {
-			//       this.disabledPullRefresh(false);
-			//     }
-			//     this.pullDownRefresh = false;
-			//   }
-			//
-			//   this.disabledPullRefresh(e.detail.scrollTop == 0);
-			//
-			//   if (e.detail.scrollTop > 1000) {
-			//     this.showFloatButton = true;
-			//   } else {
-			//     this.showFloatButton = false;
-			//   }
-			//   this.oldScrollTop = e.detail.scrollTop;
-			// },
 			gotTop() {
 				this.scrollTop = this.oldScrollTop;
 				this.$nextTick(function() {
@@ -317,36 +260,13 @@
 				});
 			},
 		},
-
-		/**
-		 * 当 searchInput 配置 disabled 为 true 时触发
-		 */
 		onNavigationBarSearchInputClicked(e) {
 			console.log('事件执行了');
 			uni.navigateTo({
 				url: '/pages/search/index'
 			});
 		},
-		/**
-		 *  点击导航栏 buttons 时触发
-		 */
-		// onNavigationBarButtonTap(e) {
-		//   if (e.index == 0) {
-		//     this.getData();
-		//   } else if (e.index == 1) {
-		//     uni.navigateTo({
-		//       url: '/pages/center/footprint'
-		//     });
-		//   }
-		// },
-		// onTabItemTap(e) {
-		//   if (e.index == 0) {
-		//     this.getData();
-		//   }
-		// },
-		// onPullDownRefresh() {
-		//   console.log(1111)
-		// }
+		
 	};
 </script>
 
@@ -635,7 +555,8 @@
 		margin-top: 150px;
 		color: #8F8F94;
 	}
-	/deep/.u-modal__content{
+
+	/deep/.u-modal__content {
 		text-align: center;
 	}
 </style>

@@ -1,15 +1,15 @@
 <template>
-	<view class="jishi">
+	<view class="jishi"  :style="{'padding-top': statusBarHeight + 'px'}">
 		<view class="header">
-			<u-navbar title="全部技师" leftIcon=""></u-navbar>
-		</view>
-		<view class="body" style="margin-top: 20;">
+			<!-- <u-navbar title="全部技师" leftIcon=""></u-navbar> -->
 			<u-tabs :list="conditions" lineWidth="0" lineHeight="0" :activeStyle="{
 			    color: '#303133',
 			    fontWeight: 'bold',
 			}">
 				</u-tabs>
-			<scroll-view @scroll="scroll()" refresher-default-style="none" class="scroll" :refresher-triggered="triggered" @refresherrestore="onRestore"
+		</view>
+		<view class="body">
+			<scroll-view @scroll="scroll" refresher-default-style="none" class="scroll" :refresher-triggered="triggered" @refresherrestore="onRestore"
 				@refresherrefresh="onRefresh" @refresherabort="onAbout" refresher-background="#f0f0f0"
 				:refresher-enabled="refresherEnabled" scroll-y @scrolltolower="loadMore()">
 				<view class="recommend-good-list">
@@ -42,7 +42,7 @@
 						</view>
 					</block>
 				</view>
-				<uni-load-more style="padding-bottom: 40px" :status="loadmoreStatue"
+				<uni-load-more :status="loadmoreStatue"
 					:contentText="loadingText"></uni-load-more>
 			</scroll-view>
 		</view>
@@ -157,7 +157,7 @@
 				this.selectIndex = undefined;
 			},
 			change(e) {
-				console.log('e:', e.detail.data);
+				console.log('e:', e);
 			},
 			closeDrawer(e) {
 				this.showDrawer = false;
@@ -167,7 +167,7 @@
 				if (this.technicianList.length === this.total) {
 					this.loadmoreStatue = 'nomore';
 				} else {
-					this.loadmoreStatue = 'loading';
+					// this.loadmoreStatue = 'loading';
 					this.getTechnicians()
 					this.loadmoreStatue = 'more';
 					
@@ -202,10 +202,11 @@
 		width: 100%;
 		height: 100%;
 	}
-	.header{
+	/* .header{
 		height: 40px;
-	}
+	} */
 	.body {
+		/* height: calc(100% - 40px); */
 		height: 100%;
 	}
 
@@ -218,7 +219,9 @@
 	.scroll {
 		/*width: 750upx;*/
 		background: #eee;
-		height: calc(100% - 40px);
+		/* height: calc(100% + 40px); */
+		height:100%;
+		
 	}
 
 	.recommend-good-list {
@@ -232,7 +235,8 @@
 		background: #FFFFFF;
 		/*width: 365upx;*/
 		width: 100%;
-		margin: 5px;
+		/* margin: 5px; */
+		margin: 10px 5px 0 5px;
 		display: flex;
 		border-radius: 15upx;
 		flex-direction: column;
