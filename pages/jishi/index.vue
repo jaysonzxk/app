@@ -7,9 +7,6 @@
 			}">
 				</u-tabs>
 		</view>
-		<!-- <view class="body">
-			
-		</view> -->
 		<view class="body">
 			<scroll-view @scroll="scroll" refresher-default-style="none" class="scroll" :refresher-triggered="triggered" @refresherrestore="onRestore"
 				@refresherrefresh="onRefresh" @refresherabort="onAbout" refresher-background="#f0f0f0"
@@ -43,10 +40,9 @@
 							</view>
 						</view>
 					</block>
-					<uni-load-more :status="loadmoreStatue"
-						:contentText="loadingText"></uni-load-more>
+					<!-- <uni-load-more :status="loadmoreStatue"
+						:contentText="loadingText"></uni-load-more> -->
 				</view>
-				
 			</scroll-view>
 		</view>
 		
@@ -212,6 +208,7 @@
 	.body {
 		/* height: calc(100% - 40px); */
 		height: 100%;
+		background: #eee;
 	}
 
 	/deep/.u-tabs__wrapper__nav {
@@ -232,7 +229,7 @@
 		display: flex;
 		width: 100%;
 		/* flex-wrap: wrap; */
-		height: calc(100% - 40px);
+		height: 100%;
 		flex-direction: column;
 	}
 
