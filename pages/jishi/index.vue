@@ -1,13 +1,15 @@
 <template>
 	<view class="jishi"  :style="{'padding-top': statusBarHeight + 'px'}">
 		<view class="header">
-			<!-- <u-navbar title="全部技师" leftIcon=""></u-navbar> -->
 			<u-tabs :list="conditions" lineWidth="0" lineHeight="0" :activeStyle="{
 			    color: '#303133',
 			    fontWeight: 'bold',
 			}">
 				</u-tabs>
 		</view>
+		<!-- <view class="body">
+			
+		</view> -->
 		<view class="body">
 			<scroll-view @scroll="scroll" refresher-default-style="none" class="scroll" :refresher-triggered="triggered" @refresherrestore="onRestore"
 				@refresherrefresh="onRefresh" @refresherabort="onAbout" refresher-background="#f0f0f0"
@@ -41,11 +43,13 @@
 							</view>
 						</view>
 					</block>
+					<uni-load-more :status="loadmoreStatue"
+						:contentText="loadingText"></uni-load-more>
 				</view>
-				<uni-load-more :status="loadmoreStatue"
-					:contentText="loadingText"></uni-load-more>
+				
 			</scroll-view>
 		</view>
+		
 
 	</view>
 </template>
@@ -202,9 +206,9 @@
 		width: 100%;
 		height: 100%;
 	}
-	/* .header{
+	.header{
 		height: 40px;
-	} */
+	}
 	.body {
 		/* height: calc(100% - 40px); */
 		height: 100%;
@@ -219,7 +223,7 @@
 	.scroll {
 		/*width: 750upx;*/
 		background: #eee;
-		/* height: calc(100% + 40px); */
+		/* height: calc(100% - 40px); */
 		height:100%;
 		
 	}
@@ -227,8 +231,9 @@
 	.recommend-good-list {
 		display: flex;
 		width: 100%;
-		flex-wrap: wrap;
-		flex-direction: row;
+		/* flex-wrap: wrap; */
+		height: calc(100% - 40px);
+		flex-direction: column;
 	}
 
 	.items {
