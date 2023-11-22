@@ -208,7 +208,7 @@
 	.body {
 		/* height: calc(100% - 40px); */
 		height: 100%;
-		background: #eee;
+		background: #fff;
 	}
 
 	/deep/.u-tabs__wrapper__nav {
@@ -290,7 +290,7 @@
 
 	.star:before {
 		content: '';
-		background: url("@/pages/jishi/image/star.png") no-repeat;
+		background: url("@/pages/robot/image/star.png") no-repeat;
 		background-size: 100%;
 		width: 12px;
 		height: 12px;
@@ -384,7 +384,7 @@
 
 	.recommend-good-condition-item:after {
 		content: '';
-		background: url("@/pages/jishi/image/sort_down.png") no-repeat;
+		background: url("@/pages/robot/image/sort_down.png") no-repeat;
 		background-size: 100%;
 		width: 10px;
 		height: 10px;
@@ -398,7 +398,7 @@
 
 	.recommend-good-condition-color:after {
 		content: '';
-		background: url("@/pages/jishi/image/sort_up.png") no-repeat;
+		background: url("@/pages/robot/image/sort_up.png") no-repeat;
 		background-size: 100%;
 		height: 10px;
 		width: 10px;

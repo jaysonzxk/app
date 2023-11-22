@@ -40,7 +40,7 @@ export function userLogin(data){
 export function getBanner(params) {
 	return http.request({
 		method: 'get',
-		url: '/api/v1/client/banners/',
+		url: '/api/app/home/banners',
 		params: params
 	})
 }
@@ -53,20 +53,29 @@ export function getUserInfo(params){
 	})
 }
 
-// 商品
-export function getGoods(params){
+// 跑马灯
+export function getMarquee(params){
 	return http.request({
 		method: 'get',
-		url: '/api/v1/client/goods/',
+		url: '/api/app/home/marquee',
 		params: params
 	})
 }
 
-// 推荐技师列表
-export function getRecommendTechnician(params){
+// 收益排行
+export function getIncomeRank(params){
 	return http.request({
 		method: 'get',
-		url: '/api/v1/client/technician/getRecommend/',
+		url: '/api/app/home/incomeRank',
+		params:params
+	})
+}
+
+// 收益展示
+export function getIncome(params){
+	return http.request({
+		method: 'get',
+		url: '/api/app/home/income',
 		params:params
 	})
 }

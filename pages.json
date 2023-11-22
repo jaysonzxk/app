@@ -59,9 +59,9 @@
 			}
 		},
 		{
-			"path": "pages/jishi/index",
+			"path": "pages/robot/index",
 			"style": {
-				"navigationBarTitleText": "技师",
+				"navigationBarTitleText": "机器人",
 				"navigationStyle": "custom",
 				"app-plus": {
 					"scrollIndicator":"none",
@@ -371,10 +371,10 @@
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/jishi/index",
+				"pagePath": "pages/robot/index",
 				"iconPath": "static/technician_noselect.png",
 				"selectedIconPath": "static/technician_select.png",
-				"text": "技师"
+				"text": "机器人"
 			},
 			{
 				"pagePath": "pages/order/index",

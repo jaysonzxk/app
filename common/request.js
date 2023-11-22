@@ -1,7 +1,9 @@
+import config from "./config";
+
 export default {
   config: {
-    baseURL: ' http://192.168.2.71:8000',
-    // baseURL: 'http://0.0.0.0:8000',  // hbiuld x
+    // baseURL: ' http://192.168.2.71:8000',
+    baseURL: config.server,  // hbiuld x
     getToken() {
       let token = uni.getStorageSync('TOKEN');
       // if (!token) {
@@ -48,31 +50,32 @@ export default {
     handleResponse(data) {
       return new Promise((resolve, reject) => {
         const [err, res] = data;
-        // if (res.data.code === 401) {
-        //   uni.showToast({
-        //     icon: 'none',
-        //     title: '请先登录',
-        //     duration: 2000
-        //   });
-        //   setTimeout(() => {
-        //     uni.navigateTo({
-        //       url: '/pages/center/login'
-        //     })
-        //   }, 1000)
-        //
-        //   return reject('请先登录')
-        // }
-        // if (res && res.data.code === 401) {
-        //   return
-        // }
-        if (res && (res.data.code !== 2000 && res.data.code !== 401)) {
-          let msg = res.data.msg || 'Yêu cầu lỗi';
+        if (res.data.code === 401) {
           uni.showToast({
             icon: 'none',
-            title: msg
-          })
-          return reject(msg)
+            title: '请先登录',
+            duration: 2000
+          });
+          setTimeout(() => {
+            uni.navigateTo({
+              url: '/pages/center/login'
+            })
+          }, 1000)
+        
+          return reject('请先登录')
         }
+        if (res && res.data.code === 401) {
+          return
+        }
+		// console.log('res', res)
+  //       if (res && (res.data.code !== 200 && res.data.code !== 401)) {
+  //         let msg = res.data.msg || 'Yêu cầu lỗi';
+  //         uni.showToast({
+  //           icon: 'none',
+  //           title: msg
+  //         })
+  //         return reject(msg)
+  //       }
         if (err) {
           uni.showToast({
             icon: 'none',

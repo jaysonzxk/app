@@ -1,89 +1,59 @@
 <template>
 	<view class="uni-tab-bar app" :style="{'padding-top': statusBarHeight + 'px'}">
-		<view class="header">
-			<view class="location">
-				<view class="location-icon"></view>
-				<view class="title">北京</view>
-				<view class="more"></view>
-			</view>
-			<view class="massage"></view>
-		</view>
 		<view class="banner">
-			<u-swiper :list="bannerList" keyName="file" indicator indicatorMode="line" circular></u-swiper>
+			<u-swiper :list="bannerList" keyName="uri" indicator indicatorMode="line" circular></u-swiper>
 		</view>
-		<view class="tip-list">
-			<view class="item-tab">
-				<span class="tab-1"></span>
-				<span>超时秒退</span>
-			</view>
-			<view class="item-tab">
-				<span class="tab-2"></span>
-				<span>持证上岗</span>
-			</view>
-			<view class="item-tab">
-				<span class="tab-3"></span>
-				<span>爽约包赔</span>
-			</view>
-			<view class="item-tab">
-				<span class="tab-4"></span>
-				<span>全场保障</span>
+		<view class="marquee">
+			<u-notice-bar :text="marquee" bgColor="#eee"></u-notice-bar>
+		</view>
+		<view class="top">
+			<span class="incomeTop">收益榜</span>
+			<view class="incomeList">
+				<!-- <view class="title">
+					<span>排名</span>
+					<span>用户</span>
+					<span>收益</span>
+				</view> -->
+				<view v-if="incomeRankList.length>0" class="incomeItem" v-for="(item, index) in incomeRankList" :key="index">
+					<view>
+						<span  v-if="index==0">
+							<img src="./images/no1.png" alt="" />
+						</span>
+						<span  v-if="index==1">
+							<img src="./images/no2.png" alt="" />
+						</span>
+						<span  v-if="index==2">
+							<img src="./images/no3.png" alt="" />
+						</span>
+					</view>
+					<view class="">
+						<span>{{item.user}}</span>
+					</view>
+					<view class="">
+						<span>{{item.income}}</span>
+					</view>
+				</view>
+				<view v-else>
+					<u-empty mode="list" icon="" text="暂无数据">
+					</u-empty>
+				</view>
 			</view>
 		</view>
-		<view class="recommend">
-			<span class="tjjs">推荐技师</span>
-			<view class="more-jishi">
-				<span class="more-l">更多</span>
-				<span class="more-r"></span>
+		<view class="income">
+			<span class="incomeShow">收益展示</span>
+			<view class="title">
+				<span>用户</span>
+				<span>收益(U)</span>
 			</view>
+			<view class="slider">
+				<div class="sliderList">
+					<div class="slideItem" v-for="(item, index) in incomeList" :key="index">
+						<span class="username">{{item.user}}</span>
+						<span class="money">{{item.income}}</span>
+					</div>
 
-		</view>
-		<view class="technician" v-show="technicianList.length > 0">
-			<view class="technician-item">
-				<view class="jishi" v-for="(item, index) in technicianList" :key="index">
-					<u-avatar :src="item.avatar" shape="square"></u-avatar>
-					<!--          <img class="avatar" :src="item.avatar" />-->
-					<view class="user">
-						<span class="username">{{item.name}}</span>
-						<span class="order">接单量{{item.orderNum}}</span>
-					</view>
-				</view>
+				</div>
 			</view>
-		</view>
-		<span class="tjxm">服务项目</span>
-		<view v-show="products.length === 0">
-			<u-empty mode="list" text="暂无数据" marginTop="40">
-			</u-empty>
-		</view>
-		<view class="product" v-show="products.length > 0">
-			<view v-for="(product, index) in products" :key="product.id" class="item" @click="goodClick(product.id)">
-				<view class="uni-index-list-cell">
-					<view class="list">
-						<image class="uni-good-list-logo" lazy-load :src="product.img"></image>
-						<view class="uni-good-list-body">
-							<view class="uni-good-list-text-top">{{ product.name }}</view>
-							<view class="time">{{ product.duration }}分钟</view>
-							<view class="uni-good-list-text-bottom">
-								<view class="bottom">
-									<view class="prices">
-										<span class="price">{{ product.price }}</span>
-										<span class="origin-price">{{ product.originPrice }}</span>
-									</view>
-									<view class="sales">
-										已售 {{ product.sales }}
-									</view>
-								</view>
-								<!-- <text class="good-price-favour">天猫价￥{{ g.original_price }}</text>
-                <text class="good-price-favour">淘宝价￥{{ g.original_price }}</text>
-                <text class="good-sell-number">已售{{ g.sales_num }}件</text> -->
-							</view>
-						</view>
-					</view>
-				</view>
-			</view>
-		</view>
-		<view>
-			<u-modal :title="title" :show="isShow" :content='content' cancelText="取消" confirmText="去开启" :showCancelButton="true"
-				@confirm="confirm" @cancel="cancel"></u-modal>
 		</view>
 		<uni-load-more :status="loadmoreStatue" :contentText="loadingText"></uni-load-more>
 	</view>
@@ -96,8 +66,9 @@
 	import uniGrid from '@/components/uni-grid/uni-grid.vue';
 	import {
 		getBanner,
-		getGoods,
-		getRecommendTechnician
+		getMarquee,
+		getIncomeRank,
+		getIncome
 	} from '@/common/api'
 	import {
 		mapGetters
@@ -107,6 +78,7 @@
 		openGps
 	} from '@/common/util';
 	import uniCard from "@/components/uni-card/uni-card.vue";
+	import config from "@/common/config.js";
 
 	export default {
 		components: {
@@ -121,7 +93,7 @@
 
 		data() {
 			return {
-				statusBarHeight: getApp().globalData.statusBarHeight,
+				statusBarHeight: getApp().globalData.statusBarHeight || 20,
 				isShow: false,
 				title: "提示",
 				openNow: false,
@@ -145,8 +117,9 @@
 					contentnomore: '没有更多数据了'
 				},
 				bannerList: [],
-				products: [],
-				technicianList: [],
+				marquee: '',
+				incomeRankList: [],
+				incomeList: []
 			};
 		},
 		create() {
@@ -155,8 +128,9 @@
 		onLoad: function(options) {
 			const that = this;
 			this.getBanners();
-			this.getGoodsList();
-			this.getTechnicians();
+			this.getMarqueeList();
+			this.getIncomeRankList();
+			that.getIncomeList();
 			uni.getLocation({
 				type: 'wgs84',
 				geocode: true,
@@ -166,37 +140,34 @@
 				fail: (error) => {
 					that.isShow = true;
 					// that.openNow = true;
-					
+
 				}
 			})
 		},
 		methods: {
 			async getBanners() {
 				let res = await getBanner()
-				if (res.code === 2000) {
-					this.bannerList = res.data.data
+				for (let i = 0; i < res.data.results.length; i++) {
+					const host = config.server + '/';
+					res.data.results[i].uri = (host + res.data.results[i].uri) || null;
+					this.bannerList.push(res.data.results[i])
 				}
 			},
-			async getTechnicians() {
-				let res = await getRecommendTechnician()
-				if (res.code === 2000) {
-					this.technicianList = res.data
+			async getIncomeRankList() {
+				let params = {
+					pageNum: 1,
+					pageSize: 3,
 				}
+				let res = await getIncomeRank(params);
+				this.incomeRankList = res.data.results;
 			},
-			async getGoodsList() {
-				uni.showLoading({
-					title: '数据加载中'
-				});
-				let res = await getGoods()
-				if (res.code === 2000) {
-					this.products = res.data.data
-					uni.hideLoading();
-				}
+			async getMarqueeList() {
+				let res = await getMarquee()
+				this.marquee = res.data.results[0].content;
 			},
-			goodClick(val) {
-				uni.navigateTo({
-					url: '/pages/good/detail?goodsId=' + val
-				})
+			async getIncomeList() {
+				let res = await getIncome();
+				this.incomeList = res.data.results;
 			},
 			async loadMore(cid) {
 				let item = this.goods[cid];
@@ -215,7 +186,7 @@
 						this.loadmoreStatue = 'noMore';
 					});
 			},
-			confirm(){
+			confirm() {
 				this.isShow = false;
 				this.openNow = true;
 				openGps(this.openNow);
@@ -266,297 +237,137 @@
 				url: '/pages/search/index'
 			});
 		},
-		
+
 	};
 </script>
 
-<style>
+<style lang="scss" scoped>
 	.app {
 		/*margin-top: 15px;*/
 		height: auto;
 		padding-bottom: 60px;
-	}
 
-	.header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 0 10px;
-		/*justify-items: center;*/
-	}
+		.banner {
+			margin: 0px 10px 0 10px;
+		}
 
-	.location {
-		display: flex;
-		align-items: center;
-	}
+		.marquee {
+			margin: 10px 10px 0 10px;
 
-	.location-icon {
-		background: url("@/pages/home/images/location.png") no-repeat;
-		background-size: 100%;
-		width: 14px;
-		height: 14px;
-		margin-right: 2px;
-	}
+		}
 
-	.more {
-		background: url("@/pages/home/images/down.png") no-repeat;
-		background-size: 100%;
-		width: 14px;
-		height: 8px;
-		display: flex;
-		align-items: center;
-		margin-left: 2px;
-	}
+		/deep/.u-notice-bar {
+			padding: 0;
+		}
 
-	.massage {
-		background: url("@/pages/home/images/tongzhi.png") no-repeat;
-		background-size: 100%;
-		height: 30px;
-		width: 20px;
-		margin-top: 13px;
-	}
+		.top {
+			.incomeTop {
+				font-size: 15px;
+				color: #333;
+				display: flex;
+				align-items: center;
+				margin-top: 10px;
+				margin-left: 10px;
+			}
 
-	.banner {
-		margin: 0px 10px 0 10px;
-	}
+			.incomeTop::before {
+				content: "";
+				display: block;
+				width: 15px;
+				height: 20px;
+				background: url("@/pages/home/images/tjtc.png") no-repeat;
+				background-size: 100%;
+				/*border-radius: 1px;*/
+				margin-right: 5px;
+				margin-top: 5px;
+			}
 
-	.item-tab {
-		display: flex;
-		align-items: center;
-	}
+			.incomeList {
+				display: flex;
+				flex-direction: column;
+				// justify-content: space-around;
+				.title {
+					// display: flex;
+					// justify-content: space-around;
+					font-size: 14px;
+					font-weight: 500;
+				}
+				.incomeItem{
+					display: flex;
+					align-items: center;
+					justify-content: space-around;
+					span img {
+						display: flex;
+						align-items: center;
+						width: 20px;
+						height: 20px;
+					}
+				}
+			}
+			
+		}
 
-	.tip-list {
-		margin-top: 10px;
-		display: flex;
-		flex-direction: row;
-		color: #007aff;
-		font-size: 10px;
-		justify-content: space-around;
-	}
+		.income {
+			margin-bottom: 20px;
+			.title {
+				display: flex;
+				justify-content: space-around;
+				font-size: 14px;
+				font-weight: 500;
+			}
 
-	.tab-1 {
-		background: url("@/pages/home/images/home_tab_1.png") no-repeat;
-		background-size: 100%;
-		width: 12px;
-		height: 12px;
-		margin-right: 3px;
-		/*padding-right: 5px;*/
-	}
+			.incomeShow {
+				font-size: 15px;
+				color: #333;
+				display: flex;
+				align-items: center;
+				margin-top: 10px;
+				margin-left: 10px;
+			}
 
-	.tab-2 {
-		background: url("@/pages/home/images/home_tab_2.png") no-repeat;
-		background-size: 100%;
-		width: 12px;
-		height: 12px;
-		margin-right: 3px;
-	}
+			.incomeShow::before {
+				content: "";
+				display: block;
+				width: 15px;
+				height: 20px;
+				background: url("@/pages/home/images/tjtc.png") no-repeat;
+				background-size: 100%;
+				/*border-radius: 1px;*/
+				margin-right: 5px;
+				margin-top: 5px;
+			}
 
-	.tab-3 {
-		background: url("@/pages/home/images/home_tab_3.png") no-repeat;
-		background-size: 100%;
-		width: 12px;
-		height: 12px;
-		margin-right: 3px;
-	}
+			.slider {
+				height: 200px;
+				overflow: hidden;
+				position: relative;
 
-	.tab-4 {
-		background: url("@/pages/home/images/home_tab_4.png") no-repeat;
-		background-size: 100%;
-		width: 12px;
-		height: 12px;
-		margin-right: 3px;
-	}
+				.sliderList {
+					display: flex;
+					flex-direction: column;
+					justify-content: space-around;
+					// position: absolute;
+					// top: 0;
+					// left: 0;
+					animation: scroll 30s linear infinite;
 
-	.recommend {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-		margin: 15px 10px 0 10px;
-	}
+					.slideItem {
+						margin: 0;
+						display: flex;
+						justify-content: space-around;
+					}
+				}
+			}
 
-	.tjjs {
-		font-size: 15px;
-		color: #333;
-		display: flex;
-		align-items: center;
-	}
+			@keyframes scroll {
+				0% {
+					transform: translateY(0);
+				}
 
-	.more-jishi {
-		display: flex;
-		align-items: center;
-	}
-
-	.more-l {
-		font-size: 12px;
-		color: #8F8F94;
-	}
-
-	.more-r {
-		background: url("@/pages/home/images/more.png") no-repeat;
-		background-size: 100%;
-		height: 15px;
-		width: 15px;
-	}
-
-	.technician {
-		margin-top: 10px;
-		overflow-x: auto;
-		/*background: #8F8F94;*/
-	}
-
-	.technician::-webkit-scrollbar {
-		display: none;
-	}
-
-	.technician-item {
-		display: flex;
-		flex-direction: row;
-		/*width: 60px;*/
-		/*height: 80px;*/
-	}
-
-	.jishi {
-		/*margin-right: 15px;*/
-		/*margin-left: 2px;*/
-		display: flex;
-		flex-direction: column;
-		/*justify-items: center;*/
-		/*justify-content: space-around;*/
-		/*align-items: center;*/
-		align-items: center;
-	}
-
-	.user {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		width: 80px;
-	}
-
-	.username {
-		font-weight: 700;
-	}
-
-	.order {
-		font-size: 10px;
-		color: #8F8F94;
-	}
-
-	.tjjs::before {
-		content: "";
-		display: block;
-		width: 15px;
-		height: 20px;
-		background: url("@/pages/home/images/tjjs.png") no-repeat;
-		background-size: 100%;
-		/*border-radius: 1px;*/
-		margin-right: 5px;
-		margin-top: 5px;
-	}
-
-	.tjxm {
-		font-size: 15px;
-		color: #333;
-		display: flex;
-		align-items: center;
-		margin-top: 10px;
-		margin-left: 10px;
-	}
-
-	.tjxm::before {
-		content: "";
-		display: block;
-		width: 15px;
-		height: 20px;
-		background: url("@/pages/home/images/tjtc.png") no-repeat;
-		background-size: 100%;
-		/*border-radius: 1px;*/
-		margin-right: 5px;
-		margin-top: 5px;
-	}
-
-	.uni-index-list-cell {
-		width: auto !important;
-		margin: 7px 10px !important;
-	}
-
-	.uni-good-list-logo {
-		width: 80px;
-		height: 80px;
-		align-items: center;
-		border-radius: 5px;
-		margin: 10px;
-	}
-
-	.list {
-		display: flex;
-	}
-
-	.time {
-		font-size: 12px;
-		margin-bottom: 10px;
-	}
-
-	.bottom {
-		display: flex;
-		justify-content: space-between;
-		margin-bottom: 15px;
-	}
-
-	.uni-good-list-text-top {
-		font-size: 15px;
-		line-height: 21px;
-		color: #333;
-		font-weight: 700;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		display: -webkit-box;
-		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 2;
-		margin-top: 15px !important;
-	}
-
-	.price {
-		font-size: 17px;
-		color: #f55;
-	}
-
-	.price::before {
-		content: "¥";
-		color: #f55;
-		font-size: 12px
-	}
-
-	.origin-price {
-		font-size: 12px;
-		margin-left: 5px;
-		text-decoration: line-through;
-		text-decoration-line: line-through;
-		text-decoration-thickness: initial;
-		text-decoration-style: initial;
-		text-decoration-color: initial;
-	}
-
-	.origin-price::before {
-		content: "¥";
-	}
-
-	.sales {
-		font-size: 11px;
-		color: #999;
-		margin-right: 10px;
-	}
-
-	.noData {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		margin-top: 150px;
-		color: #8F8F94;
-	}
-
-	/deep/.u-modal__content {
-		text-align: center;
+				100% {
+					transform: translateY(-100%);
+				}
+			}
+		}
 	}
 </style>
