@@ -32,7 +32,7 @@ import http from '@/common/request'
 export function userLogin(data){
 	return http.request({
 		method: 'post',
-		url: '/api/v1/login/',
+		url: '/api/app/login',
 		data: data
 	})
 }
