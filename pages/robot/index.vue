@@ -1,416 +1,327 @@
 <template>
-	<view class="jishi"  :style="{'padding-top': statusBarHeight + 'px'}">
-		<view class="header">
-			<u-tabs :list="conditions" lineWidth="0" lineHeight="0" :activeStyle="{
-			    color: '#303133',
-			    fontWeight: 'bold',
-			}">
-				</u-tabs>
+	<view class="uni-tab-bar app" :style="{'padding-top': statusBarHeight + 'px'}">
+		<view class="banner">
+			<u-swiper :list="bannerList" keyName="uri" indicator indicatorMode="line" circular></u-swiper>
 		</view>
-		<view class="body">
-			<scroll-view @scroll="scroll" refresher-default-style="none" class="scroll" :refresher-triggered="triggered" @refresherrestore="onRestore"
-				@refresherrefresh="onRefresh" @refresherabort="onAbout" refresher-background="#f0f0f0"
-				:refresher-enabled="refresherEnabled" scroll-y @scrolltolower="loadMore()">
-				<view class="recommend-good-list">
-					<block v-for="(t,idx) in technicianList" :key="idx">
-						<view class="items">
-							<view class="item">
-								<view class="img">
-									<image class="avatar" :src="t.avatar"></image>
-								</view>
-								<view class="jishi-info">
-									<view class="name">{{ t.name }}</view>
-									<view class="time">
-										<span style="margin-right: 5px">最早可约</span>
-										<span>16:00</span>
-									</view>
-									<view class="stars">
-										<span class="star">{{ t.starLevel }}</span>
-										<span>单量{{ t.orderNum }}</span>
-									</view>
-									<view class="pingjia-fensi">
-										<span class="pingjia">评价30</span>
-										<span>粉丝{{ t.collectNum }}</span>
-									</view>
-								</view>
-								<view class="other">
-									<span class="distance">1km</span>
-									<span class="btn" @click="reserve(t.id)">去预约</span>
-								</view>
-							</view>
-						</view>
-					</block>
-					<!-- <uni-load-more :status="loadmoreStatue"
-						:contentText="loadingText"></uni-load-more> -->
-				</view>
-			</scroll-view>
+		<view class="marquee">
+			<u-notice-bar :text="marquee" bgColor="#eee"></u-notice-bar>
 		</view>
-		
-
 	</view>
 </template>
 
 <script>
-	import uniFloatingButton from "@/components/uni-floating-button/uni-floating-button.vue"
-	import uniDrawer from '@/components/uni-drawer/uni-drawer.vue'
-	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
+	import uniFloatingButton from '@/components/uni-floating-button/uni-floating-button.vue';
+	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
+	import uniSwiperDot from '@/components/uni-swiper-dot/uni-swiper-dot.vue';
+	import uniGrid from '@/components/uni-grid/uni-grid.vue';
+	import {
+		getBanner,
+		getMarquee,
+		getIncomeRank,
+		getIncome
+	} from '@/common/api'
 	import {
 		mapGetters
 	} from 'vuex';
 	import {
-		getTechnician,
-		getMasterGoods
-	} from "@/common/api";
+		paseNum,
+		openGps
+	} from '@/common/util';
+	import uniCard from "@/components/uni-card/uni-card.vue";
+	import config from "@/common/config.js";
 
 	export default {
 		components: {
+			uniCard,
+			uniGrid,
 			uniLoadMore,
-			uniDrawer,
-			uniFloatingButton,
+			uniSwiperDot,
+			uniFloatingButton
 		},
+
 		computed: {},
-		onLoad: function(options) {
-			this._freshing = false
-			this.getTechnicians()
-		},
+
 		data() {
 			return {
-				show: false,
-				selectShow: false,
-				indexType: undefined,
-				statusBarHeight: getApp().globalData.statusBarHeight,
+				statusBarHeight: getApp().globalData.statusBarHeight || 20,
+				isShow: false,
+				title: "提示",
+				openNow: false,
+				content: "定位失败，请打开手机定位",
 				pullDownRefresh: true,
+				tabs: [],
 				showFloatButton: false,
 				scrollTop: 0,
 				oldScrollTop: 0,
-				canFix: true,
-				startPrice: '',
-				endPrice: '',
-				refresherEnabled: true,
-				triggered: false,
-				masterGoodsList: [],
-				showDrawer: false,
-				params: {},
-				total: 0,
-				selectIndex: undefined,
+				isClickChange: false,
+				scrollLeft: 0,
+				tabIndex: 0,
 				loadmoreStatue: 'more',
-				technicianList: [],
+				indicatorDots: true,
+				autoplay: true,
+				interval: 2000,
+				duration: 500,
 				loadingText: {
 					// contentdown: '下拉加载更多',
-					contentrefresh: 'đang tải...',
-					contentnomore: 'không còn dữ liệu'
+					contentrefresh: '正在加载...',
+					contentnomore: '没有更多数据了'
 				},
-				queryParams: {
-					limit: 10,
-					page: 1,
+				bannerList: [],
+				marquee: '',
+				incomeRankList: [],
+				incomeList: []
+			};
+		},
+		create() {
+
+		},
+		onLoad: function(options) {
+			const that = this;
+			this.getBanners();
+			this.getMarqueeList();
+			this.getIncomeRankList();
+			that.getIncomeList();
+			uni.getLocation({
+				type: 'wgs84',
+				geocode: true,
+				success: function(res) {
+					console.log(res)
 				},
-				conditions: [{
-					name: '全部',
-				}, {
-					name: '单量优先',
-				}, {
-					name: '好评优先'
-				}, {
-					name: '距离优先'
-				}],
-			}
+				fail: (error) => {
+					that.isShow = true;
+					// that.openNow = true;
+
+				}
+			})
 		},
 		methods: {
-			reserve(val) {
-				uni.navigateTo({
-					url: '/pages/jishi/reserve?userId=' + val,
-				})
-			},
-
-			onRestore() {
-				this.triggered = 'restore';
-			},
-			onRefresh() {
-				this.loadmoreStatue = 'loading';
-				if (this._freshing) return
-				this._freshing = true;
-				this.queryParams.page = 1;
-				this.queryParams.limit = 10;
-				this.technicianList = [];
-				this.getTechnicians()
-				this.triggered = 'restore';
-				setTimeout(() => {
-					this.triggered = false;
-					this._freshing = false;
-				}, 1000)
-			},
-			onAbout(e) {
-				this.triggered = false;
-			},
-			async getTechnicians() {
-				let res = await getTechnician(this.queryParams);
-				if (res.code === 2000) {
-					this.technicianList = this.technicianList.concat(res.data.data);
-					this.total = res.data.total;
-					if (this.technicianList.length === this.total) {
-						this.loadmoreStatue = 'nomore';
-					}
+			async getBanners() {
+				let res = await getBanner()
+				for (let i = 0; i < res.data.results.length; i++) {
+					const host = config.server + '/';
+					res.data.results[i].uri = (host + res.data.results[i].uri) || null;
+					this.bannerList.push(res.data.results[i])
 				}
+			},
+			async getIncomeRankList() {
+				let params = {
+					pageNum: 1,
+					pageSize: 3,
+				}
+				let res = await getIncomeRank(params);
+				this.incomeRankList = res.data.results;
+			},
+			async getMarqueeList() {
+				let res = await getMarquee()
+				this.marquee = res.data.results[0].content;
+			},
+			async getIncomeList() {
+				let res = await getIncome();
+				this.incomeList = res.data.results;
+			},
+			async loadMore(cid) {
+				let item = this.goods[cid];
+				let page = item.page + 1;
+				this.loadmoreStatue = 'loading';
+				this.$store
+					.dispatch('good/GetGoods', {
+						cid: cid,
+						page: page,
+						push: true
+					})
+					.then(() => {
+						this.loadmoreStatue = 'more';
+					})
+					.catch(() => {
+						this.loadmoreStatue = 'noMore';
+					});
+			},
+			confirm() {
+				this.isShow = false;
+				this.openNow = true;
+				openGps(this.openNow);
 			},
 			cancel() {
-				this.selectShow = false;
-				this.selectIndex = undefined;
+				this.isShow = false;
 			},
-			change(e) {
-				console.log('e:', e);
-			},
-			closeDrawer(e) {
-				this.showDrawer = false;
-			},
-			loadMore() {
-				this.queryParams.page += 1;
-				if (this.technicianList.length === this.total) {
-					this.loadmoreStatue = 'nomore';
-				} else {
-					// this.loadmoreStatue = 'loading';
-					this.getTechnicians()
-					this.loadmoreStatue = 'more';
-					
-				}
-			},
-			reset() {
-				this.startPrice = '';
-				this.endPrice = '';
-			},
-			scroll(e) {
-				if (e.detail.scrollTop == 0) {
-					this.refresherEnabled = true;
-					this.disabledPullRefresh(true);
-				} else {
-					//保证只设置一次
-					if (!this.refresherEnabled) {
-						this.disabledPullRefresh(false);
+			bannerClick(banner) {
+				if (banner.url != '') {
+					if (banner.url.indexOf('https://') == 0) {
+						// #ifdef APP-PLUS
+						let link = banner.url;
+						link = link.replace('https', 'taobao');
+
+						plus.runtime.openURL(link, function(res) {
+							uni.navigateTo({
+								url: '/pages/web/index?url=' + escape(banner.url)
+							});
+						});
+
+						// #endif
+						// #ifdef H5
+						uni.navigateTo({
+							url: '/pages/web/index?url=' + escape(banner.url)
+						});
+						// #endif
+					} else {
+						uni.navigateTo({
+							url: banner.url
+						});
 					}
-					this.refresherEnabled = false;
+				} else if (banner.activity_type > 0) {
+					uni.navigateTo({
+						url: '/pages/activity/index?id=' + banner.activity_type
+					});
 				}
-				this.oldScrollTop = e.detail.scrollTop;
 			},
-
-
+			gotTop() {
+				this.scrollTop = this.oldScrollTop;
+				this.$nextTick(function() {
+					this.scrollTop = 0;
+				});
+			},
+		},
+		onNavigationBarSearchInputClicked(e) {
+			console.log('事件执行了');
+			uni.navigateTo({
+				url: '/pages/search/index'
+			});
 		},
 
 	};
 </script>
 
-<style>
-	.jishi {
-		width: 100%;
-		height: 100%;
-	}
-	.header{
-		height: 40px;
-	}
-	.body {
-		/* height: calc(100% - 40px); */
-		height: 100%;
-		background: #fff;
-	}
+<style lang="scss" scoped>
+	.app {
+		/*margin-top: 15px;*/
+		height: auto;
+		padding-bottom: 60px;
 
-	/deep/.u-tabs__wrapper__nav {
-		justify-content: space-around;
-	}
-	/* /deep/.uni-scroll-view-refresh-inner{
-		display: none;
-	} */
-	.scroll {
-		/*width: 750upx;*/
-		background: #eee;
-		/* height: calc(100% - 40px); */
-		height:100%;
-		
-	}
+		.banner {
+			margin: 0px 10px 0 10px;
+		}
 
-	.recommend-good-list {
-		display: flex;
-		width: 100%;
-		/* flex-wrap: wrap; */
-		height: 100%;
-		flex-direction: column;
-	}
+		.marquee {
+			margin: 10px 10px 0 10px;
 
-	.items {
-		background: #FFFFFF;
-		/*width: 365upx;*/
-		width: 100%;
-		/* margin: 5px; */
-		margin: 10px 5px 0 5px;
-		display: flex;
-		border-radius: 15upx;
-		flex-direction: column;
-	}
+		}
 
-	.item {
-		display: flex;
-		justify-content: space-around;
-		width: 100%;
-	}
+		/deep/.u-notice-bar {
+			padding: 0;
+		}
 
-	.img {
-		display: flex;
-		align-items: center;
-		/*justify-items: center;*/
-		border-radius: 50%;
-		border: 1px solid #eee;
-		width: 75px;
-	}
+		.top {
+			.incomeTop {
+				font-size: 15px;
+				color: #333;
+				display: flex;
+				align-items: center;
+				margin-top: 10px;
+				margin-left: 10px;
+			}
 
-	.avatar {
-		width: 60px;
-		height: 60px;
-		margin-left: calc(15px / 2);
-	}
+			.incomeTop::before {
+				content: "";
+				display: block;
+				width: 15px;
+				height: 20px;
+				background: url("@/pages/home/images/tjtc.png") no-repeat;
+				background-size: 100%;
+				/*border-radius: 1px;*/
+				margin-right: 5px;
+				margin-top: 5px;
+			}
 
-	.jishi-info {
-		display: flex;
-		flex-direction: column;
-	}
+			.incomeList {
+				display: flex;
+				flex-direction: column;
 
-	.name {
-		font-size: 14px;
-		font-weight: 600;
-	}
+				// justify-content: space-around;
+				.title {
+					// display: flex;
+					// justify-content: space-around;
+					font-size: 14px;
+					font-weight: 500;
+				}
 
-	.stars {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		font-size: 10px;
-	}
+				.incomeItem {
+					display: flex;
+					align-items: center;
+					justify-content: space-around;
 
-	.star {
-		display: flex;
-		align-items: center;
-		margin-right: 5px;
-	}
+					span img {
+						display: flex;
+						align-items: center;
+						width: 20px;
+						height: 20px;
+					}
+				}
+			}
 
-	.star:before {
-		content: '';
-		background: url("@/pages/robot/image/star.png") no-repeat;
-		background-size: 100%;
-		width: 12px;
-		height: 12px;
-	}
+		}
 
-	.pingjia-fensi {
-		font-size: 10px;
-		color: #8F8F94;
-		display: flex;
-	}
+		.income {
+			margin-bottom: 20px;
 
-	.pingjia {
-		margin-right: 5px;
-	}
+			.title {
+				display: flex;
+				justify-content: space-around;
+				font-size: 14px;
+				font-weight: 500;
+			}
 
-	.time {
-		background: rgb(255, 237, 236);
-		border-radius: 5px;
-		font-size: 10px;
-		/*color: #fff;*/
-		/*display: flex;*/
-		/*width: auto;*/
-		/*justify-content: space-around;*/
-		/*text-align: center;*/
-		/*width: 100%;*/
-	}
+			.incomeShow {
+				font-size: 15px;
+				color: #333;
+				display: flex;
+				align-items: center;
+				margin-top: 10px;
+				margin-left: 10px;
+			}
 
-	.other {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		align-items: center;
-		margin-left: 20px;
-	}
+			.incomeShow::before {
+				content: "";
+				display: block;
+				width: 15px;
+				height: 20px;
+				background: url("@/pages/home/images/tjtc.png") no-repeat;
+				background-size: 100%;
+				/*border-radius: 1px;*/
+				margin-right: 5px;
+				margin-top: 5px;
+			}
 
-	.distance {
-		font-size: 12px;
-		color: #8F8F94;
-		position: relative;
-		top: 20px;
-	}
+			.slider {
+				height: 200px;
+				overflow: hidden;
+				position: relative;
 
-	/*.distance:before{*/
-	/*  content: '';*/
-	/*  background: url("@/pages/jishi/image/location.png") no-repeat;*/
-	/*  background-size: 100%;*/
-	/*  display: inline-block;*/
-	/*  width: 15px;*/
-	/*  height: 15px;*/
-	/*}*/
-	.btn {
-		background: rgb(255, 209, 51);
-		text-align: center;
-		border-radius: 12px;
-		color: #000000;
-		font-size: 14px;
-		position: relative;
-		bottom: 10px;
-		padding: 0 12px;
-		/*font-weight: 700;*/
-	}
+				.sliderList {
+					display: flex;
+					flex-direction: column;
+					justify-content: space-around;
+					// position: absolute;
+					// top: 0;
+					// left: 0;
+					animation: scroll 60s linear infinite;
 
-	.recommend-good-title-view {
-		width: 100%;
-		display: flex;
-		justify-content: center;
-	}
+					.slideItem {
+						margin: 0;
+						display: flex;
+						justify-content: space-around;
+					}
+				}
+			}
 
-	.recommend-good-image-view {
-		margin: 20upx 0 20upx 0;
-		width: 100%;
-		display: flex;
-		justify-content: center;
-	}
+			@keyframes scroll {
+				0% {
+					transform: translateY(0);
+				}
 
-	.recommend-good-condition-view {
-		background: #FFFFFF;
-		height: 80upx;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-around;
-		align-items: center;
-	}
-
-	.recommend-good-condition-item {
-		/*width: 150upx;*/
-		/*text-align: center;*/
-		display: flex;
-		align-items: center;
-	}
-
-	.recommend-good-condition-item:after {
-		content: '';
-		background: url("@/pages/robot/image/sort_down.png") no-repeat;
-		background-size: 100%;
-		width: 10px;
-		height: 10px;
-		margin-top: 3px;
-	}
-
-	.recommend-good-condition-color {
-		/*color:#FF80AB;*/
-		font-weight: 700;
-	}
-
-	.recommend-good-condition-color:after {
-		content: '';
-		background: url("@/pages/robot/image/sort_up.png") no-repeat;
-		background-size: 100%;
-		height: 10px;
-		width: 10px;
-	}
-
-	.queren {
-		height: 700rpx;
-	}
-
-	.tag {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-around;
+				100% {
+					transform: translateY(-100%);
+				}
+			}
+		}
 	}
 </style>

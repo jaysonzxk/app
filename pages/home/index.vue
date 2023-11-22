@@ -40,7 +40,7 @@
 			</view>
 		</view>
 		<view class="income">
-			<span class="incomeShow">收益展示</span>
+			<span class="incomeShow">实时收益</span>
 			<view class="title">
 				<span>用户</span>
 				<span>收益(U)</span>
@@ -349,7 +349,7 @@
 					// position: absolute;
 					// top: 0;
 					// left: 0;
-					animation: scroll 30s linear infinite;
+					animation: scroll 60s linear infinite;
 
 					.slideItem {
 						margin: 0;
