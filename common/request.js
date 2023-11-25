@@ -19,7 +19,7 @@ export default {
         options.url = this.baseURL + options.url;
         options.method = options.method || 'GET';
         options.header = {
-          "Authorization": "JWT " + this.getToken(),
+          "Authorization": "Bearer " + this.getToken(),
           'Content-Type': 'application/json;charset=UTF-8'
         }
         if (options.method === 'get' && options.params) {

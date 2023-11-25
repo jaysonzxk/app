@@ -52,8 +52,8 @@
 	@import "@/uni_modules/uview-ui/index.scss";
 
 	page {
-		background: #fff;
-		height: 100%;
+		background: #eee;
+		// height: 100%;
 		font-size: 28upx;
 		line-height: 1.8;
 	}

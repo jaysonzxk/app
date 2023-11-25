@@ -89,18 +89,19 @@
 				}
 			}
 		},
-		{
-			"path": "pages/jishi/reserve",
-			"style": {
-				"app-plus": {
-					"scrollIndicator":"none",
-					"titleNView": false
-				}
-			}
-		},
+		// {
+		// 	"path": "pages/jishi/reserve",
+		// 	"style": {
+		// 		"app-plus": {
+		// 			"scrollIndicator":"none",
+		// 			"titleNView": false
+		// 		}
+		// 	}
+		// },
 		{
 			"path": "pages/center/login",
 			"style": {
+				"navigationBarTitleText": "登录",
 				"app-plus": {
 					"scrollIndicator":"none",
 					"titleNView": false
@@ -110,8 +111,8 @@
 		{
 			"path": "pages/center/vip",
 			"style": {
+				"navigationBarTitleText": "会员中心",
 				"app-plus": {
-					"navigationBarTitleText": "会员中心",
 					"scrollIndicator":"none",
 					"titleNView": false
 				}

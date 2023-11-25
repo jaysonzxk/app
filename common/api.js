@@ -45,11 +45,10 @@ export function getBanner(params) {
 	})
 }
 // 用户信息
-export function getUserInfo(params){
+export function getUserInfo(){
 	return http.request({
 		method: 'get',
-		url: '/api/v1/client/user/user_info/',
-		params: params
+		url: '/api/app/mine/info'
 	})
 }
 
@@ -104,7 +103,7 @@ export function getMasterGoods(query){
 export function getMobileCode(query){
 	return http.request({
 		method: 'get',
-		url: '/api/v1/getCode/',
+		url: '/api/app/getCode',
 		params: query
 	})
 }
@@ -113,7 +112,7 @@ export function getMobileCode(query){
 export function getVipList(query) {
 	return http.request({
 		method: 'get',
-		url: '/api/v1/client/vipList/',
+		url: '/api/app/mine/vipCard/list',
 		params: query
 	})
 }
@@ -123,7 +122,7 @@ export function getVipList(query) {
 export function getPayChannel(query) {
 	return http.request({
 		method: 'get',
-		url: '/api/v1/client/payChannel/',
+		url: '/api/app/mine/channel/list',
 		params: query
 	})
 }

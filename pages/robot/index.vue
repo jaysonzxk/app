@@ -10,34 +10,15 @@
 </template>
 
 <script>
-	import uniFloatingButton from '@/components/uni-floating-button/uni-floating-button.vue';
-	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
-	import uniSwiperDot from '@/components/uni-swiper-dot/uni-swiper-dot.vue';
-	import uniGrid from '@/components/uni-grid/uni-grid.vue';
 	import {
 		getBanner,
 		getMarquee,
 		getIncomeRank,
 		getIncome
 	} from '@/common/api'
-	import {
-		mapGetters
-	} from 'vuex';
-	import {
-		paseNum,
-		openGps
-	} from '@/common/util';
-	import uniCard from "@/components/uni-card/uni-card.vue";
 	import config from "@/common/config.js";
 
 	export default {
-		components: {
-			uniCard,
-			uniGrid,
-			uniLoadMore,
-			uniSwiperDot,
-			uniFloatingButton
-		},
 
 		computed: {},
 

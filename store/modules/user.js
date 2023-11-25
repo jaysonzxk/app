@@ -50,7 +50,7 @@ const user = {
 		GetUserInfo({commit}){
 			return new Promise((resolve, reject) => {
 				getUserInfo().then(response => {
-					const userInfo = response.data
+					const userInfo = response.data;
 					commit('SET_USER_INFO', userInfo)
 					uni.setStorageSync('userInfo', userInfo)
 					resolve()

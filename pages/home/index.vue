@@ -41,15 +41,11 @@
 		</view>
 		<view class="income">
 			<span class="incomeShow">实时收益</span>
-			<view class="title">
-				<span>用户</span>
-				<span>收益(U)</span>
-			</view>
 			<view class="slider">
 				<div class="sliderList">
 					<div class="slideItem" v-for="(item, index) in incomeList" :key="index">
-						<span class="username">{{item.user}}</span>
-						<span class="money">{{item.income}}</span>
+						<span class="username">用户:{{item.user}}</span>
+						<span class="money">收益:{{item.income}}U</span>
 					</div>
 
 				</div>
@@ -60,10 +56,6 @@
 </template>
 
 <script>
-	import uniFloatingButton from '@/components/uni-floating-button/uni-floating-button.vue';
-	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
-	import uniSwiperDot from '@/components/uni-swiper-dot/uni-swiper-dot.vue';
-	import uniGrid from '@/components/uni-grid/uni-grid.vue';
 	import {
 		getBanner,
 		getMarquee,
@@ -72,12 +64,7 @@
 	} from '@/common/api'
 	import {
 		mapGetters
-	} from 'vuex';
-	import {
-		paseNum,
-		openGps
-	} from '@/common/util';
-	import uniCard from "@/components/uni-card/uni-card.vue";
+	} from 'vuex';x
 	import config from "@/common/config.js";
 
 	export default {
@@ -308,7 +295,8 @@
 		}
 
 		.income {
-			margin-bottom: 20px;
+			// margin-bottom: 20px;
+			margin-top: 20px;
 			.title {
 				display: flex;
 				justify-content: space-around;
@@ -338,10 +326,11 @@
 			}
 
 			.slider {
-				height: 200px;
+				height: 300px;
 				overflow: hidden;
 				position: relative;
-
+				display: flex;
+				justify-content: center;
 				.sliderList {
 					display: flex;
 					flex-direction: column;
@@ -349,12 +338,13 @@
 					// position: absolute;
 					// top: 0;
 					// left: 0;
-					animation: scroll 60s linear infinite;
+					animation: scroll 10s linear infinite;
 
 					.slideItem {
-						margin: 0;
-						display: flex;
-						justify-content: space-around;
+						.username{
+							margin-right: 20px;
+						}
+						
 					}
 				}
 			}
