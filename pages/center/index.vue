@@ -11,7 +11,7 @@
 				<view class="userInfo" v-if="!userInfo">
 					<view class="infoLeft">
 						<u-avatar text="XY" fontSize="20" size="60"></u-avatar>
-						<span style="font-size: 20px; font-weight: 500;" @click="goLogin">登 录</span>
+						<span style="font-size: 20px; font-weight: 500;margin-left: 10px;" @click="goLogin">登 录</span>
 					</view>
 				</view>
 				<view class="userInfo" v-else>
@@ -154,10 +154,10 @@
 				userImg: undefined
 			};
 		},
-		onShow() {},
+		
 		onLoad(options) {
 			this.versionName = '版本:' + this.$config.versionName;
-			this.userInfos()
+			this.userInfos();
 		},
 		computed: {
 		},
@@ -165,8 +165,7 @@
 			async userInfos() {
 				let res = await getUserInfo();
 				let host = config.server + '/';	
-				this.userImg  = host + res.data.avatar;
-				console.log(this.userImg)
+				this.userImg  = (host + res.data.avatar) || null;
 				this.userInfo = res.data;
 			},
 			

@@ -50,32 +50,12 @@ export default {
     handleResponse(data) {
       return new Promise((resolve, reject) => {
         const [err, res] = data;
-        if (res.data.code === 401) {
-          uni.showToast({
-            icon: 'none',
-            title: '请先登录',
-            duration: 2000
-          });
-          setTimeout(() => {
-            uni.navigateTo({
-              url: '/pages/center/login'
-            })
-          }, 1000)
-        
-          return reject('请先登录')
+        if (res.data.code === 200) {
+          return resolve(res.data)
         }
         if (res && res.data.code === 401) {
           return
         }
-		// console.log('res', res)
-  //       if (res && (res.data.code !== 200 && res.data.code !== 401)) {
-  //         let msg = res.data.msg || 'Yêu cầu lỗi';
-  //         uni.showToast({
-  //           icon: 'none',
-  //           title: msg
-  //         })
-  //         return reject(msg)
-  //       }
         if (err) {
           uni.showToast({
             icon: 'none',

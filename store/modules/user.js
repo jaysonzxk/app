@@ -38,7 +38,10 @@ const user = {
 					});
 					setTimeout(() => {
 						uni.navigateBack({
-							delta: 1
+							delta: 1,
+							complete: () => {
+							    uni.startPullDownRefresh()
+							  }
 						}, 1000)
 					})
 					resolve()

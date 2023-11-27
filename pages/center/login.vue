@@ -15,7 +15,7 @@
 <!--              margin="0 8px 0 0"-->
 <!--              type="tips"-->
 <!--          ></u&#45;&#45;text>-->
-        </u--input>
+        </u--input>	
         <view class="reg-code">
 <!--          <u&#45;&#45;input v-model="password" placeholder="请输短信验证码" border="bottom" type="number" class="code">-->
 <!--          </u&#45;&#45;input>-->
@@ -137,6 +137,7 @@ export default {
     async userLogin() {
       const loginForm = {mobile: this.mobile, code: this.code, deviceId:this.deviceId}
       await this.$store.dispatch('user/Login', loginForm);
+	  
       await this.$store.dispatch('user/GetUserInfo', {});
       // uni.showLoading({
       // 	title: '数据加载中...'

@@ -68,7 +68,7 @@
 					</div>
 				</view>
 				<view class="pay-list">
-					<u-popup  class="mode" :show="show" :round="10" mode="bottom" @close="close" @open="open">
+					<u-popup  class="mode" :show="show" :round="10" mode="bottom" @close="close">
 						<span class="title">选择支付方式</span>
 						<view class="pay-item" v-for="(p,index) in payChannelList" :key="p.id"
 							@click="changePay(p,index)">
@@ -117,7 +117,6 @@
 		},
 		data() {
 			return {
-				toastShow: false,
 				statusBarHeight: getApp().globalData.statusBarHeight,
 				bgColor: '#444',
 				leftIconColor: '#fff',
@@ -131,9 +130,7 @@
 				pName: undefined,
 				pId: undefined,
 				vId: undefined,
-				form: {},
 				show: false,
-				show1: false,
 				payData: {}
 			};
 		},
@@ -152,9 +149,10 @@
 				this.show = true;
 			},
 			close() {
-				this.show = false
+				this.show = false;
 			},
 			goPay() {
+				this.close();
 				this.payData = {
 					vip: this.vipList[this.indexI].id,
 					qrCode: this.payChannelList[this.payIndex].qrCode,
@@ -162,7 +160,7 @@
 					amount: this.vipList[this.indexI].discountAmount,
 					payShow: true,
 				}
-				this.show = false;
+				// this.show = false;
 			},
 			changePay(val, index) {
 				this.payIndex = index;

@@ -27,7 +27,9 @@
 		globalData: {
 			statusBarHeight: ''
 		},
-		onShow: function() {},
+		onShow: function() {
+			this.getClientId();
+		},
 		onHide: function() {
 			console.log('App Hide')
 		},

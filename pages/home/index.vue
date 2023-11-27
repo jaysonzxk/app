@@ -1,5 +1,5 @@
 <template>
-	<view class="uni-tab-bar app" :style="{'padding-top': statusBarHeight + 'px'}">
+	<view class="uni-tab-bar app" :style="{'padding-top': statusBarHeight+20 + 'px'}">
 		<view class="banner">
 			<u-swiper :list="bannerList" keyName="uri" indicator indicatorMode="line" circular></u-swiper>
 		</view>
@@ -9,22 +9,9 @@
 		<view class="top">
 			<span class="incomeTop">收益榜</span>
 			<view class="incomeList">
-				<!-- <view class="title">
-					<span>排名</span>
-					<span>用户</span>
-					<span>收益</span>
-				</view> -->
 				<view v-if="incomeRankList.length>0" class="incomeItem" v-for="(item, index) in incomeRankList" :key="index">
 					<view>
-						<span  v-if="index==0">
-							<img src="./images/no1.png" alt="" />
-						</span>
-						<span  v-if="index==1">
-							<img src="./images/no2.png" alt="" />
-						</span>
-						<span  v-if="index==2">
-							<img src="./images/no3.png" alt="" />
-						</span>
+						<span>{{ index+1 }}</span>
 					</view>
 					<view class="">
 						<span>{{item.user}}</span>
@@ -51,7 +38,6 @@
 				</div>
 			</view>
 		</view>
-		<uni-load-more :status="loadmoreStatue" :contentText="loadingText"></uni-load-more>
 	</view>
 </template>
 
@@ -64,16 +50,11 @@
 	} from '@/common/api'
 	import {
 		mapGetters
-	} from 'vuex';x
+	} from 'vuex';
 	import config from "@/common/config.js";
 
 	export default {
 		components: {
-			uniCard,
-			uniGrid,
-			uniLoadMore,
-			uniSwiperDot,
-			uniFloatingButton
 		},
 
 		computed: {},
@@ -110,30 +91,20 @@
 			};
 		},
 		create() {
-
+			this.getBanners();
 		},
 		onLoad: function(options) {
 			const that = this;
-			this.getBanners();
-			this.getMarqueeList();
-			this.getIncomeRankList();
+			that.getBanners();
+			that.getMarqueeList();
+			that.getIncomeRankList();
 			that.getIncomeList();
-			uni.getLocation({
-				type: 'wgs84',
-				geocode: true,
-				success: function(res) {
-					console.log(res)
-				},
-				fail: (error) => {
-					that.isShow = true;
-					// that.openNow = true;
-
-				}
-			})
 		},
 		methods: {
 			async getBanners() {
-				let res = await getBanner()
+				console.log(1111111111111)
+				let res = await getBanner();
+				console.log(res)
 				for (let i = 0; i < res.data.results.length; i++) {
 					const host = config.server + '/';
 					res.data.results[i].uri = (host + res.data.results[i].uri) || null;
@@ -251,6 +222,7 @@
 			.incomeTop {
 				font-size: 15px;
 				color: #333;
+				font-weight: 700;
 				display: flex;
 				align-items: center;
 				margin-top: 10px;
@@ -283,12 +255,27 @@
 					display: flex;
 					align-items: center;
 					justify-content: space-around;
-					span img {
-						display: flex;
-						align-items: center;
+					.rankIcon1{
+						background: url('images/no1.png') no-repeat;
 						width: 20px;
 						height: 20px;
 					}
+					.rankIcon2{
+						background: url('images/no2.png') no-repeat;
+						width: 20px;
+						height: 20px;
+					}
+					.rankIcon3{
+						background: url('images/no3.png') no-repeat;
+						width: 20px;
+						height: 20px;
+					}
+					// span img {
+					// 	display: flex;
+					// 	align-items: center;
+					// 	width: 20px;
+					// 	height: 20px;
+					// }
 				}
 			}
 			
@@ -296,6 +283,7 @@
 
 		.income {
 			// margin-bottom: 20px;
+			padding-bottom: 20px;
 			margin-top: 20px;
 			.title {
 				display: flex;
@@ -306,6 +294,7 @@
 
 			.incomeShow {
 				font-size: 15px;
+				font-weight: 700;
 				color: #333;
 				display: flex;
 				align-items: center;
