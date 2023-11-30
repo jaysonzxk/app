@@ -109,6 +109,26 @@
 			}
 		},
 		{
+			"path": "pages/center/appPromote/promote",
+			"style": {
+				"navigationBarTitleText": "推广赚钱",
+				"app-plus": {
+					"scrollIndicator":"none",
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/center/appPromote/promoteRecord",
+			"style": {
+				"navigationBarTitleText": "推广记录",
+				"app-plus": {
+					"scrollIndicator":"none",
+					"titleNView": false
+				}
+			}
+		},
+		{
 			"path": "pages/center/vip",
 			"style": {
 				"navigationBarTitleText": "会员中心",

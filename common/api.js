@@ -136,11 +136,11 @@ export function payMoney(data) {
 	})
 }
 
-// 获取技师详情
-export function getInfo(query) {
+// 获取推广列表
+export function getPromotionList(query) {
 	return http.request({
 		method: 'get',
-		url: '/api/v1/client/technician/getMasterInfo',
+		url: '/api/app/mine/promotion/list',
 		params: query
 	})
 }

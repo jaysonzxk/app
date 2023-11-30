@@ -42,7 +42,7 @@
 					</div>
 					<div>
 						<span class="num">0</span>
-						<span class="tip">下级</span>
+						<span class="tip">余额</span>
 					</div>
 					<div>
 						<span class="num">0</span>
@@ -88,7 +88,7 @@
 		<view class="bottom">
 			<span class="title">常用功能</span>
 			<view class="toolTop">
-				<div class="tips">
+				<div class="tips" @click="goPromote">
 					<span class="spread"></span>
 					<span>推广赚钱</span>
 				</div>
@@ -127,7 +127,7 @@
 				<view class="feedback">
 					<div class="item">
 						<span class="feedbackIcon"></span>
-						<span class="title">已经反馈</span>
+						<span class="title">意见反馈</span>
 					</div>
 					<span class="goMore"></span>
 				</view>
@@ -168,7 +168,12 @@
 				this.userImg  = (host + res.data.avatar) || null;
 				this.userInfo = res.data;
 			},
-			
+			goPromote(){
+				// uni.navigateTo({
+				// 	url:'/pages/center/promote'
+				// })
+				uni.$u.route('/pages/center/appPromote/promote')
+			},
 			goWallet() {
 				uni.navigateTo({
 					url: '/pages/center/wallet'
@@ -520,7 +525,7 @@
 					align-items: center;
 					flex-direction: column;
 					width: 70px;
-					
+					margin: 5px 0;
 					.spread{
 						background: url('images/spread.png') no-repeat;
 						background-size: 100% 100%;

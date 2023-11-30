@@ -1,9 +1,10 @@
 import config from "./config";
 
+
 export default {
   config: {
     // baseURL: ' http://192.168.2.71:8000',
-    baseURL: config.server,  // hbiuld x
+    baseURL: uni.getSystemInfoSync().platform === 'ios' ? config.h5Serveer : config.server ,  // hbiuld x
     getToken() {
       let token = uni.getStorageSync('TOKEN');
       // if (!token) {
@@ -19,7 +20,7 @@ export default {
         options.url = this.baseURL + options.url;
         options.method = options.method || 'GET';
         options.header = {
-          "Authorization": "Bearer " + this.getToken(),
+          "Authorization": "JWT " + this.getToken(),
           'Content-Type': 'application/json;charset=UTF-8'
         }
         if (options.method === 'get' && options.params) {

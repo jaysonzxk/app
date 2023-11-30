@@ -31,7 +31,7 @@
 			return {
 				payShow: false,
 				title: '支付确认',
-				host: config.server + '/',
+				host: uni.getSystemInfoSync().platform === 'ios' ? config.h5Serveer + '/': config.server + '/',
 				confirmText: '确认付款',
 				fileList: [],
 			};
