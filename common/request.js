@@ -52,7 +52,7 @@ export default {
       return new Promise((resolve, reject) => {
         const [err, res] = data;
         if (res.data.code === 200) {
-          return resolve(res.data)
+          resolve(res.data);
         }
         if (res && res.data.code === 401) {
           return

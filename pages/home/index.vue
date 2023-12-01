@@ -102,10 +102,11 @@
 		},
 		methods: {
 			async getBanners() {
+				console.log('==============', 111111111111111111)
 				let res = await getBanner();
-				console.log(res)
 				for (let i = 0; i < res.data.results.length; i++) {
 					const host = uni.getSystemInfoSync().platform === 'ios' ? config.h5Serveer + '/': config.server + '/';
+					console.log(host);
 					res.data.results[i].uri = (host + res.data.results[i].uri) || null;
 					this.bannerList.push(res.data.results[i])
 				}
