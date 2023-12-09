@@ -1,5 +1,5 @@
 <template>
-	<view class="uni-tab-bar app" :style="{'padding-top': statusBarHeight+20 + 'px'}">
+	<view class="uni-tab-bar app" :style="{'padding-top': statusBarHeight + 'px'}">
 		<view class="banner">
 			<u-swiper :list="bannerList" keyName="uri" indicator indicatorMode="line" circular></u-swiper>
 		</view>
@@ -102,7 +102,6 @@
 		},
 		methods: {
 			async getBanners() {
-				console.log('==============', 111111111111111111)
 				let res = await getBanner();
 				for (let i = 0; i < res.data.results.length; i++) {
 					const host = uni.getSystemInfoSync().platform === 'ios' ? config.h5Serveer + '/': config.server + '/';

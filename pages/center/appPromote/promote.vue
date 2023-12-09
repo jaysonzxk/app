@@ -1,9 +1,9 @@
 <template>
 	<view class="promote" :style="{'paddingTop': statusBarHeight + 'px'}">
-		<view class="header">
+		<!-- <view class="header">
 			<u-navbar title="APP推广" @rightClick="rightClick" :autoBack="true">
 			</u-navbar>
-		</view>
+		</view> -->
 		<view class="incomeBox">
 			<view class="income">
 				<span class="title">收益金额</span>
